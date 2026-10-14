@@ -6,7 +6,10 @@ Use a bundled model to learn the schema and workflow before writing a custom mod
 |---|---|
 | `public_message.json` | Minimal public byte message |
 | `nonce_exchange.json` | Two-role nonce exchange, local certificate, honest global trace, and malformed-message rejection |
+| `dh_exchange.json` | Unauthenticated Diffie–Hellman exchange with accept targets; checked honest key agreement and a man-in-the-middle execution in which the adversary computes both accepted keys |
+| `signed_dh_exchange.json` | DH exchange with signed shares; checked honest agreement and two share substitutions that fail signature verification, with no key accepted |
 | `signature_check.json` | Signature-construction lemma and separately labeled executable verification observations |
+| `scenarios/*.scenarios.json` | Concrete executions and final-state claims, bound by hash to a model and profile ([format](../docs/scenarios.md)) |
 | `restricted_symbolic_v1.profile.json` | Supported profile for export and verification |
 
 From the repository root:
@@ -18,9 +21,9 @@ From the repository root:
   --out reports/public-message-verification
 ```
 
-On Windows, use `target\debug\vake.exe`. Choose a fresh output directory. Use `vake demo` or the browser tour to run the nonce-specific executions.
+On Windows, use `target\debug\vake.exe`. Choose a fresh output directory. Use `vake demo` or the browser to check the bundled concrete executions; see [scenarios](../docs/scenarios.md).
 
-The nonce is public. Erasing a local value does not remove packets, sent bytes, or existing aliases. These examples do not prove authentication, secrecy, or secure erasure.
+The nonce is public. Erasing a local value does not remove packets, sent bytes, or existing aliases. These examples do not prove authentication, secrecy, or secure erasure. The DH man-in-the-middle scenario is a checked execution showing that this unauthenticated model accepts keys the adversary computes.
 
 ## Rejected inputs
 

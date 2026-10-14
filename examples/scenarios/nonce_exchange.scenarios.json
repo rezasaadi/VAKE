@@ -1,0 +1,159 @@
+{
+  "format": "vake-scenarios-0.1",
+  "description": "Concrete executions of the bundled nonce exchange: one honest exchange and one malformed-envelope rejection.",
+  "model_sha256": "78f1dcffd245e80d9ec2f933abbba2ca41338d3dd3a39cb77b3b0c7080052048",
+  "profile_sha256": "4a0efdd3d41915d7a251635582f2946d59b91c02581b3d3db0a7ea6d329c7268",
+  "scenarios": [
+    {
+      "name": "honest",
+      "description": "Both sessions stopped; echo equals announcement; NonceObserved emitted.",
+      "actions": [
+        {
+          "spawn": {
+            "session": "A1",
+            "role": "Announcer",
+            "party": "Alice"
+          }
+        },
+        {
+          "spawn": {
+            "session": "B1",
+            "role": "Echoer",
+            "party": "Bob"
+          }
+        },
+        {
+          "advance": "A1",
+          "events": [
+            "sample",
+            "assign",
+            "assign",
+            "send",
+            "erase",
+            "stop"
+          ]
+        },
+        {
+          "deliver": "B1",
+          "recipe": {
+            "sent": 0
+          }
+        },
+        {
+          "advance": "B1",
+          "events": [
+            "receive",
+            "invoke",
+            "match",
+            "emit",
+            "send",
+            "stop"
+          ]
+        }
+      ],
+      "claims": [
+        {
+          "name": "echoer_outcome",
+          "status": {
+            "session": "B1",
+            "is": "stopped"
+          }
+        },
+        {
+          "name": "send_count",
+          "sent_count": 2
+        },
+        {
+          "name": "echoer_no_resume",
+          "no_resume": "B1"
+        },
+        {
+          "name": "announcer_stopped",
+          "status": {
+            "session": "A1",
+            "is": "stopped"
+          }
+        },
+        {
+          "name": "echo_equals_announcement",
+          "sent_equal": [
+            0,
+            1
+          ]
+        },
+        {
+          "name": "observation",
+          "emitted": [
+            [
+              "NonceObserved"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "malformed",
+      "description": "Echoer rejected the envelope with a nonce of invalid length; no send.",
+      "actions": [
+        {
+          "spawn": {
+            "session": "B1",
+            "role": "Echoer",
+            "party": "Bob"
+          }
+        },
+        {
+          "deliver": "B1",
+          "recipe": {
+            "encode": {
+              "encoding": "envelopeCodec",
+              "record": {
+                "record": {
+                  "constructor": "MkEnvelope",
+                  "fields": [
+                    [
+                      "nonce",
+                      {
+                        "atom": {
+                          "type": "Nonce",
+                          "name": "short",
+                          "length": 1
+                        }
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "advance": "B1",
+          "events": [
+            "receive",
+            "invoke",
+            "match",
+            "reject"
+          ]
+        }
+      ],
+      "claims": [
+        {
+          "name": "echoer_outcome",
+          "status": {
+            "session": "B1",
+            "is": "rejected"
+          }
+        },
+        {
+          "name": "send_count",
+          "sent_count": 0
+        },
+        {
+          "name": "echoer_no_resume",
+          "no_resume": "B1"
+        }
+      ]
+    }
+  ]
+}

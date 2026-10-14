@@ -1,0 +1,446 @@
+{
+  "format": "vake-scenarios-0.1",
+  "description": "Concrete executions of the signed DH exchange: honest key agreement and two share substitutions that fail signature verification.",
+  "model_sha256": "9f84fa5803433a7fafece0969b3fee77fdbbc0f5ed537e1f2dc7bf1a4c19bcd4",
+  "profile_sha256": "4a0efdd3d41915d7a251635582f2946d59b91c02581b3d3db0a7ea6d329c7268",
+  "scenarios": [
+    {
+      "name": "honest",
+      "description": "Both roles verify the peer's signature and accept the same shared secret.",
+      "actions": [
+        {
+          "spawn": {
+            "session": "I1",
+            "role": "Initiator",
+            "party": "Alice",
+            "parameters": {
+              "iSk": {
+                "signing_key": "Alice"
+              },
+              "iPeerPk": {
+                "public_key": "Bob"
+              }
+            }
+          }
+        },
+        {
+          "spawn": {
+            "session": "R1",
+            "role": "Responder",
+            "party": "Bob",
+            "parameters": {
+              "rSk": {
+                "signing_key": "Bob"
+              },
+              "rPeerPk": {
+                "public_key": "Alice"
+              }
+            }
+          }
+        },
+        {
+          "advance": "I1",
+          "events": [
+            "invoke",
+            "match",
+            "assign",
+            "assign",
+            "assign",
+            "send",
+            "jump"
+          ]
+        },
+        {
+          "deliver": "R1",
+          "recipe": {
+            "sent": 0
+          }
+        },
+        {
+          "advance": "R1",
+          "events": [
+            "receive",
+            "invoke",
+            "match",
+            "assign",
+            "assign",
+            "assign",
+            "invoke",
+            "match",
+            "invoke",
+            "match",
+            "invoke",
+            "match",
+            "assign",
+            "assign",
+            "assign",
+            "send",
+            "jump",
+            "invoke",
+            "match",
+            "accept",
+            "stop"
+          ]
+        },
+        {
+          "deliver": "I1",
+          "recipe": {
+            "sent": 1
+          }
+        },
+        {
+          "advance": "I1",
+          "events": [
+            "receive",
+            "invoke",
+            "match",
+            "assign",
+            "assign",
+            "assign",
+            "invoke",
+            "match",
+            "invoke",
+            "match",
+            "invoke",
+            "match",
+            "accept",
+            "stop"
+          ]
+        }
+      ],
+      "claims": [
+        {
+          "name": "initiator_accepted",
+          "accepted": {
+            "session": "I1",
+            "target": "iKey"
+          }
+        },
+        {
+          "name": "responder_accepted",
+          "accepted": {
+            "session": "R1",
+            "target": "rKey"
+          }
+        },
+        {
+          "name": "keys_agree",
+          "same_key": [
+            [
+              "I1",
+              "iKey"
+            ],
+            [
+              "R1",
+              "rKey"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "forged_share",
+      "description": "The adversary sends its own DH share signed with its own key. The responder's verification with Alice's public key fails and it rejects; no key is accepted.",
+      "actions": [
+        {
+          "spawn": {
+            "session": "I1",
+            "role": "Initiator",
+            "party": "Alice",
+            "parameters": {
+              "iSk": {
+                "signing_key": "Alice"
+              },
+              "iPeerPk": {
+                "public_key": "Bob"
+              }
+            }
+          }
+        },
+        {
+          "spawn": {
+            "session": "R1",
+            "role": "Responder",
+            "party": "Bob",
+            "parameters": {
+              "rSk": {
+                "signing_key": "Bob"
+              },
+              "rPeerPk": {
+                "public_key": "Alice"
+              }
+            }
+          }
+        },
+        {
+          "advance": "I1",
+          "events": [
+            "invoke",
+            "match",
+            "assign",
+            "assign",
+            "assign",
+            "send",
+            "jump"
+          ]
+        },
+        {
+          "remember": "eve",
+          "recipe": {
+            "call": {
+              "primitive": "dhKeygen",
+              "args": []
+            }
+          }
+        },
+        {
+          "deliver": "R1",
+          "recipe": {
+            "encode": {
+              "encoding": "signedCodec",
+              "record": {
+                "record": {
+                  "constructor": "MkSigned",
+                  "fields": [
+                    [
+                      "pub",
+                      {
+                        "field": {
+                          "of": {
+                            "named": "eve"
+                          },
+                          "name": "public"
+                        }
+                      }
+                    ],
+                    [
+                      "sig",
+                      {
+                        "call": {
+                          "primitive": "signSig",
+                          "args": [
+                            {
+                              "atom": {
+                                "type": "SignatureSecretKey",
+                                "name": "eve"
+                              }
+                            },
+                            {
+                              "encode": {
+                                "encoding": "shareCodec",
+                                "record": {
+                                  "record": {
+                                    "constructor": "MkShare",
+                                    "fields": [
+                                      [
+                                        "pub",
+                                        {
+                                          "field": {
+                                            "of": {
+                                              "named": "eve"
+                                            },
+                                            "name": "public"
+                                          }
+                                        }
+                                      ]
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "advance": "R1",
+          "events": [
+            "receive",
+            "invoke",
+            "match",
+            "assign",
+            "assign",
+            "assign",
+            "invoke",
+            "match",
+            "reject"
+          ]
+        }
+      ],
+      "claims": [
+        {
+          "name": "responder_rejected",
+          "status": {
+            "session": "R1",
+            "is": "rejected"
+          }
+        },
+        {
+          "name": "responder_target_rejected",
+          "target_state": {
+            "session": "R1",
+            "target": "rKey",
+            "is": "rejected"
+          }
+        },
+        {
+          "name": "no_key_accepted",
+          "no_accept": true
+        },
+        {
+          "name": "initiator_waiting",
+          "target_state": {
+            "session": "I1",
+            "target": "iKey",
+            "is": "pending"
+          }
+        }
+      ]
+    },
+    {
+      "name": "spliced_signature",
+      "description": "The adversary pairs its own DH share with Alice's genuine signature from her message. The signature does not cover the substituted share, so the responder rejects; no key is accepted.",
+      "actions": [
+        {
+          "spawn": {
+            "session": "I1",
+            "role": "Initiator",
+            "party": "Alice",
+            "parameters": {
+              "iSk": {
+                "signing_key": "Alice"
+              },
+              "iPeerPk": {
+                "public_key": "Bob"
+              }
+            }
+          }
+        },
+        {
+          "spawn": {
+            "session": "R1",
+            "role": "Responder",
+            "party": "Bob",
+            "parameters": {
+              "rSk": {
+                "signing_key": "Bob"
+              },
+              "rPeerPk": {
+                "public_key": "Alice"
+              }
+            }
+          }
+        },
+        {
+          "advance": "I1",
+          "events": [
+            "invoke",
+            "match",
+            "assign",
+            "assign",
+            "assign",
+            "send",
+            "jump"
+          ]
+        },
+        {
+          "remember": "eve",
+          "recipe": {
+            "call": {
+              "primitive": "dhKeygen",
+              "args": []
+            }
+          }
+        },
+        {
+          "deliver": "R1",
+          "recipe": {
+            "encode": {
+              "encoding": "signedCodec",
+              "record": {
+                "record": {
+                  "constructor": "MkSigned",
+                  "fields": [
+                    [
+                      "pub",
+                      {
+                        "field": {
+                          "of": {
+                            "named": "eve"
+                          },
+                          "name": "public"
+                        }
+                      }
+                    ],
+                    [
+                      "sig",
+                      {
+                        "field": {
+                          "of": {
+                            "decode": {
+                              "sent": 0
+                            }
+                          },
+                          "name": "sig"
+                        }
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "advance": "R1",
+          "events": [
+            "receive",
+            "invoke",
+            "match",
+            "assign",
+            "assign",
+            "assign",
+            "invoke",
+            "match",
+            "reject"
+          ]
+        }
+      ],
+      "claims": [
+        {
+          "name": "responder_rejected",
+          "status": {
+            "session": "R1",
+            "is": "rejected"
+          }
+        },
+        {
+          "name": "responder_target_rejected",
+          "target_state": {
+            "session": "R1",
+            "target": "rKey",
+            "is": "rejected"
+          }
+        },
+        {
+          "name": "no_key_accepted",
+          "no_accept": true
+        },
+        {
+          "name": "initiator_waiting",
+          "target_state": {
+            "session": "I1",
+            "target": "iKey",
+            "is": "pending"
+          }
+        }
+      ]
+    }
+  ]
+}

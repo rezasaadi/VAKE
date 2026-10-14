@@ -1,0 +1,361 @@
+{
+  "format": "vake-scenarios-0.1",
+  "description": "Concrete executions of the unauthenticated DH exchange: honest key agreement and a man-in-the-middle execution.",
+  "model_sha256": "97bc9c92bb0b58914f9329a3ee32f9943c6b798af00924414857eff9e4906003",
+  "profile_sha256": "4a0efdd3d41915d7a251635582f2946d59b91c02581b3d3db0a7ea6d329c7268",
+  "scenarios": [
+    {
+      "name": "honest",
+      "description": "Both roles accept the same shared secret.",
+      "actions": [
+        {
+          "spawn": {
+            "session": "I1",
+            "role": "Initiator",
+            "party": "Alice"
+          }
+        },
+        {
+          "spawn": {
+            "session": "R1",
+            "role": "Responder",
+            "party": "Bob"
+          }
+        },
+        {
+          "advance": "I1",
+          "events": [
+            "invoke",
+            "match",
+            "assign",
+            "send",
+            "jump"
+          ]
+        },
+        {
+          "deliver": "R1",
+          "recipe": {
+            "sent": 0
+          }
+        },
+        {
+          "advance": "R1",
+          "events": [
+            "receive",
+            "invoke",
+            "match",
+            "invoke",
+            "match",
+            "invoke",
+            "match",
+            "assign",
+            "send",
+            "jump",
+            "invoke",
+            "match",
+            "accept",
+            "stop"
+          ]
+        },
+        {
+          "deliver": "I1",
+          "recipe": {
+            "sent": 1
+          }
+        },
+        {
+          "advance": "I1",
+          "events": [
+            "receive",
+            "invoke",
+            "match",
+            "invoke",
+            "match",
+            "invoke",
+            "match",
+            "accept",
+            "stop"
+          ]
+        }
+      ],
+      "claims": [
+        {
+          "name": "initiator_accepted",
+          "accepted": {
+            "session": "I1",
+            "target": "iKey"
+          }
+        },
+        {
+          "name": "responder_accepted",
+          "accepted": {
+            "session": "R1",
+            "target": "rKey"
+          }
+        },
+        {
+          "name": "keys_agree",
+          "same_key": [
+            [
+              "I1",
+              "iKey"
+            ],
+            [
+              "R1",
+              "rKey"
+            ]
+          ]
+        },
+        {
+          "name": "initiator_stopped",
+          "status": {
+            "session": "I1",
+            "is": "stopped"
+          }
+        },
+        {
+          "name": "responder_stopped",
+          "status": {
+            "session": "R1",
+            "is": "stopped"
+          }
+        }
+      ]
+    },
+    {
+      "name": "mitm",
+      "description": "The adversary replaces both DH shares with its own. Both roles accept, their keys differ, and the adversary computes each accepted key.",
+      "actions": [
+        {
+          "spawn": {
+            "session": "I1",
+            "role": "Initiator",
+            "party": "Alice"
+          }
+        },
+        {
+          "spawn": {
+            "session": "R1",
+            "role": "Responder",
+            "party": "Bob"
+          }
+        },
+        {
+          "advance": "I1",
+          "events": [
+            "invoke",
+            "match",
+            "assign",
+            "send",
+            "jump"
+          ]
+        },
+        {
+          "remember": "eve",
+          "recipe": {
+            "call": {
+              "primitive": "dhKeygen",
+              "args": []
+            }
+          }
+        },
+        {
+          "deliver": "R1",
+          "recipe": {
+            "encode": {
+              "encoding": "shareCodec",
+              "record": {
+                "record": {
+                  "constructor": "MkShare",
+                  "fields": [
+                    [
+                      "pub",
+                      {
+                        "field": {
+                          "of": {
+                            "named": "eve"
+                          },
+                          "name": "public"
+                        }
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "advance": "R1",
+          "events": [
+            "receive",
+            "invoke",
+            "match",
+            "invoke",
+            "match",
+            "invoke",
+            "match",
+            "assign",
+            "send",
+            "jump",
+            "invoke",
+            "match",
+            "accept",
+            "stop"
+          ]
+        },
+        {
+          "deliver": "I1",
+          "recipe": {
+            "encode": {
+              "encoding": "shareCodec",
+              "record": {
+                "record": {
+                  "constructor": "MkShare",
+                  "fields": [
+                    [
+                      "pub",
+                      {
+                        "field": {
+                          "of": {
+                            "named": "eve"
+                          },
+                          "name": "public"
+                        }
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "advance": "I1",
+          "events": [
+            "receive",
+            "invoke",
+            "match",
+            "invoke",
+            "match",
+            "invoke",
+            "match",
+            "accept",
+            "stop"
+          ]
+        },
+        {
+          "remember": "key_with_initiator",
+          "recipe": {
+            "field": {
+              "of": {
+                "call": {
+                  "primitive": "dhShared",
+                  "args": [
+                    {
+                      "field": {
+                        "of": {
+                          "named": "eve"
+                        },
+                        "name": "secret"
+                      }
+                    },
+                    {
+                      "field": {
+                        "of": {
+                          "decode": {
+                            "sent": 0
+                          }
+                        },
+                        "name": "pub"
+                      }
+                    }
+                  ]
+                }
+              },
+              "name": "shared"
+            }
+          }
+        },
+        {
+          "remember": "key_with_responder",
+          "recipe": {
+            "field": {
+              "of": {
+                "call": {
+                  "primitive": "dhShared",
+                  "args": [
+                    {
+                      "field": {
+                        "of": {
+                          "named": "eve"
+                        },
+                        "name": "secret"
+                      }
+                    },
+                    {
+                      "field": {
+                        "of": {
+                          "decode": {
+                            "sent": 1
+                          }
+                        },
+                        "name": "pub"
+                      }
+                    }
+                  ]
+                }
+              },
+              "name": "shared"
+            }
+          }
+        }
+      ],
+      "claims": [
+        {
+          "name": "initiator_accepted",
+          "accepted": {
+            "session": "I1",
+            "target": "iKey"
+          }
+        },
+        {
+          "name": "responder_accepted",
+          "accepted": {
+            "session": "R1",
+            "target": "rKey"
+          }
+        },
+        {
+          "name": "keys_differ",
+          "different_key": [
+            [
+              "I1",
+              "iKey"
+            ],
+            [
+              "R1",
+              "rKey"
+            ]
+          ]
+        },
+        {
+          "name": "adversary_has_initiator_key",
+          "adversary_holds_key": {
+            "name": "key_with_initiator",
+            "session": "I1",
+            "target": "iKey"
+          }
+        },
+        {
+          "name": "adversary_has_responder_key",
+          "adversary_holds_key": {
+            "name": "key_with_responder",
+            "session": "R1",
+            "target": "rKey"
+          }
+        }
+      ]
+    }
+  ]
+}
