@@ -1,4 +1,3 @@
-"""Measure the bundled VAKE workflows and retain success or failure evidence."""
 from pathlib import Path
 import argparse
 import hashlib
@@ -11,7 +10,8 @@ import sys
 import time
 
 ROOT = Path(__file__).resolve().parents[1]
-
+sys.path.insert(0, str(ROOT / "scripts"))
+from scenario_traces import matching
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
@@ -26,7 +26,7 @@ def main():
     rows = []
     error = None
     try:
-        for model in ("nonce_exchange", "signature_check", "negative/type_mismatch"):
+        for model in ("nonce_exchange", "dh_exchange", "signed_dh_exchange", "signature_check", "negative/type_mismatch"):
             for i in range(args.repetitions):
                 directory = out / (model.replace("/", "-") + "-" + str(i + 1))
                 directory.mkdir()
@@ -35,13 +35,17 @@ def main():
                 commands = [("check", [binary, "check", file], 1 if negative else 0,
                              "TYPE_ERROR" if negative else "CHECKED")]
                 if not negative:
+                    flags = {"nonce_exchange": ["--terminal-demo"], "signature_check": ["--signature-demo"]}.get(model, [])
                     commands += [
                         ("export", [binary, "export", file, "--profile", profile,
                                     "--out", directory / "export"], 0, "EXPORTED"),
                         ("verify", [sys.executable, ROOT / "scripts/verify.py", "--export-dir",
-                                    directory / "export", "--terminal-demo" if model == "nonce_exchange"
-                                    else "--signature-demo"], 0, "PROVED_UNDER_ASSUMPTIONS"),
+                                    directory / "export", *flags], 0, "PROVED_UNDER_ASSUMPTIONS"),
                     ]
+                    if profile.is_file() and matching(ROOT, file.read_bytes(), profile.read_bytes()):
+                        commands.append(("traces", [sys.executable, ROOT / "scripts/trace_demo.py", "--export-dir",
+                                                    directory / "export", "--out", directory / "traces"], 0,
+                                         "PROVED_UNDER_ASSUMPTIONS"))
                 for stage, argv, expected_code, expected_status in commands:
                     started = time.perf_counter()
                     proc = subprocess.run([str(a) for a in argv], cwd=ROOT, capture_output=True,
@@ -81,7 +85,6 @@ def main():
     (ROOT / "reports/timings.json").write_text(data, encoding="utf-8")
     print(json.dumps({"status": status, "error": error, "output": str(out), "summary": summary}, indent=2))
     return 1 if error else 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())

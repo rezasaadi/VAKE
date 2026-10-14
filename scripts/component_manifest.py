@@ -1,10 +1,8 @@
-"""Refresh hashes for the checked-in VAKE implementation components."""
 from pathlib import Path
 import hashlib
 import json
 
 ROOT = Path(__file__).resolve().parents[1]
-
 
 def refresh(root=ROOT):
     root = Path(root)
@@ -32,7 +30,6 @@ def refresh(root=ROOT):
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
     return result
-
 
 if __name__ == "__main__":
     result = refresh()

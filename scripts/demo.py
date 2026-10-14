@@ -48,6 +48,24 @@ def main():
             ok = invoke('signature-export', [executable, 'export', signature_model, '--profile', profile, '--out', run/'signature-export'], expected_status='EXPORTED')
         if ok:
             ok = invoke('signature-verify', [sys.executable, ROOT/'scripts/verify.py', '--export-dir', run/'signature-export', '--signature-demo'], expected_status='PROVED_UNDER_ASSUMPTIONS')
+    if ok:
+        dh_model = ROOT/'examples/dh_exchange.json'
+        ok = invoke('dh-check', [executable, 'check', dh_model], expected_status='CHECKED')
+        if ok:
+            ok = invoke('dh-export', [executable, 'export', dh_model, '--profile', profile, '--out', run/'dh-export'], expected_status='EXPORTED')
+        if ok:
+            ok = invoke('dh-verify', [sys.executable, ROOT/'scripts/verify.py', '--export-dir', run/'dh-export'], expected_status='PROVED_UNDER_ASSUMPTIONS')
+        if ok:
+            ok = invoke('dh-traces', [sys.executable, ROOT/'scripts/trace_demo.py', '--export-dir', run/'dh-export', '--out', run/'dh-traces'], expected_status='PROVED_UNDER_ASSUMPTIONS')
+    if ok:
+        signed_model = ROOT/'examples/signed_dh_exchange.json'
+        ok = invoke('signed-dh-check', [executable, 'check', signed_model], expected_status='CHECKED')
+        if ok:
+            ok = invoke('signed-dh-export', [executable, 'export', signed_model, '--profile', profile, '--out', run/'signed-dh-export'], expected_status='EXPORTED')
+        if ok:
+            ok = invoke('signed-dh-verify', [sys.executable, ROOT/'scripts/verify.py', '--export-dir', run/'signed-dh-export'], expected_status='PROVED_UNDER_ASSUMPTIONS')
+        if ok:
+            ok = invoke('signed-dh-traces', [sys.executable, ROOT/'scripts/trace_demo.py', '--export-dir', run/'signed-dh-export', '--out', run/'signed-dh-traces'], expected_status='PROVED_UNDER_ASSUMPTIONS')
     negative = ROOT / 'examples/negative/type_mismatch.json'
     if negative.exists():
         ok = invoke('negative-type', [executable, 'check', negative], 1, 'TYPE_ERROR') and ok

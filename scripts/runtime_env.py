@@ -1,4 +1,3 @@
-"""Resolve the environment settings used by VAKE commands."""
 import os
 
 def configured(name, default=None):

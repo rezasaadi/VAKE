@@ -49,7 +49,7 @@ def main():
         record, output = run([lake, 'build', imported['proof']], isolated, logs / 'lean-build.log')
         commands.append(record)
         if record['exit_code']:
-            result['status'] = 'OPEN_OBLIGATION'
+            result['status'] = 'CERTIFICATE_FAILED'
             raise RuntimeError('Lean rejected the generated model or its binding/correspondence certificates')
         result['compilation_status'] = 'LEAN_COMPILED'
         command = [sys.executable, ROOT / 'scripts/validate_lean.py', '--lean-dir', isolated, '--proof-module', imported['proof'], '--lake', lake]
@@ -62,7 +62,7 @@ def main():
         record, output = run(command, ROOT, logs / 'axiom-validation.log')
         commands.append(record)
         if record['exit_code']:
-            result['status'] = 'OPEN_OBLIGATION'
+            result['status'] = 'CERTIFICATE_FAILED'
             raise RuntimeError('Independent theorem or axiom validation failed')
         audit = json.loads(output)
         result.update(status='PROVED_UNDER_ASSUMPTIONS', proof_module=imported['proof'], import_status=imported,

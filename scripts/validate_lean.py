@@ -69,7 +69,8 @@ def generate_demo(lean_dir: Path, proof_module: str) -> Path:
     path.write_text(template.replace("@DIGEST@", digest), encoding="utf-8")
     return path
 
-def validate(lean_dir: Path, proof_module: str | None, lake: str, terminal_demo: bool = False, global_demo: bool = False, signature_demo: bool = False) -> dict:
+def validate(lean_dir: Path, proof_module: str | None, lake: str, terminal_demo: bool = False, scenarios: Path | None = None, signature_demo: bool = False, binding: tuple[str, str] | None = None) -> dict:
+    global_demo = scenarios is not None
     lean_dir = lean_dir.resolve()
     out = lean_dir / "validation"
     out.mkdir(parents=True, exist_ok=True)
@@ -90,8 +91,10 @@ def validate(lean_dir: Path, proof_module: str | None, lake: str, terminal_demo:
     if global_demo:
         if not proof_module:
             raise ValueError("Global demo requires a concrete proof module")
-        from global_demo import generate
-        files.append(generate(lean_dir, proof_module, lake))
+        if not binding:
+            raise ValueError("Scenario traces require the model and profile SHA-256 binding")
+        from scenario_traces import generate
+        files.append(generate(lean_dir, proof_module, lake, scenarios, *binding))
         modules.append("VAKE.Demo.Global")
     if signature_demo:
         if not proof_module: raise ValueError("Signature demo requires a proof module")
@@ -128,7 +131,7 @@ def validate(lean_dir: Path, proof_module: str | None, lake: str, terminal_demo:
     records = parse_audits(output, names)
     result = {"status": "PROVED_UNDER_ASSUMPTIONS", "lean_version": version,
               "scope": "Symbolic operational semantics and translation correspondence only",
-              "proof_module": proof_module, "terminal_demo": terminal_demo, "global_demo": global_demo, "signature_demo": signature_demo,
+              "proof_module": proof_module, "terminal_demo": terminal_demo, "global_demo": global_demo, "scenario_file": scenarios.name if scenarios else None, "signature_demo": signature_demo,
               "theorem_count": len(records), "allowed_axioms": sorted(ALLOWED_AXIOMS),
               "axioms_used": sorted({a for r in records for a in r["axioms"]}),
               "source_files": [{"path": str(p.relative_to(lean_dir)), "sha256": sha(p.read_bytes())} for p in files],
@@ -142,11 +145,14 @@ def main() -> int:
     parser.add_argument("--proof-module")
     parser.add_argument("--lake", default="lake")
     parser.add_argument("--terminal-demo", action="store_true")
-    parser.add_argument("--global-demo", action="store_true")
+    parser.add_argument("--scenarios", type=Path, help="scenario file for concrete trace certificates")
+    parser.add_argument("--model-sha256")
+    parser.add_argument("--profile-sha256")
     parser.add_argument("--signature-demo", action="store_true")
     args = parser.parse_args()
     try:
-        result = validate(args.lean_dir, args.proof_module, args.lake, args.terminal_demo, args.global_demo, args.signature_demo)
+        binding = (args.model_sha256, args.profile_sha256) if args.model_sha256 and args.profile_sha256 else None
+        result = validate(args.lean_dir, args.proof_module, args.lake, args.terminal_demo, args.scenarios, args.signature_demo, binding)
         print(json.dumps({key: result[key] for key in ("status", "lean_version", "proof_module", "terminal_demo", "theorem_count", "axioms_used", "output_dir")}))
         return 0
     except (OSError, ValueError, RuntimeError) as error:
