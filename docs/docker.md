@@ -28,7 +28,7 @@ The image build also runs the full reproducer, including the opt-in Lean integra
 
 Builds need network access for the base image, Lean archive, and Cargo dependencies. Runtime reproduction uses cached Cargo dependencies with `--offline`. Native and container reports are under `reports/runs/` and `reports/ui-runs/`; inside the container those paths are beneath `/opt/vake/`.
 
-The recipe supports amd64 and arm64 archive selection. That selection alone does not establish a successful build on either platform. Consult [the consistency report](consistency-report.md) for the checks performed on this source revision.
+Validation used Linux amd64. The recipe also selects an arm64 archive, but arm64 execution has not been checked.
 
 ## Export reports
 

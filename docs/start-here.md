@@ -13,7 +13,7 @@ docker compose build
 docker compose up -d
 ```
 
-Enter **http://127.0.0.1:8765** in your browser's address bar and select **Take a guided tour**. The tour creates a fresh example; it does not load a saved proof result. For a native installation, follow the [installation instructions](../README.md#installation).
+Enter **http://127.0.0.1:8765** in your browser's address bar and select **Take a guided tour**. The tour creates a fresh example; it does not load a saved proof result. For a native installation, follow the [installation instructions](../README.md#native-installation).
 
 The [Docker guide](docker.md) covers tool versions, reproduction, and stopping the tool. GitHub displays this walkthrough as a document; the interactive checks run locally.
 
@@ -60,8 +60,8 @@ The bundle contains the run's current state, including unfinished checks. Use **
 
 Select **Finish tour** to return to ordinary navigation. You can inspect the same run or start another example. Reloading preserves the selected run and tour step.
 
-Upload your own JSON through **Open model**. Example-specific global traces are available only for the exact bundled nonce model/profile pair. The signature example demonstrates signature construction with limited executable observations; it is not a protocol-authentication proof.
+Upload your own JSON through **Open model**. Execution traces are available for the bundled nonce, DH, and signed-DH examples when their scenario files match the exact model/profile bytes. See [scenario files](scenarios.md). The signature example demonstrates signature construction with limited executable observations; it is not a protocol-authentication proof.
 
-The [technical guide](ui-user-guide.md) explains every evidence field. Read [limitations](limitations.md) and [the consistency report](consistency-report.md) for scope and validation coverage.
+The [technical guide](ui-user-guide.md) explains every evidence field. Read [limitations](limitations.md) for the supported scope and assumptions.
 
 The screenshots illustrate a historical UI run. They do not validate this source revision. Their original identifiers and hashes are recorded in [the capture manifest](onboarding/capture-manifest.json).

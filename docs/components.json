@@ -15,14 +15,29 @@
       "sha256": "224e442e147b80bc315305413513d57a3bc12a2a0e8268c5b6ba19005b7b3cca"
     },
     {
+      "path": "lean/lake-manifest.json",
+      "bytes": 145,
+      "sha256": "b1349abe516eebb219f6f704a9939452505ce76f5de0995b6c73d7329102b328"
+    },
+    {
+      "path": "lean/lakefile.toml",
+      "bytes": 86,
+      "sha256": "8a3d89c82ad16dd5fd4b2991c98876a52b5d1267602e046ff26ccdd5730e027e"
+    },
+    {
+      "path": "lean/lean-toolchain",
+      "bytes": 25,
+      "sha256": "d5edba4e4b8faad9c1baeadb265716d20d03be4d1a2647dc5e35b0c0325bea7b"
+    },
+    {
       "path": "lean/VAKE/Common.lean",
-      "bytes": 6747,
-      "sha256": "e1c38fc3d209ab10079ba8aeef138f07c3733b47a31cb101610d2fb938fe3aae"
+      "bytes": 7940,
+      "sha256": "3f2e5175c0937657bb8a49c2e46d1ad69b0d64021fe69b1cf069491d227dd425"
     },
     {
       "path": "lean/VAKE/EDHOC.lean",
-      "bytes": 9214,
-      "sha256": "d8982343be087b7c1205ff63cc97da7b8132a9f50ed5e15a8b8c93cd3658ba60"
+      "bytes": 9176,
+      "sha256": "e9da7fec65ef3e74de0b9154b318031ec0eb74e2c59b83cf4b577367e6d40b4c"
     },
     {
       "path": "lean/VAKE/Network.lean",
@@ -33,6 +48,11 @@
       "path": "lean/VAKE/Proofs/Commitment.lean",
       "bytes": 10068,
       "sha256": "a579c124fa98c3815e0af4e3491ab168a4f6f7faf2c0b41d1d1127a0049243bf"
+    },
+    {
+      "path": "lean/VAKE/Proofs/Deduce.lean",
+      "bytes": 4715,
+      "sha256": "5a88e9db3f1a3e5066d5dd00dbe5e8bd64dc0b08a9de0d0e46ed5f5432274d50"
     },
     {
       "path": "lean/VAKE/Proofs/Global.lean",
@@ -48,6 +68,11 @@
       "path": "lean/VAKE/Proofs/NoCommit.lean",
       "bytes": 902,
       "sha256": "7678e6bf9fb4e730693bcefdb278b9b61a0d97a0d20a7acf04fd29d191e26498"
+    },
+    {
+      "path": "lean/VAKE/Proofs/Normalization.lean",
+      "bytes": 872,
+      "sha256": "995dc2a830b7e153699b3d8619f3b74e3d65f3ef41f0f8851a6460a19981efc9"
     },
     {
       "path": "lean/VAKE/Source/Global.lean",
@@ -66,8 +91,8 @@
     },
     {
       "path": "lean/VAKE/Symbolic.lean",
-      "bytes": 10513,
-      "sha256": "3be9bb6243fcea1e6317f517060fc0e435a6c9b601bab9341008e9e98e9d0a9c"
+      "bytes": 10475,
+      "sha256": "7386ea0e56431f0fa079c123b4e6624194304dba1602f78a3bbcd69195177a47"
     },
     {
       "path": "lean/VAKE/Target/Global.lean",
@@ -91,23 +116,8 @@
     },
     {
       "path": "lean/VAKE.lean",
-      "bytes": 378,
-      "sha256": "8e2a39c4ed63dbe2555542ba9b34868bc1705eec991053130499c451cbce656a"
-    },
-    {
-      "path": "lean/lake-manifest.json",
-      "bytes": 145,
-      "sha256": "b1349abe516eebb219f6f704a9939452505ce76f5de0995b6c73d7329102b328"
-    },
-    {
-      "path": "lean/lakefile.toml",
-      "bytes": 86,
-      "sha256": "8a3d89c82ad16dd5fd4b2991c98876a52b5d1267602e046ff26ccdd5730e027e"
-    },
-    {
-      "path": "lean/lean-toolchain",
-      "bytes": 25,
-      "sha256": "d5edba4e4b8faad9c1baeadb265716d20d03be4d1a2647dc5e35b0c0325bea7b"
+      "bytes": 437,
+      "sha256": "97671f474ec044d151f2db641b5835cfb62df462d9bf89f6bdc8a01d3020704e"
     },
     {
       "path": "rust-toolchain.toml",
@@ -121,18 +131,13 @@
     },
     {
       "path": "scripts/component_manifest.py",
-      "bytes": 1890,
-      "sha256": "f7d21a98e1766562355bfe67cc2f61ce0c50cf3272f8492f026c330b8f44133d"
+      "bytes": 1816,
+      "sha256": "83b912438c67e3839e75168e3d602f57a2780d04cad4c4d778d46f38c64144a5"
     },
     {
       "path": "scripts/demo.py",
-      "bytes": 3856,
-      "sha256": "50a4b6b9118dd4c0b00fd1ab4d2548ae69da36236ed1c1176a1072095e0b1b80"
-    },
-    {
-      "path": "scripts/global_demo.py",
-      "bytes": 11704,
-      "sha256": "0afb4dee0ec705290fd5bb2eb7d658b1d4cd8724b78271b592e8044a2c41b20c"
+      "bytes": 5317,
+      "sha256": "db268356a91d69f47084338f7de076b171badf8ad93f1bb1d514829a09e2acc9"
     },
     {
       "path": "scripts/import_model.py",
@@ -141,8 +146,8 @@
     },
     {
       "path": "scripts/measure.py",
-      "bytes": 5165,
-      "sha256": "fb30c288f39acfcefcba46100de76b54fc0faa4084545030b60cbc0138976862"
+      "bytes": 5619,
+      "sha256": "71c05c156efd25da7076eca4b103fa12b52e35ac8623b43cb5642457d8ef08b1"
     },
     {
       "path": "scripts/package.py",
@@ -156,13 +161,18 @@
     },
     {
       "path": "scripts/reproduce.py",
-      "bytes": 3408,
-      "sha256": "68172ee9abbf7b69487157f82b876db28ae364ab75eff0e761ea6313ff5e5412"
+      "bytes": 3662,
+      "sha256": "c7194763719635529a23fcb78f887e735f6f7dcde4397a37253dd665f376e6a3"
     },
     {
       "path": "scripts/runtime_env.py",
-      "bytes": 162,
-      "sha256": "649efc85b95986453dae19f6cd72358cde9a5896154867ede6fe9605e4b0ce6a"
+      "bytes": 100,
+      "sha256": "eeffd6f0b6b5c319cae05423330ac9145239449d8e60e23f705c6528ead52707"
+    },
+    {
+      "path": "scripts/scenario_traces.py",
+      "bytes": 19721,
+      "sha256": "a580e5deac275523042c9ae3c13c42dfc5124ae944a816323ba0fa74d22eb083"
     },
     {
       "path": "scripts/signature_demo.lean.in",
@@ -181,18 +191,18 @@
     },
     {
       "path": "scripts/trace_demo.py",
-      "bytes": 4885,
-      "sha256": "c82dfa10f916707898f05f5d598e41ccf8be605179e918b1f0fbad647b1c8518"
+      "bytes": 6319,
+      "sha256": "be94cc230385d2f8fb7e32008050de78a75061c82865c2b54608e54346b919ba"
     },
     {
       "path": "scripts/validate_lean.py",
-      "bytes": 8699,
-      "sha256": "cbc97e4761178745ffa198f92959a8b6729dbac314ff99c36d3d3f71beb12482"
+      "bytes": 9231,
+      "sha256": "9772ea51f3bbd533adc2f3aed5ac28ddfde98c270844eeff48ca3aa795c14c04"
     },
     {
       "path": "scripts/verify.py",
-      "bytes": 5106,
-      "sha256": "0c76a794ca5cc9d5a753166a6948f91928df7887cffe9f557e7a2e30534e3227"
+      "bytes": 5112,
+      "sha256": "09774784341bfebe5edd702195bf81caab89e1dcb2d5c8676672626d01873416"
     },
     {
       "path": "src/admission.rs",
@@ -201,8 +211,8 @@
     },
     {
       "path": "src/check.rs",
-      "bytes": 29403,
-      "sha256": "df05aea9d8c18b656cdd24775beb94334793b5afb76d09f4c731630fc3cda308"
+      "bytes": 29749,
+      "sha256": "171e2d21c549fa6fd3c161053b27a9a4aa838b8c6a9575d2d96121e869784c7a"
     },
     {
       "path": "src/contracts.rs",

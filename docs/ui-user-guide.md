@@ -28,9 +28,9 @@ The exact nonce input/profile pair enables its Announcer terminal certificate. T
 
 ## Executions and altered-binding controls
 
-For the exact bundled nonce pair, **Check execution traces** checks an honest execution and a malformed-message rejection. **Inspect checked steps** shows network actions, local actions, events, values, source JSON pointers, and declaration names. **Trace certificates and audit** provides the Lean certificate and statement/axiom inventory.
+**Check execution traces** is available when a bundled scenario file is bound to the run's exact model and profile: the nonce exchange (honest execution and malformed-message rejection), DH (honest agreement and man-in-the-middle), and signed DH (honest agreement and two rejected substitutions). See [scenarios](scenarios.md). **Inspect checked steps** shows network actions, local actions, events, values, source JSON pointers, and declaration names. **Trace certificates and audit** provides the Lean certificate and statement/axiom inventory.
 
-The bundled honest scenario has 15 actions and two sends. The malformed-message scenario has six actions ending in rejection and no sends. These counts describe these examples. The current run's trace evidence is the authority for its recorded result.
+Inspect the run's trace evidence for its action counts, events, sends, and final-state claims.
 
 **Additional check: altered bindings** runs two mutations. Success requires rejection at the intended target or profile binding; an arbitrary process failure does not count as a successful control.
 
@@ -44,4 +44,4 @@ Shared bundle copies normalize machine paths in metadata and logs. Semantic inpu
 
 A completed stage cannot be overwritten. To retry, open a new example or upload the input again. Missing-evidence records distinguish unavailable logs or audits from successful checks.
 
-The [capture manifest](onboarding/capture-manifest.json) describes historical interface screenshots. Those images illustrate navigation and are not evidence of a build or proof check for the current source revision. Read [limitations](limitations.md) and [the consistency report](consistency-report.md) for scope and validation coverage.
+The [capture manifest](onboarding/capture-manifest.json) describes historical interface screenshots. Those images illustrate navigation and are not evidence of a build or proof check for the current source revision. Read [limitations](limitations.md) for the supported scope and assumptions.
