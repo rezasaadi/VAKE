@@ -28,7 +28,7 @@ def refresh(root=ROOT):
               "files": rows}
     destination = root / "docs/components.json"
     destination.parent.mkdir(parents=True, exist_ok=True)
-    destination.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
+    destination.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8", newline="\n")
     return result
 
 if __name__ == "__main__":

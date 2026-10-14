@@ -39,6 +39,16 @@ VAKE_UI_TEST_LEAN=1 python3 scripts/reproduce.py --stage all
 
 On Windows, use `target\debug\vake.exe`; set `$env:VAKE_UI_TEST_LEAN='1'` before running `.\scripts\reproduce.ps1`. The full demo checks the nonce, DH, signed-DH, signature-construction, and altered-binding examples. Use fresh output directories for verification runs.
 
+## Prepare a source update
+
+After editing source or documentation, run:
+
+```bash
+python3 scripts/prepare_release.py
+```
+
+This refreshes both hash manifests and checks the complete working tree. Include every changed and new source file, plus both manifests, in the same commit. Before pushing, run `python3 scripts/prepare_release.py --check-publication` to check for pending files. CI checks the committed snapshot; it saves preflight failures in the `vake-linux-evidence` artifact.
+
 ## Examples and scope
 
 - **Nonce exchange:** honest execution and malformed-message rejection.

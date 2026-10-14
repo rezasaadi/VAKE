@@ -126,13 +126,13 @@
     },
     {
       "path": "scripts/collect_ci_evidence.py",
-      "bytes": 1485,
-      "sha256": "718a3f4536b0607c8dc65773bdf26fd1962ad791ff33165ed451d76f1eacebc5"
+      "bytes": 1509,
+      "sha256": "d1ed4284a491658f65ae1ef11848a185ca55869751560d799330b6fcfb7ff043"
     },
     {
       "path": "scripts/component_manifest.py",
-      "bytes": 1816,
-      "sha256": "83b912438c67e3839e75168e3d602f57a2780d04cad4c4d778d46f38c64144a5"
+      "bytes": 1830,
+      "sha256": "6a5889834ca6ff26863be7de493ee4cfbb6487093fcef58b294903d735be9a6b"
     },
     {
       "path": "scripts/demo.py",
@@ -151,13 +151,18 @@
     },
     {
       "path": "scripts/package.py",
-      "bytes": 3142,
-      "sha256": "b91292f506d887803f5a09d296b30313262c7e7b3d764f30287d9541a5180f7d"
+      "bytes": 3443,
+      "sha256": "0037babd9db20639d23fe454483fea3e1929f3d291b315c614af8333be42b00b"
+    },
+    {
+      "path": "scripts/prepare_release.py",
+      "bytes": 2023,
+      "sha256": "13c1274b09f41c2913b0bb8d7cf6934c5e6e3d74089c4778ce845d87f833cbdc"
     },
     {
       "path": "scripts/repository_preflight.py",
-      "bytes": 6897,
-      "sha256": "d0b46d08b169af27d645dddb600fef5901547fab5b096f562da0802d56a1e7e4"
+      "bytes": 7806,
+      "sha256": "dff1ad58354944b82c3cd43d90f440b4c57e64324f4f3019684d99c6ea6d8a78"
     },
     {
       "path": "scripts/reproduce.py",

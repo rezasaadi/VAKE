@@ -10,7 +10,7 @@ import subprocess
 from urllib.parse import unquote
 import zipfile
 
-from package import included
+from package import source_files
 
 ROOT = Path(__file__).resolve().parents[1]
 FORBIDDEN_PARTS = {".git", "target", ".lake", "__pycache__", "node_modules"}
@@ -26,16 +26,18 @@ PATTERNS = {
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--json", type=Path, help="write the result outside the tracked source snapshot")
+    parser.add_argument("--working-tree", action="store_true", help="check current source files, including updates not yet added to Git")
     args = parser.parse_args()
-    if (ROOT / ".git").exists():
+    tracked_selection = (ROOT / ".git").exists() and not args.working_tree
+    if tracked_selection:
         raw = subprocess.check_output(["git", "-C", str(ROOT), "ls-files", "-z"])
         names = sorted(n.decode("utf-8") for n in raw.split(b"\0") if n)
         source_selection = "Git tracked files"
     else:
-        names = sorted(p.relative_to(ROOT).as_posix() for p in ROOT.rglob("*") if included(p))
+        names = sorted(p.relative_to(ROOT).as_posix() for p in source_files(ROOT))
         if (ROOT / "source-manifest.json").is_file():
             names.append("source-manifest.json")
-        source_selection = "Source archive files, excluding build and run output"
+        source_selection = "Working tree source files" if args.working_tree else "Source archive files, excluding build and run output"
     if not names:
         raise SystemExit("No source files found.")
     findings = []
@@ -110,9 +112,17 @@ def main():
                 candidate = ROOT / relative
                 if candidate.is_symlink() or not candidate.resolve().is_relative_to(ROOT.resolve()):
                     raise ValueError("manifest entry outside source tree")
+                if not candidate.is_file():
+                    findings.append({"path": manifest_name, "issue": "manifest references missing file", "target": row["path"]})
+                    continue
+                if tracked_selection and row["path"] not in names:
+                    findings.append({"path": manifest_name, "issue": "manifest references untracked file", "target": row["path"]})
                 data = candidate.read_bytes()
                 if len(data) != row["bytes"] or hashlib.sha256(data).hexdigest() != row["sha256"]:
                     findings.append({"path": manifest_name, "issue": "manifest fingerprint mismatch", "target": row["path"]})
+            if manifest_name == "source-manifest.json":
+                for missing in sorted(set(names) - {manifest_name} - seen):
+                    findings.append({"path": manifest_name, "issue": "source file absent from manifest", "target": missing})
         except (OSError, ValueError, KeyError, TypeError) as error:
             findings.append({"path": manifest_name, "issue": "invalid source manifest", "message": str(error)})
     result = {

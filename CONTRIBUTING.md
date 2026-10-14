@@ -4,7 +4,7 @@ For a bug report, include the model, profile, command, tool versions, and actual
 
 Keep model acceptance, export, certificate checks, and protocol security claims distinct. Changes to formal definitions or theorem statements need mathematical review.
 
-Run the [reproduction workflow](README.md#cli-and-reproduction) after execution or proof changes. After source changes, refresh `docs/components.json` with `python3 scripts/component_manifest.py` and run `python3 scripts/repository_preflight.py`. Check a packaged ZIP with the same preflight command.
+Run the [reproduction workflow](README.md#cli-and-reproduction) after execution or proof changes. After source changes, run `python3 scripts/prepare_release.py` to refresh both manifests and check the complete working tree. Commit all changed and new source files together with both manifests. Run `python3 scripts/prepare_release.py --check-publication` before pushing to check for pending files. CI checks the committed checkout without regenerating its manifests.
 
 Keep compiler caches and local runs outside the source package. Evidence bundles preserve model and Lean bytes; machine paths are normalized only in metadata copies.
 

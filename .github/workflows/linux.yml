@@ -18,7 +18,7 @@ jobs:
         with:
           python-version: '3.12.14'
       - name: Check repository snapshot
-        run: python scripts/repository_preflight.py
+        run: python scripts/repository_preflight.py --json reports/runs/preflight/preflight-result.json
       - name: Install pinned toolchains
         shell: bash
         run: |

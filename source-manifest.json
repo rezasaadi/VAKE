@@ -14,8 +14,8 @@
     },
     {
       "path": ".github/workflows/linux.yml",
-      "sha256": "88f6042f07a44368c90e855105847e0cf3a2c445e146cd3f4083b3aa0578f7d8",
-      "bytes": 1628
+      "sha256": "b6dac8d1b068ea882103ba87ac1b6b30c7665c9ac704b0d224ee433603f5b174",
+      "bytes": 1680
     },
     {
       "path": ".gitignore",
@@ -44,8 +44,8 @@
     },
     {
       "path": "CONTRIBUTING.md",
-      "sha256": "f303a7d0d45551ee4768217e758d13a38beb8e0627631f9d08a1a50b122470ea",
-      "bytes": 900
+      "sha256": "63a90d0eafc4e9acf02f89132d767d11efdfe3a5b45f833969a49d4e6fee7971",
+      "bytes": 1066
     },
     {
       "path": "Dockerfile",
@@ -54,8 +54,8 @@
     },
     {
       "path": "docs/components.json",
-      "sha256": "dffebf3fd4ee19982a59c85764ae4cb58e5b76340596ddf683bac39947e9d7ac",
-      "bytes": 8182
+      "sha256": "2ca6c0b979c3de367def7d75edacf2645987a4a95997a9dbf9a42349b5282ee9",
+      "bytes": 8090
     },
     {
       "path": "docs/docker.md",
@@ -339,8 +339,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "dc4017393baff6b6dc657fdc8ec28b131f1614143d16b7f5e5171959bb1999d7",
-      "bytes": 2748
+      "sha256": "ca2b57ce6a887ac705bb14b28218f501d6f94b894b5f80aff35b094f62802a30",
+      "bytes": 3233
     },
     {
       "path": "rust-toolchain.toml",
@@ -359,13 +359,13 @@
     },
     {
       "path": "scripts/collect_ci_evidence.py",
-      "sha256": "718a3f4536b0607c8dc65773bdf26fd1962ad791ff33165ed451d76f1eacebc5",
-      "bytes": 1485
+      "sha256": "d1ed4284a491658f65ae1ef11848a185ca55869751560d799330b6fcfb7ff043",
+      "bytes": 1509
     },
     {
       "path": "scripts/component_manifest.py",
-      "sha256": "83b912438c67e3839e75168e3d602f57a2780d04cad4c4d778d46f38c64144a5",
-      "bytes": 1816
+      "sha256": "6a5889834ca6ff26863be7de493ee4cfbb6487093fcef58b294903d735be9a6b",
+      "bytes": 1830
     },
     {
       "path": "scripts/demo.ps1",
@@ -409,8 +409,13 @@
     },
     {
       "path": "scripts/package.py",
-      "sha256": "b91292f506d887803f5a09d296b30313262c7e7b3d764f30287d9541a5180f7d",
-      "bytes": 3142
+      "sha256": "0037babd9db20639d23fe454483fea3e1929f3d291b315c614af8333be42b00b",
+      "bytes": 3443
+    },
+    {
+      "path": "scripts/prepare_release.py",
+      "sha256": "13c1274b09f41c2913b0bb8d7cf6934c5e6e3d74089c4778ce845d87f833cbdc",
+      "bytes": 2023
     },
     {
       "path": "scripts/proof-declarations.json",
@@ -419,8 +424,8 @@
     },
     {
       "path": "scripts/repository_preflight.py",
-      "sha256": "d0b46d08b169af27d645dddb600fef5901547fab5b096f562da0802d56a1e7e4",
-      "bytes": 6897
+      "sha256": "dff1ad58354944b82c3cd43d90f440b4c57e64324f4f3019684d99c6ea6d8a78",
+      "bytes": 7806
     },
     {
       "path": "scripts/reproduce.ps1",
@@ -551,6 +556,11 @@
       "path": "tests/test_proof_audit.py",
       "sha256": "05223b773d86f42fdaa351dac406b500cf3756d3f6a9e838e6f4ab24e1b38d01",
       "bytes": 1802
+    },
+    {
+      "path": "tests/test_release_preflight.py",
+      "sha256": "bfbdea90fb9f1bc649d37c4e336168c3948b334b3db4c0c84dad55535ab23c02",
+      "bytes": 5843
     },
     {
       "path": "tests/test_scenarios.py",
