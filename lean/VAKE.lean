@@ -13,3 +13,5 @@ import VAKE.Proofs.Local
 import VAKE.Proofs.Global
 import VAKE.Proofs.NoCommit
 import VAKE.Proofs.Commitment
+import VAKE.Proofs.Deduce
+import VAKE.Proofs.Normalization

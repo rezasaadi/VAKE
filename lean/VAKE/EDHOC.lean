@@ -90,7 +90,7 @@ mutual
 end
 def length (r : Registry) (v : Val) : Option Nat := lengthFuel r 10000 v
 
-def ordered (xs : List Val) : List Val := xs.mergeSort (fun a b => reprStr a ≤ reprStr b)
+def ordered (xs : List Val) : List Val := Val.sort xs
 def xorValue (n : Nat) (a b : Val) : Val :=
   let terms := (appArgs a "xor").getD [a] ++ (appArgs b "xor").getD [b]
   let parity := terms.foldl (fun acc v => if (appArgs v "edhoc_zero").isSome then acc

@@ -81,7 +81,7 @@ decreasing_by
   have h2 : sizeOf f.val = 1 + sizeOf f.val.1 + sizeOf f.val.2 := rfl
   omega
 
-def ordered (vs : List Val) : List Val := vs.mergeSort (fun a b => reprStr a ≤ reprStr b)
+def ordered (vs : List Val) : List Val := Val.sort vs
 def xorTerms (v : Val) : List Val :=
   if string? v == some "" then [] else (appArgs v "xor").getD [v]
 def xorValue (a b : Val) : Val :=

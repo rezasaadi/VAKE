@@ -15,6 +15,34 @@ def Val.typeId : Val → String
   | .literal t _ | .atom t _ _ _ | .record t _ _ | .app t _ _ | .result t _ _ _ => t
   | .encoded .. => "Bytes"
 
+def Val.str (s : String) : String := toString s.length ++ ":" ++ s
+mutual
+def Val.key : Val → String
+  | .literal t j => "L" ++ Val.str t ++ Val.str j
+  | .atom t n o l => "A" ++ Val.str t ++ Val.str n ++ Val.str o ++
+      (match l with | none => "N" | some k => "S" ++ Val.str (toString k))
+  | .record t c fs => "R" ++ Val.str t ++ Val.str c ++ "[" ++ Val.fieldKeys fs ++ "]"
+  | .encoded i v => "E" ++ Val.str i ++ Val.key v
+  | .app t o as => "P" ++ Val.str t ++ Val.str o ++ "[" ++ Val.listKeys as ++ "]"
+  | .result t p g fs => "Q" ++ Val.str t ++ Val.str p ++ Val.str g ++ "[" ++ Val.fieldKeys fs ++ "]"
+def Val.listKeys : List Val → String
+  | [] => ""
+  | v :: vs => Val.key v ++ Val.listKeys vs
+def Val.fieldKeys : List (String × Val) → String
+  | [] => ""
+  | (n, v) :: fs => Val.str n ++ Val.key v ++ Val.fieldKeys fs
+end
+
+instance (priority := high) instBEqValKey : BEq Val := ⟨fun a b => a.key == b.key⟩
+
+def Val.insertSorted (x : Val) : List Val → List Val
+  | [] => [x]
+  | y :: ys => if decide (x.key ≤ y.key) then x :: y :: ys else y :: Val.insertSorted x ys
+
+def Val.sort : List Val → List Val
+  | [] => []
+  | x :: xs => Val.insertSorted x (Val.sort xs)
+
 abbrev Store := List (String × Val)
 def lookup (xs : List (String × α)) (key : String) : Option α := (xs.find? (·.1 == key)).map Prod.snd
 def put (xs : List (String × α)) (key : String) (v : α) : List (String × α) :=
