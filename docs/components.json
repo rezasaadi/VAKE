@@ -1,0 +1,243 @@
+{
+  "schema_version": "1.0",
+  "project": "VAKE",
+  "package_version": "0.2.0",
+  "scope": "Current checked-in Rust, Lean, workflow and toolchain components. File hashes are not execution or proof evidence.",
+  "files": [
+    {
+      "path": "Cargo.lock",
+      "bytes": 4790,
+      "sha256": "450ea3bf87c74d51e5385c8b7c2d12dc8829ae33a3e8015e0962fb20059cd694"
+    },
+    {
+      "path": "Cargo.toml",
+      "bytes": 259,
+      "sha256": "224e442e147b80bc315305413513d57a3bc12a2a0e8268c5b6ba19005b7b3cca"
+    },
+    {
+      "path": "lean/VAKE/Common.lean",
+      "bytes": 6747,
+      "sha256": "e1c38fc3d209ab10079ba8aeef138f07c3733b47a31cb101610d2fb938fe3aae"
+    },
+    {
+      "path": "lean/VAKE/EDHOC.lean",
+      "bytes": 9214,
+      "sha256": "d8982343be087b7c1205ff63cc97da7b8132a9f50ed5e15a8b8c93cd3658ba60"
+    },
+    {
+      "path": "lean/VAKE/Network.lean",
+      "bytes": 15635,
+      "sha256": "801549984e1fcb49981baeb34d02c87fd7308fcec1da2121a1ae67debc6b5745"
+    },
+    {
+      "path": "lean/VAKE/Proofs/Commitment.lean",
+      "bytes": 10068,
+      "sha256": "a579c124fa98c3815e0af4e3491ab168a4f6f7faf2c0b41d1d1127a0049243bf"
+    },
+    {
+      "path": "lean/VAKE/Proofs/Global.lean",
+      "bytes": 7557,
+      "sha256": "e4b787a5cfa49d994bef2d98214cb2d80bc61246ddd3d10727a11116d1d0fa3a"
+    },
+    {
+      "path": "lean/VAKE/Proofs/Local.lean",
+      "bytes": 5396,
+      "sha256": "00734364d99256d02020a8b598ab0647fbf4a09621d8804ccc85c673a4f31dc9"
+    },
+    {
+      "path": "lean/VAKE/Proofs/NoCommit.lean",
+      "bytes": 902,
+      "sha256": "7678e6bf9fb4e730693bcefdb278b9b61a0d97a0d20a7acf04fd29d191e26498"
+    },
+    {
+      "path": "lean/VAKE/Source/Global.lean",
+      "bytes": 3011,
+      "sha256": "843c82d4303602cf9da9991e19ee42cb566ddaa2d45c945c01445d302d6130e3"
+    },
+    {
+      "path": "lean/VAKE/Source/Semantics.lean",
+      "bytes": 6854,
+      "sha256": "3baf39c6dc75ecc3fb21343c95fb69836561a88125913d8841be3dca21e64f58"
+    },
+    {
+      "path": "lean/VAKE/Source/Syntax.lean",
+      "bytes": 2354,
+      "sha256": "738e9dfd699634fde1ed1e52b3eb0667f0affe762ad582068e86831dda8836ee"
+    },
+    {
+      "path": "lean/VAKE/Symbolic.lean",
+      "bytes": 10513,
+      "sha256": "3be9bb6243fcea1e6317f517060fc0e435a6c9b601bab9341008e9e98e9d0a9c"
+    },
+    {
+      "path": "lean/VAKE/Target/Global.lean",
+      "bytes": 3024,
+      "sha256": "d092f2451b4d104fd9cf6b65782818c90bb287ced9c1e814817fbbf3220edcef"
+    },
+    {
+      "path": "lean/VAKE/Target/Semantics.lean",
+      "bytes": 6919,
+      "sha256": "d9699ef163acca6c4bd9e3034059b78f0ccf47c26d0e16d26bc7ca2d57195751"
+    },
+    {
+      "path": "lean/VAKE/Target/Syntax.lean",
+      "bytes": 2389,
+      "sha256": "d9a44d619aa20dbfe7a89c91a5d00dc93623863dd4b143dceac9fadae5857b31"
+    },
+    {
+      "path": "lean/VAKE/Target/Translate.lean",
+      "bytes": 2184,
+      "sha256": "c9e636a54238ba9cdd75e3a661dc5f6aec6b0697897afe84132213350b7bd3d9"
+    },
+    {
+      "path": "lean/VAKE.lean",
+      "bytes": 378,
+      "sha256": "8e2a39c4ed63dbe2555542ba9b34868bc1705eec991053130499c451cbce656a"
+    },
+    {
+      "path": "lean/lake-manifest.json",
+      "bytes": 145,
+      "sha256": "b1349abe516eebb219f6f704a9939452505ce76f5de0995b6c73d7329102b328"
+    },
+    {
+      "path": "lean/lakefile.toml",
+      "bytes": 86,
+      "sha256": "8a3d89c82ad16dd5fd4b2991c98876a52b5d1267602e046ff26ccdd5730e027e"
+    },
+    {
+      "path": "lean/lean-toolchain",
+      "bytes": 25,
+      "sha256": "d5edba4e4b8faad9c1baeadb265716d20d03be4d1a2647dc5e35b0c0325bea7b"
+    },
+    {
+      "path": "rust-toolchain.toml",
+      "bytes": 86,
+      "sha256": "559f488c181e0e9e77cf17c29de663977f036ec7ff2e2060585714bf53c52d62"
+    },
+    {
+      "path": "scripts/collect_ci_evidence.py",
+      "bytes": 1485,
+      "sha256": "718a3f4536b0607c8dc65773bdf26fd1962ad791ff33165ed451d76f1eacebc5"
+    },
+    {
+      "path": "scripts/component_manifest.py",
+      "bytes": 1890,
+      "sha256": "f7d21a98e1766562355bfe67cc2f61ce0c50cf3272f8492f026c330b8f44133d"
+    },
+    {
+      "path": "scripts/demo.py",
+      "bytes": 3856,
+      "sha256": "50a4b6b9118dd4c0b00fd1ab4d2548ae69da36236ed1c1176a1072095e0b1b80"
+    },
+    {
+      "path": "scripts/global_demo.py",
+      "bytes": 11704,
+      "sha256": "0afb4dee0ec705290fd5bb2eb7d658b1d4cd8724b78271b592e8044a2c41b20c"
+    },
+    {
+      "path": "scripts/import_model.py",
+      "bytes": 15934,
+      "sha256": "20db0c0304fef013dbde3cf36ececf6ac59497f995f83db1613e5933490f0f17"
+    },
+    {
+      "path": "scripts/measure.py",
+      "bytes": 5165,
+      "sha256": "fb30c288f39acfcefcba46100de76b54fc0faa4084545030b60cbc0138976862"
+    },
+    {
+      "path": "scripts/package.py",
+      "bytes": 3142,
+      "sha256": "b91292f506d887803f5a09d296b30313262c7e7b3d764f30287d9541a5180f7d"
+    },
+    {
+      "path": "scripts/repository_preflight.py",
+      "bytes": 6897,
+      "sha256": "d0b46d08b169af27d645dddb600fef5901547fab5b096f562da0802d56a1e7e4"
+    },
+    {
+      "path": "scripts/reproduce.py",
+      "bytes": 3408,
+      "sha256": "68172ee9abbf7b69487157f82b876db28ae364ab75eff0e761ea6313ff5e5412"
+    },
+    {
+      "path": "scripts/runtime_env.py",
+      "bytes": 162,
+      "sha256": "649efc85b95986453dae19f6cd72358cde9a5896154867ede6fe9605e4b0ce6a"
+    },
+    {
+      "path": "scripts/signature_demo.lean.in",
+      "bytes": 1646,
+      "sha256": "d0626bd6594b57062479ed713a7c9a9ceaf6e1325bf7a160fca9631a850a7602"
+    },
+    {
+      "path": "scripts/terminal_demo.lean.in",
+      "bytes": 5107,
+      "sha256": "dcc1c9ae4821ff87186ad9ebb088835e2895203b20a76df01d182bcb637de897"
+    },
+    {
+      "path": "scripts/test_negative_bindings.py",
+      "bytes": 3569,
+      "sha256": "85d324c9f00eb3f9ccf80b0641aed66d4152ca635f653c343ed5f4b577fec038"
+    },
+    {
+      "path": "scripts/trace_demo.py",
+      "bytes": 4885,
+      "sha256": "c82dfa10f916707898f05f5d598e41ccf8be605179e918b1f0fbad647b1c8518"
+    },
+    {
+      "path": "scripts/validate_lean.py",
+      "bytes": 8699,
+      "sha256": "cbc97e4761178745ffa198f92959a8b6729dbac314ff99c36d3d3f71beb12482"
+    },
+    {
+      "path": "scripts/verify.py",
+      "bytes": 5106,
+      "sha256": "0c76a794ca5cc9d5a753166a6948f91928df7887cffe9f557e7a2e30534e3227"
+    },
+    {
+      "path": "src/admission.rs",
+      "bytes": 2821,
+      "sha256": "366b75690fa3e101d3ab4685a9f879d43143f7637c78471a2285232e703c03b6"
+    },
+    {
+      "path": "src/check.rs",
+      "bytes": 29403,
+      "sha256": "df05aea9d8c18b656cdd24775beb94334793b5afb76d09f4c731630fc3cda308"
+    },
+    {
+      "path": "src/contracts.rs",
+      "bytes": 10601,
+      "sha256": "f511eabaac6294a4e260ca714963330f1a05eaf1d9da63189c92599a5a362a11"
+    },
+    {
+      "path": "src/ir.rs",
+      "bytes": 8766,
+      "sha256": "f80b3b73eeab9de6c45c16e7bc66d7351054c8318d31d122e48439f62d5b1083"
+    },
+    {
+      "path": "src/lean_export.rs",
+      "bytes": 21409,
+      "sha256": "598d0ae4c9a898d8e682ecf2646a6f76fe234df12336d4337334b22f5f37f1e7"
+    },
+    {
+      "path": "src/lib.rs",
+      "bytes": 154,
+      "sha256": "688c2cd44f7f4e3c8d95e53ba1b198ea9a1473466bbcbe9db58758e48c8ac370"
+    },
+    {
+      "path": "src/main.rs",
+      "bytes": 6285,
+      "sha256": "90b225a6fea9c5f2f605065ebd82d0d7074572256f3b57c94ceb85a0b02d82fa"
+    },
+    {
+      "path": "src/profile.rs",
+      "bytes": 2766,
+      "sha256": "93c24b50f525ba0b312e624186863b5004da539d44380b99e46444b443bd7dda"
+    },
+    {
+      "path": "src/transport.rs",
+      "bytes": 2085,
+      "sha256": "76c95dcad3ab0d8b90b6eac4148a92873348035f68148503decc2888013dc2f0"
+    }
+  ]
+}

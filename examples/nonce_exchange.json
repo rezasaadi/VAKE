@@ -1,0 +1,336 @@
+{
+  "format_version": "0.1",
+  "protocol": {
+    "id": "VAKE.NonceExchange",
+    "fragment_description": "Original two-role demonstration: publicly announce a typed nonce, then decode and echo the envelope. Erasing the local nonce does not remove the nonce from the sent record or public knowledge. No authentication or secrecy assertion is made."
+  },
+  "types": [
+    {
+      "id": "Bytes",
+      "kind": "base",
+      "parameters": [],
+      "fields": [],
+      "primitive_ref": null
+    },
+    {
+      "id": "Nonce",
+      "kind": "semantic",
+      "parameters": [],
+      "fields": [],
+      "primitive_ref": null
+    },
+    {
+      "id": "Envelope",
+      "kind": "record",
+      "parameters": [],
+      "fields": [
+        {
+          "name": "nonce",
+          "type_id": "Nonce"
+        }
+      ],
+      "primitive_ref": null
+    },
+    {
+      "id": "DecodedEnvelope",
+      "kind": "result",
+      "parameters": [],
+      "fields": [],
+      "primitive_ref": "decodeEnvelope"
+    }
+  ],
+  "primitives": [
+    {
+      "id": "newNonce",
+      "family": "generator",
+      "mode": "effectful_total",
+      "inputs": [],
+      "outcomes": [
+        {
+          "tag": "ok",
+          "payload": [
+            {
+              "name": "nonce",
+              "type_id": "Nonce"
+            }
+          ]
+        }
+      ],
+      "failure_profile": "none",
+      "law_ids": [
+        "Op.fresh"
+      ]
+    },
+    {
+      "id": "decodeEnvelope",
+      "family": "codec",
+      "mode": "effectful_result",
+      "inputs": [
+        {
+          "name": "bytes",
+          "type_id": "Bytes",
+          "position_kind": "public"
+        }
+      ],
+      "outcomes": [
+        {
+          "tag": "ok",
+          "payload": [
+            {
+              "name": "message",
+              "type_id": "Envelope"
+            }
+          ]
+        },
+        {
+          "tag": "invalid",
+          "payload": []
+        }
+      ],
+      "failure_profile": "explicit_error",
+      "law_ids": [
+        "Op.decode"
+      ]
+    }
+  ],
+  "constructors": [
+    {
+      "id": "MkEnvelope",
+      "type_id": "Envelope",
+      "fields": [
+        {
+          "name": "nonce",
+          "type_id": "Nonce"
+        }
+      ]
+    }
+  ],
+  "encodings": [
+    {
+      "id": "envelopeCodec",
+      "input_type_ids": [
+        "Envelope"
+      ],
+      "family": "fixture_tlv",
+      "contract_ids": [
+        "FixtureEncodingInverse",
+        "FixtureEncodingInjective"
+      ]
+    }
+  ],
+  "values": [
+    {
+      "id": "nonceA",
+      "type_id": "Nonce",
+      "owner_role": "Announcer",
+      "storage_kind": "local"
+    },
+    {
+      "id": "packetA",
+      "type_id": "Envelope",
+      "owner_role": "Announcer",
+      "storage_kind": "local"
+    },
+    {
+      "id": "wireA",
+      "type_id": "Bytes",
+      "owner_role": "Announcer",
+      "storage_kind": "local"
+    },
+    {
+      "id": "wireB",
+      "type_id": "Bytes",
+      "owner_role": "Echoer",
+      "storage_kind": "local"
+    },
+    {
+      "id": "decodedB",
+      "type_id": "DecodedEnvelope",
+      "owner_role": "Echoer",
+      "storage_kind": "local"
+    },
+    {
+      "id": "packetB",
+      "type_id": "Envelope",
+      "owner_role": "Echoer",
+      "storage_kind": "local"
+    }
+  ],
+  "slots": [],
+  "messages": [
+    {
+      "id": "announcement",
+      "constructor_id": "MkEnvelope",
+      "sender_role": "Announcer",
+      "receiver_role": "Echoer",
+      "encoding_id": "envelopeCodec"
+    },
+    {
+      "id": "echo",
+      "constructor_id": "MkEnvelope",
+      "sender_role": "Echoer",
+      "receiver_role": "Announcer",
+      "encoding_id": "envelopeCodec"
+    }
+  ],
+  "contexts": [],
+  "roles": [
+    {
+      "id": "Announcer",
+      "parameter_value_ids": [],
+      "entry_block": "announce",
+      "blocks": [
+        {
+          "id": "announce",
+          "steps": [
+            {
+              "kind": "sample",
+              "output_value_id": "nonceA",
+              "generator_id": "newNonce"
+            },
+            {
+              "kind": "assign",
+              "output_value_id": "packetA",
+              "term": {
+                "kind": "record",
+                "constructor_id": "MkEnvelope",
+                "fields": [
+                  {
+                    "name": "nonce",
+                    "term": {
+                      "kind": "ref",
+                      "value_id": "nonceA"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "kind": "assign",
+              "output_value_id": "wireA",
+              "term": {
+                "kind": "encode",
+                "encoding_id": "envelopeCodec",
+                "record": {
+                  "kind": "ref",
+                  "value_id": "packetA"
+                }
+              }
+            },
+            {
+              "kind": "send",
+              "bytes": {
+                "kind": "ref",
+                "value_id": "wireA"
+              },
+              "channel_id": "demoChannel"
+            },
+            {
+              "kind": "erase",
+              "object_id": "nonceA"
+            }
+          ],
+          "terminator": {
+            "kind": "stop",
+            "reason": "announcement_completed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "Echoer",
+      "parameter_value_ids": [],
+      "entry_block": "receiveEnvelope",
+      "blocks": [
+        {
+          "id": "receiveEnvelope",
+          "steps": [
+            {
+              "kind": "receive",
+              "output_bytes_value_id": "wireB"
+            },
+            {
+              "kind": "invoke",
+              "primitive_id": "decodeEnvelope",
+              "args": [
+                {
+                  "kind": "ref",
+                  "value_id": "wireB"
+                }
+              ],
+              "result_value_id": "decodedB"
+            }
+          ],
+          "terminator": {
+            "kind": "match",
+            "result_value_id": "decodedB",
+            "arms": [
+              {
+                "tag": "ok",
+                "bindings": [
+                  {
+                    "payload_name": "message",
+                    "value_id": "packetB"
+                  }
+                ],
+                "target_block": "echoEnvelope"
+              },
+              {
+                "tag": "invalid",
+                "bindings": [],
+                "target_block": "rejectEnvelope"
+              }
+            ]
+          }
+        },
+        {
+          "id": "echoEnvelope",
+          "steps": [
+            {
+              "kind": "emit",
+              "event_name": "NonceObserved",
+              "args": [
+                {
+                  "kind": "project",
+                  "record": {
+                    "kind": "ref",
+                    "value_id": "packetB"
+                  },
+                  "field": "nonce"
+                }
+              ],
+              "visibility": "public"
+            },
+            {
+              "kind": "send",
+              "bytes": {
+                "kind": "encode",
+                "encoding_id": "envelopeCodec",
+                "record": {
+                  "kind": "ref",
+                  "value_id": "packetB"
+                }
+              },
+              "channel_id": "demoChannel"
+            }
+          ],
+          "terminator": {
+            "kind": "stop",
+            "reason": "echo_completed"
+          }
+        },
+        {
+          "id": "rejectEnvelope",
+          "steps": [],
+          "terminator": {
+            "kind": "reject",
+            "target_ids": [],
+            "reason": "invalid_envelope"
+          }
+        }
+      ]
+    }
+  ],
+  "targets": [],
+  "holes": []
+}

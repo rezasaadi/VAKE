@@ -1,0 +1,62 @@
+{
+  "Local": [
+    "VAKE.Proofs.term",
+    "VAKE.Proofs.args",
+    "VAKE.Proofs.fields",
+    "VAKE.Proofs.peer",
+    "VAKE.Proofs.instruction",
+    "VAKE.Proofs.bindPayload",
+    "VAKE.Proofs.arm_find",
+    "VAKE.Proofs.terminator",
+    "VAKE.Proofs.role_find",
+    "VAKE.Proofs.block_find",
+    "VAKE.Proofs.findBlock",
+    "VAKE.Proofs.waiting",
+    "VAKE.Proofs.localStep"
+  ],
+  "Global": [
+    "VAKE.Proofs.value_id",
+    "VAKE.Proofs.label_id",
+    "VAKE.Proofs.deduction",
+    "VAKE.Proofs.action",
+    "VAKE.Proofs.commitment",
+    "VAKE.Proofs.step_preservation",
+    "VAKE.Proofs.step_reflection",
+    "VAKE.Proofs.finite_trace_preservation",
+    "VAKE.Proofs.finite_trace_reflection",
+    "VAKE.Proofs.run_preservation",
+    "VAKE.Proofs.run_normalization",
+    "VAKE.Proofs.run_reflection",
+    "VAKE.Proofs.histories",
+    "VAKE.Proofs.terminal_outcomes",
+    "VAKE.Proofs.accept_export_events",
+    "VAKE.Proofs.context_fields"
+  ],
+  "NoCommit": [
+    "VAKE.Commitment.source_no_commit_of_none",
+    "VAKE.Commitment.target_no_commit_of_none"
+  ],
+  "Commitment": [
+    "VAKE.Commitment.source_commit_of_some",
+    "VAKE.Commitment.target_commit_of_some",
+    "VAKE.Commitment.source_commit_reflects_some",
+    "VAKE.Commitment.target_commit_reflects_some",
+    "VAKE.Commitment.source_committed_iff",
+    "VAKE.Commitment.target_committed_iff",
+    "VAKE.Commitment.source_inactive_none",
+    "VAKE.Commitment.target_inactive_none",
+    "VAKE.Commitment.source_waiting_none",
+    "VAKE.Commitment.target_waiting_none",
+    "VAKE.Commitment.source_inactive_no_commit",
+    "VAKE.Commitment.target_inactive_no_commit",
+    "VAKE.Commitment.source_waiting_no_commit",
+    "VAKE.Commitment.target_waiting_no_commit",
+    "VAKE.Commitment.inactive_delivery_preserves_session",
+    "VAKE.Commitment.source_no_trace_after_none",
+    "VAKE.Commitment.target_no_trace_after_none",
+    "VAKE.Commitment.source_run_exact_expansion",
+    "VAKE.Commitment.target_run_exact_expansion",
+    "VAKE.Commitment.source_done_expands_zero",
+    "VAKE.Commitment.target_done_expands_zero"
+  ]
+}

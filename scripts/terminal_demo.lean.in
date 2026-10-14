@@ -1,0 +1,78 @@
+import VAKE.Generated.B@DIGEST@
+import VAKE.Proofs.Commitment
+set_option maxRecDepth 100000
+set_option maxHeartbeats 8000000
+namespace VAKE.Demo.Terminal
+open VAKE
+
+abbrev model := VAKE.Imported.M@DIGEST@.model
+abbrev environment := VAKE.Imported.M@DIGEST@.environment
+abbrev program := VAKE.Generated.M@DIGEST@.program
+abbrev targetEnvironment := VAKE.Generated.M@DIGEST@.environment
+
+def startSession : Session := {role := "Announcer", party := "Alice", block := "announce"}
+def start : World := {sessions := [("A1", startSession)]}
+
+def advance (w : World) : World :=
+  match Source.localStep Symbolic.contract model environment "A1" w with
+  | .ok (some next) => next
+  | _ => w
+def w1 := advance start
+def w2 := advance w1
+def w3 := advance w2
+def w4 := advance w3
+def w5 := advance w4
+def terminal := advance w5
+def terminalSession : Session := (lookup terminal.sessions "A1").getD startSession
+
+theorem exact_step_1 : Source.localStep Symbolic.contract model environment "A1" start = .ok (some w1) := by rfl
+theorem exact_step_2 : Source.localStep Symbolic.contract model environment "A1" w1 = .ok (some w2) := by rfl
+theorem exact_step_3 : Source.localStep Symbolic.contract model environment "A1" w2 = .ok (some w3) := by rfl
+theorem exact_step_4 : Source.localStep Symbolic.contract model environment "A1" w3 = .ok (some w4) := by rfl
+theorem exact_step_5 : Source.localStep Symbolic.contract model environment "A1" w4 = .ok (some w5) := by rfl
+theorem exact_step_6 : Source.localStep Symbolic.contract model environment "A1" w5 = .ok (some terminal) := by rfl
+theorem terminal_found : lookup terminal.sessions "A1" = some terminalSession := by rfl
+theorem terminal_status : terminalSession.status = .stopped := by rfl
+theorem erased_local_name : lookup terminalSession.locals "nonceA" = none := by rfl
+theorem exact_history : terminal.history.map Event.kind = ["sample", "assign", "assign", "send", "erase", "stop"] := by rfl
+theorem one_public_message : terminal.sent.length = 1 := by rfl
+
+theorem six_successful_local_steps :
+    Commitment.Advances (Source.localStep Symbolic.contract model environment "A1") start 6 terminal.history terminal := by
+  exact .cons (u := w1) exact_step_1 (.cons (u := w2) exact_step_2 (.cons (u := w3) exact_step_3 (.cons (u := w4) exact_step_4 (.cons (u := w5) exact_step_5 (.cons (u := terminal) exact_step_6 (.nil terminal))))))
+
+theorem terminal_no_local_result : Source.localStep Symbolic.contract model environment "A1" terminal = .ok none :=
+  Commitment.source_inactive_none _ _ _ _ _ _ terminal_found (by rw [terminal_status]; intro h; cases h)
+
+theorem source_run : Source.Run Symbolic.contract model environment "A1" start terminal.history terminal := by
+  exact .more (u := w1) exact_step_1 (.more (u := w2) exact_step_2 (.more (u := w3) exact_step_3 (.more (u := w4) exact_step_4 (.more (u := w5) exact_step_5 (.more (u := terminal) exact_step_6 (.done terminal_no_local_result))))))
+
+theorem target_run : Target.Run Symbolic.contract program targetEnvironment "A1" start terminal.history terminal := by
+  dsimp only [program, targetEnvironment]
+  rw [VAKE.Generated.B@DIGEST@.binding, VAKE.Generated.B@DIGEST@.profile_binding]
+  exact Proofs.run_preservation _ _ _ _ source_run
+
+theorem no_further_source_commit (labels : List Event) (next : Source.Configuration) :
+    ¬ Source.Step Symbolic.contract model environment ⟨terminal⟩ (.advance "A1") labels next :=
+  Commitment.source_inactive_no_commit _ _ _ _ _ _ terminal_found (by rw [terminal_status]; intro h; cases h) labels next
+
+theorem no_further_target_commit (labels : List Event) (next : Target.Configuration) :
+    ¬ Target.Step Symbolic.contract program targetEnvironment ⟨terminal⟩ (.tick "A1") labels next :=
+  Commitment.target_inactive_no_commit _ _ _ _ _ _ terminal_found (by rw [terminal_status]; intro h; cases h) labels next
+
+theorem delivery_preserves_terminal_session (v : Val) (bytes : v.typeId = "Bytes") (next : World)
+    (delivered : Network.deliver model.registry environment "A1" v false terminal = .ok next) :
+    lookup next.sessions "A1" = some terminalSession :=
+  Commitment.inactive_delivery_preserves_session _ _ _ _ _ _ _ terminal_found
+    (by rw [terminal_status]; intro h; cases h) bytes delivered
+
+def lateInput : Val := .literal "Bytes" "\"late input\""
+def afterDelivery : World := (Network.deliver model.registry environment "A1" lateInput false terminal).toOption.getD terminal
+theorem concrete_delivery : Network.deliver model.registry environment "A1" lateInput false terminal = .ok afterDelivery := by rfl
+theorem concrete_delivery_preserves : lookup afterDelivery.sessions "A1" = some terminalSession :=
+  delivery_preserves_terminal_session lateInput rfl afterDelivery concrete_delivery
+theorem no_resume_after_delivery (labels : List Event) (next : Source.Configuration) :
+    ¬ Source.Step Symbolic.contract model environment ⟨afterDelivery⟩ (.advance "A1") labels next :=
+  Commitment.source_inactive_no_commit _ _ _ _ _ _ concrete_delivery_preserves (by rw [terminal_status]; intro h; cases h) labels next
+
+end VAKE.Demo.Terminal

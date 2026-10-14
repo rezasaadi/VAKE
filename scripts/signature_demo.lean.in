@@ -1,0 +1,20 @@
+import VAKE.Generated.B@DIGEST@
+set_option maxRecDepth 100000
+set_option maxHeartbeats 1000000
+set_option linter.unusedSimpArgs false
+namespace VAKE.Demo.Signature
+open VAKE
+abbrev model := VAKE.Imported.M@DIGEST@.model
+abbrev environment := VAKE.Imported.M@DIGEST@.environment
+def key : Val := Symbolic.signingKey "Alice"
+def publicKey : Val := Symbolic.publicKey "Alice"
+def packet (name : String) : Val := .encoded "envelopeCodec" (.record "Envelope" "MkEnvelope" [("nonce", .atom "Nonce" name "session:S1" (some 32))])
+def signature : Val := .app "Signature" "sign" [key, packet "n1"]
+theorem sign_constructs_signature : Symbolic.contract.pure model.registry environment "signSig" [key, packet "n1"] = .ok signature := by first | rfl | simp [Symbolic.contract, Symbolic.invoke, Symbolic.pure, Symbolic.appArgs, Symbolic.signingKey, Symbolic.publicKey, model, environment, VAKE.Imported.M@DIGEST@.model, VAKE.Imported.M@DIGEST@.environment, key, publicKey, packet, signature, need, lookup, Bind.bind, Except.bind, Functor.map, Except.map, Pure.pure, Except.pure, BEq.beq, instBEqVal.beq] <;> rfl
+
+def observations : Lean.Json := Lean.Json.mkObj [
+  ("status", Lean.toJson "EXECUTABLE_OBSERVATION"),
+  ("scope", Lean.toJson "Compiled symbolic contract evaluations; not kernel proofs of verification or authentication"),
+  ("valid", Lean.toJson (reprStr (Symbolic.contract.invoke model.registry environment "S1" "verifySig" [publicKey, packet "n1", signature] 0))),
+  ("changed_message", Lean.toJson (reprStr (Symbolic.contract.invoke model.registry environment "S1" "verifySig" [publicKey, packet "n2", signature] 0)))]
+end VAKE.Demo.Signature

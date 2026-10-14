@@ -1,0 +1,81 @@
+{
+  "chromium_engine_version": "Not recorded",
+  "tool_version": "VAKE 0.2.0 onboarding preview",
+  "platform": "Native Windows; real existing CLI and Lean 4.34.1",
+  "pixels": "Original browser JPEG bytes; no image edits",
+  "capture_mode": "Six views visited on the completed real run; execution and screenshot timestamps are distinct.",
+  "source_sha256": "78f1dcffd245e80d9ec2f933abbba2ca41338d3dd3a39cb77b3b0c7080052048",
+  "profile_sha256": "4a0efdd3d41915d7a251635582f2946d59b91c02581b3d3db0a7ea6d329c7268",
+  "captures": [
+    {
+      "file": "01-open.jpg",
+      "timestamp_utc": "2026-10-14T08:34:57.731Z",
+      "run_id": "20261014T082952Z-fa4359d6644b",
+      "sha256": "4dc72a053ffd4394e5a88800ee3059b1e4985550a522f195a500f0c5967f0185",
+      "dimensions": [
+        1276,
+        1019
+      ]
+    },
+    {
+      "file": "02-check.jpg",
+      "timestamp_utc": "2026-10-14T08:34:58.033Z",
+      "run_id": "20261014T082952Z-fa4359d6644b",
+      "sha256": "9daeb50b3893863003a1662b878f42387bdb958beffae929aa676f166af8c608",
+      "dimensions": [
+        1291,
+        884
+      ]
+    },
+    {
+      "file": "03-export.jpg",
+      "timestamp_utc": "2026-10-14T08:34:58.354Z",
+      "run_id": "20261014T082952Z-fa4359d6644b",
+      "sha256": "7a8e44ac2f994eb486ee1185252cdb7c0c79990f71df257dc6c2beccddf3ac0b",
+      "dimensions": [
+        1276,
+        895
+      ]
+    },
+    {
+      "file": "04-lean.jpg",
+      "timestamp_utc": "2026-10-14T08:34:58.667Z",
+      "run_id": "20261014T082952Z-fa4359d6644b",
+      "sha256": "0bd4644893654bd7cf88e9e6633ef67134b599f5aefa4d65d12e9e7de538555e",
+      "dimensions": [
+        1276,
+        983
+      ]
+    },
+    {
+      "file": "05-traces.jpg",
+      "timestamp_utc": "2026-10-14T08:34:58.999Z",
+      "run_id": "20261014T082952Z-fa4359d6644b",
+      "sha256": "6ac7e5ed3743145971033557d3a13e3d1b1e2d07f0b27b3bf7204795c28120e8",
+      "dimensions": [
+        1276,
+        1261
+      ]
+    },
+    {
+      "file": "06-evidence.jpg",
+      "timestamp_utc": "2026-10-14T08:34:59.312Z",
+      "run_id": "20261014T082952Z-fa4359d6644b",
+      "sha256": "36fa5f594c28e34a49d033a77acaebfdc37f410e0880fc62e5be9b2ec091b90a",
+      "dimensions": [
+        1276,
+        925
+      ]
+    }
+  ],
+  "welcome": {
+    "file": "welcome.jpg",
+    "sha256": "5ba87d1d253ed9e01ac8c6a940330754de5d5cd43082fc0c18216023e3adad9b",
+    "dimensions": [
+      1276,
+      1135
+    ],
+    "scope": "First-time view on localhost with no selected run; no result is displayed."
+  },
+  "validation_scope": "Historical UI illustrations captured before the current source revision; these images are not execution evidence for this revision."
+}

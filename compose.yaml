@@ -1,0 +1,23 @@
+services:
+  vake:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: vake:local
+    init: true
+    ports:
+
+      - "127.0.0.1:8765:8765"
+    environment:
+      VAKE_UI_PORT: "8765"
+    volumes:
+
+      - vake-reports:/opt/vake/reports
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    restart: "no"
+
+volumes:
+  vake-reports:

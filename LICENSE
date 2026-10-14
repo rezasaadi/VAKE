@@ -1,0 +1,13 @@
+VAKE — license status
+
+No distribution license is granted by this file. The supplied source snapshot
+contains reused formal and engineering components whose authoritative copyright
+and license notices have not been confirmed, and it does not establish a license
+for the complete package.
+
+The maintainers must supply the applicable notices and confirm the license for
+all components before distributing the package under a stated license. Renaming
+modules or rewriting documentation does not change copyright ownership or grant
+additional rights.
+
+The current component inventory is in docs/components.json.

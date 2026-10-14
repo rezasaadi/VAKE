@@ -1,0 +1,349 @@
+{
+  "format_version": "0.1",
+  "protocol": {
+    "id": "VAKE.SignatureCheck",
+    "fragment_description": "New independent local symbolic signature check over a nonce envelope. Checked signature contract behavior and translation; no authentication claim."
+  },
+  "types": [
+    {
+      "id": "Bytes",
+      "kind": "base",
+      "parameters": [],
+      "fields": [],
+      "primitive_ref": null
+    },
+    {
+      "id": "Nonce",
+      "kind": "semantic",
+      "parameters": [],
+      "fields": [],
+      "primitive_ref": null
+    },
+    {
+      "id": "Envelope",
+      "kind": "record",
+      "parameters": [],
+      "fields": [
+        {
+          "name": "nonce",
+          "type_id": "Nonce"
+        }
+      ],
+      "primitive_ref": null
+    },
+    {
+      "id": "SignatureSecretKey",
+      "kind": "semantic",
+      "parameters": [],
+      "fields": [],
+      "primitive_ref": null
+    },
+    {
+      "id": "SignaturePublicKey",
+      "kind": "semantic",
+      "parameters": [],
+      "fields": [],
+      "primitive_ref": null
+    },
+    {
+      "id": "Signature",
+      "kind": "semantic",
+      "parameters": [],
+      "fields": [],
+      "primitive_ref": null
+    },
+    {
+      "id": "VerifiedSignature",
+      "kind": "result",
+      "parameters": [],
+      "fields": [],
+      "primitive_ref": "verifySig"
+    }
+  ],
+  "primitives": [
+    {
+      "id": "newNonce",
+      "family": "generator",
+      "mode": "effectful_total",
+      "inputs": [],
+      "outcomes": [
+        {
+          "tag": "ok",
+          "payload": [
+            {
+              "name": "nonce",
+              "type_id": "Nonce"
+            }
+          ]
+        }
+      ],
+      "failure_profile": "none",
+      "law_ids": [
+        "Op.fresh"
+      ]
+    },
+    {
+      "id": "signSig",
+      "family": "signature",
+      "mode": "pure_total",
+      "inputs": [
+        {
+          "name": "key",
+          "type_id": "SignatureSecretKey",
+          "position_kind": "secret"
+        },
+        {
+          "name": "message",
+          "type_id": "Bytes",
+          "position_kind": "public"
+        }
+      ],
+      "outcomes": [
+        {
+          "tag": "ok",
+          "payload": [
+            {
+              "name": "signature",
+              "type_id": "Signature"
+            }
+          ]
+        }
+      ],
+      "failure_profile": "none",
+      "law_ids": [
+        "Op.sign"
+      ]
+    },
+    {
+      "id": "verifySig",
+      "family": "signature",
+      "mode": "effectful_result",
+      "inputs": [
+        {
+          "name": "key",
+          "type_id": "SignaturePublicKey",
+          "position_kind": "public"
+        },
+        {
+          "name": "message",
+          "type_id": "Bytes",
+          "position_kind": "public"
+        },
+        {
+          "name": "signature",
+          "type_id": "Signature",
+          "position_kind": "public"
+        }
+      ],
+      "outcomes": [
+        {
+          "tag": "ok",
+          "payload": []
+        },
+        {
+          "tag": "invalid",
+          "payload": []
+        }
+      ],
+      "failure_profile": "explicit_error",
+      "law_ids": [
+        "Op.verify"
+      ]
+    }
+  ],
+  "constructors": [
+    {
+      "id": "MkEnvelope",
+      "type_id": "Envelope",
+      "fields": [
+        {
+          "name": "nonce",
+          "type_id": "Nonce"
+        }
+      ]
+    }
+  ],
+  "encodings": [
+    {
+      "id": "envelopeCodec",
+      "input_type_ids": [
+        "Envelope"
+      ],
+      "family": "fixture_tlv",
+      "contract_ids": [
+        "FixtureEncodingInverse",
+        "FixtureEncodingInjective"
+      ]
+    }
+  ],
+  "values": [
+    {
+      "id": "nonceA",
+      "type_id": "Nonce",
+      "owner_role": "SigningCheck",
+      "storage_kind": "local"
+    },
+    {
+      "id": "packetA",
+      "type_id": "Envelope",
+      "owner_role": "SigningCheck",
+      "storage_kind": "local"
+    },
+    {
+      "id": "wireA",
+      "type_id": "Bytes",
+      "owner_role": "SigningCheck",
+      "storage_kind": "local"
+    },
+    {
+      "id": "sk",
+      "type_id": "SignatureSecretKey",
+      "owner_role": "SigningCheck",
+      "storage_kind": "parameter"
+    },
+    {
+      "id": "pk",
+      "type_id": "SignaturePublicKey",
+      "owner_role": "SigningCheck",
+      "storage_kind": "parameter"
+    },
+    {
+      "id": "signature",
+      "type_id": "Signature",
+      "owner_role": "SigningCheck",
+      "storage_kind": "local"
+    },
+    {
+      "id": "verified",
+      "type_id": "VerifiedSignature",
+      "owner_role": "SigningCheck",
+      "storage_kind": "local"
+    }
+  ],
+  "slots": [],
+  "messages": [],
+  "contexts": [],
+  "roles": [
+    {
+      "id": "SigningCheck",
+      "parameter_value_ids": [
+        "sk",
+        "pk"
+      ],
+      "entry_block": "check",
+      "blocks": [
+        {
+          "id": "check",
+          "steps": [
+            {
+              "kind": "sample",
+              "output_value_id": "nonceA",
+              "generator_id": "newNonce"
+            },
+            {
+              "kind": "assign",
+              "output_value_id": "packetA",
+              "term": {
+                "kind": "record",
+                "constructor_id": "MkEnvelope",
+                "fields": [
+                  {
+                    "name": "nonce",
+                    "term": {
+                      "kind": "ref",
+                      "value_id": "nonceA"
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "kind": "assign",
+              "output_value_id": "wireA",
+              "term": {
+                "kind": "encode",
+                "encoding_id": "envelopeCodec",
+                "record": {
+                  "kind": "ref",
+                  "value_id": "packetA"
+                }
+              }
+            },
+            {
+              "kind": "assign",
+              "output_value_id": "signature",
+              "term": {
+                "kind": "apply",
+                "primitive_id": "signSig",
+                "args": [
+                  {
+                    "kind": "ref",
+                    "value_id": "sk"
+                  },
+                  {
+                    "kind": "ref",
+                    "value_id": "wireA"
+                  }
+                ]
+              }
+            },
+            {
+              "kind": "invoke",
+              "primitive_id": "verifySig",
+              "args": [
+                {
+                  "kind": "ref",
+                  "value_id": "pk"
+                },
+                {
+                  "kind": "ref",
+                  "value_id": "wireA"
+                },
+                {
+                  "kind": "ref",
+                  "value_id": "signature"
+                }
+              ],
+              "result_value_id": "verified"
+            }
+          ],
+          "terminator": {
+            "kind": "match",
+            "result_value_id": "verified",
+            "arms": [
+              {
+                "tag": "ok",
+                "bindings": [],
+                "target_block": "success"
+              },
+              {
+                "tag": "invalid",
+                "bindings": [],
+                "target_block": "failure"
+              }
+            ]
+          }
+        },
+        {
+          "id": "success",
+          "steps": [],
+          "terminator": {
+            "kind": "stop",
+            "reason": "symbolic_signature_valid"
+          }
+        },
+        {
+          "id": "failure",
+          "steps": [],
+          "terminator": {
+            "kind": "reject",
+            "target_ids": [],
+            "reason": "symbolic_signature_invalid"
+          }
+        }
+      ]
+    }
+  ],
+  "targets": [],
+  "holes": []
+}

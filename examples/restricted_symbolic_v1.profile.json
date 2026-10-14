@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0",
+  "id": "VAKE.NonceExchange.Restricted",
+  "interpretation": "restricted_symbolic_v1",
+  "phase_policy": "stuck_unexpected",
+  "exposure_interfaces": [],
+  "parties": ["Alice", "Bob"],
+  "credentials": [],
+  "kem_correctness": "ideal",
+  "correctness_error_sessions": []
+}

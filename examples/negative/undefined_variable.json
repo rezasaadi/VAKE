@@ -1,0 +1,74 @@
+{
+  "format_version": "0.1",
+  "protocol": {
+    "id": "VAKE.Minimal",
+    "fragment_description": "Original public message fixture for standalone admission regression."
+  },
+  "types": [
+    {
+      "id": "Bytes",
+      "kind": "base",
+      "parameters": [],
+      "fields": [],
+      "primitive_ref": null
+    },
+    {
+      "id": "Bool",
+      "kind": "base",
+      "parameters": [],
+      "fields": [],
+      "primitive_ref": null
+    }
+  ],
+  "primitives": [],
+  "constructors": [],
+  "encodings": [],
+  "values": [
+    {
+      "id": "message",
+      "type_id": "Bytes",
+      "owner_role": "Sender",
+      "storage_kind": "local"
+    }
+  ],
+  "slots": [],
+  "messages": [],
+  "contexts": [],
+  "roles": [
+    {
+      "id": "Sender",
+      "parameter_value_ids": [],
+      "entry_block": "send",
+      "blocks": [
+        {
+          "id": "send",
+          "steps": [
+            {
+              "kind": "assign",
+              "output_value_id": "message",
+              "term": {
+                "kind": "literal",
+                "type_id": "Bytes",
+                "value": "hello"
+              }
+            },
+            {
+              "kind": "send",
+              "bytes": {
+                "kind": "ref",
+                "value_id": "neverDeclared"
+              },
+              "channel_id": "publicChannel"
+            }
+          ],
+          "terminator": {
+            "kind": "stop",
+            "reason": "done"
+          }
+        }
+      ]
+    }
+  ],
+  "targets": [],
+  "holes": []
+}

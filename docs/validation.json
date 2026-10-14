@@ -1,0 +1,171 @@
+{
+  "schema_version": "1.0",
+  "project": "VAKE",
+  "package_version": "0.2.0",
+  "scope": "Source consistency and toolchain-independent checks; does not establish Rust compilation or Lean proof execution.",
+  "python_version": "3.12.14",
+  "regression_tests": {
+    "status": "PASS",
+    "passed": 24,
+    "failed": 0,
+    "tests": [
+      {
+        "name": "test_proof_audit.ProofAuditTests.test_duplicate_axiom_record_is_rejected.test_duplicate_axiom_record_is_rejected",
+        "status": "PASS"
+      },
+      {
+        "name": "test_proof_audit.ProofAuditTests.test_forbidden_axiom_is_rejected.test_forbidden_axiom_is_rejected",
+        "status": "PASS"
+      },
+      {
+        "name": "test_proof_audit.ProofAuditTests.test_line_wrapped_statement_is_retained.test_line_wrapped_statement_is_retained",
+        "status": "PASS"
+      },
+      {
+        "name": "test_proof_audit.ProofAuditTests.test_missing_axiom_record_is_rejected.test_missing_axiom_record_is_rejected",
+        "status": "PASS"
+      },
+      {
+        "name": "test_proof_audit.ProofAuditTests.test_valid_axiom_free_statement_is_retained.test_valid_axiom_free_statement_is_retained",
+        "status": "PASS"
+      },
+      {
+        "name": "test_source_consistency.SourceConsistencyTests.test_archive_preflight_and_tampered_manifest.test_archive_preflight_and_tampered_manifest",
+        "status": "PASS"
+      },
+      {
+        "name": "test_source_consistency.SourceConsistencyTests.test_bare_lake_normalization_preserves_filenames.test_bare_lake_normalization_preserves_filenames",
+        "status": "PASS"
+      },
+      {
+        "name": "test_source_consistency.SourceConsistencyTests.test_environment_configuration_and_default.test_environment_configuration_and_default",
+        "status": "PASS"
+      },
+      {
+        "name": "test_source_consistency.SourceConsistencyTests.test_measurement_rejects_success_exit_with_wrong_status.test_measurement_rejects_success_exit_with_wrong_status",
+        "status": "PASS"
+      },
+      {
+        "name": "test_source_consistency.SourceConsistencyTests.test_measurement_retains_launch_failure.test_measurement_retains_launch_failure",
+        "status": "PASS"
+      },
+      {
+        "name": "test_source_consistency.SourceConsistencyTests.test_measurement_retains_non_object_failure.test_measurement_retains_non_object_failure",
+        "status": "PASS"
+      },
+      {
+        "name": "test_source_consistency.SourceConsistencyTests.test_preflight_rejects_broken_local_link.test_preflight_rejects_broken_local_link",
+        "status": "PASS"
+      },
+      {
+        "name": "test_source_consistency.SourceConsistencyTests.test_ui_wrapper_works_outside_repository.test_ui_wrapper_works_outside_repository",
+        "status": "PASS"
+      },
+      {
+        "name": "test_ui.UITests.test_missing_binary_is_explicit.test_missing_binary_is_explicit",
+        "status": "PASS"
+      },
+      {
+        "name": "test_ui.UITests.test_oversize_and_invalid_input_shapes.test_oversize_and_invalid_input_shapes",
+        "status": "PASS"
+      },
+      {
+        "name": "test_ui.UITests.test_artifact_traversal.test_artifact_traversal",
+        "status": "PASS"
+      },
+      {
+        "name": "test_ui.UITests.test_symlink_escape.test_symlink_escape",
+        "status": "PASS"
+      },
+      {
+        "name": "test_ui.UITests.test_interrupted_run_retains_failed_history.test_interrupted_run_retains_failed_history",
+        "status": "PASS"
+      },
+      {
+        "name": "test_ui.UITests.test_exact_demo_scope_requires_both_inputs.test_exact_demo_scope_requires_both_inputs",
+        "status": "PASS"
+      },
+      {
+        "name": "test_ui.UITests.test_timeout_reports_inconclusive.test_timeout_reports_inconclusive",
+        "status": "PASS"
+      },
+      {
+        "name": "test_ui.UITests.test_http_start_stop_examples_host_origin_and_occupied_port.test_http_start_stop_examples_host_origin_and_occupied_port",
+        "status": "PASS"
+      },
+      {
+        "name": "test_ui.UITests.test_container_bind_retains_host_origin_and_fetch_guards.test_container_bind_retains_host_origin_and_fetch_guards",
+        "status": "PASS"
+      },
+      {
+        "name": "test_ui.UITests.test_tour_routes_preserve_static_allowlist_and_request_guards.test_tour_routes_preserve_static_allowlist_and_request_guards",
+        "status": "PASS"
+      },
+      {
+        "name": "test_ui.UITests.test_invalid_bind_is_rejected.test_invalid_bind_is_rejected",
+        "status": "PASS"
+      }
+    ]
+  },
+  "checks": [
+    {
+      "name": "Python syntax compilation",
+      "status": "PASS"
+    },
+    {
+      "name": "Shell script syntax",
+      "status": "PASS"
+    },
+    {
+      "name": "JavaScript syntax",
+      "status": "PASS"
+    },
+    {
+      "name": "Lean module import paths",
+      "status": "PASS"
+    },
+    {
+      "name": "Declared theorem inventory",
+      "status": "PASS"
+    },
+    {
+      "name": "Lean definitions/statements retained modulo namespace rename",
+      "status": "PASS"
+    },
+    {
+      "name": "Source preflight and clean-package manifest validation",
+      "status": "PASS"
+    },
+    {
+      "name": "Archive content and filename identity scan",
+      "status": "PASS"
+    }
+  ],
+  "not_run": [
+    {
+      "name": "Rust build and frontend tests",
+      "status": "NOT_RUN",
+      "reason": "Required tool unavailable in the review environment"
+    },
+    {
+      "name": "Lean kernel and integration checks",
+      "status": "NOT_RUN",
+      "reason": "Required tool unavailable in the review environment"
+    },
+    {
+      "name": "Full reproduction workflow",
+      "status": "NOT_RUN",
+      "reason": "Required tool unavailable in the review environment"
+    },
+    {
+      "name": "Docker build and container execution",
+      "status": "NOT_RUN",
+      "reason": "Required tool unavailable in the review environment"
+    },
+    {
+      "name": "PowerShell and native Windows execution",
+      "status": "NOT_RUN",
+      "reason": "Required tool unavailable in the review environment"
+    }
+  ]
+}

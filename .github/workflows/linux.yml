@@ -1,0 +1,45 @@
+name: VAKE Linux reproduction
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+permissions:
+  contents: read
+concurrency:
+  group: vake-linux-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  reproduce:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.14'
+      - name: Check repository snapshot
+        run: python scripts/repository_preflight.py
+      - name: Install pinned toolchains
+        shell: bash
+        run: |
+          rustup toolchain install 1.97.1 --profile minimal --component clippy --component rustfmt
+          sudo apt-get update
+          sudo apt-get install -y zstd
+          curl --fail --location --retry 2 https://github.com/leanprover/lean4/releases/download/v4.34.1/lean-4.34.1-linux.tar.zst -o "$RUNNER_TEMP/lean.tar.zst"
+          echo "47bf4bbd78f70c2e9670598ab7124d92b6efb7330ff33e5fbb4030f6fd72e4e4  $RUNNER_TEMP/lean.tar.zst" | sha256sum --check
+          tar --zstd -xf "$RUNNER_TEMP/lean.tar.zst" -C "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/lean-4.34.1-linux/bin" >> "$GITHUB_PATH"
+      - name: Build, test and reproduce all demonstrations
+        env:
+          VAKE_UI_TEST_LEAN: '1'
+        run: python scripts/reproduce.py
+      - name: Collect sanitized execution logs
+        if: always()
+        run: python scripts/collect_ci_evidence.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: vake-linux-evidence
+          path: reports/ci-evidence
+          if-no-files-found: error
+
