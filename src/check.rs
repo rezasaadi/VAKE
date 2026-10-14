@@ -858,9 +858,15 @@ fn check_step(m: &Model, r: &Role, env: &mut Available, s: &Step) -> Result<(), 
             peer,
             ..
         } => {
-            same(
-                &term_type(m, role, env, key)?,
-                &target(m, role, target_id)?.key_type_id,
+            let declared = target(m, role, target_id)?;
+            same(&term_type(m, role, env, key)?, &declared.key_type_id)?;
+            ensure(
+                peer.is_some() == (declared.peer_mode == "named"),
+                format!(
+                    "accept for target {target_id} must {} a peer for peer mode {}",
+                    if declared.peer_mode == "named" { "name" } else { "not name" },
+                    declared.peer_mode
+                ),
             )?;
             if let Some(peer) = peer {
                 same(&term_type(m, role, env, peer)?, "Principal")?;

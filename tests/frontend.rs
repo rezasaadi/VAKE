@@ -310,3 +310,27 @@ fn cli_export_requires_explicit_supported_profile_and_reports_only_export() {
     assert_eq!(report["status"], "UNSUPPORTED");
     assert!(!absent.exists());
 }
+
+const DH: &[u8] = include_bytes!("../examples/dh_exchange.json");
+
+#[test]
+fn dh_example_accepts_keys_and_enforces_target_peer_mode() {
+    let model = parse_model(DH).unwrap();
+    let report = check::check(&model).unwrap();
+    assert!(report.closed);
+    assert_eq!((report.roles, report.blocks), (2, 14));
+    contracts::contracts(&model).unwrap();
+    let mut value: Value = serde_json::from_slice(DH).unwrap();
+    value["targets"][0]["peer_mode"] = json!("named");
+    let err = check::check(&parse_value(&value)).unwrap_err();
+    assert!(err.contains("must name a peer for peer mode named"), "{err}");
+}
+
+#[test]
+fn signed_dh_example_is_closed_typed_and_backend_supported() {
+    let model = parse_model(include_bytes!("../examples/signed_dh_exchange.json")).unwrap();
+    let report = check::check(&model).unwrap();
+    assert!(report.closed);
+    assert_eq!((report.roles, report.blocks), (2, 16));
+    contracts::contracts(&model).unwrap();
+}

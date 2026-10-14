@@ -146,7 +146,7 @@ class UITests(unittest.TestCase):
             self.assertTrue(result["stages"][-1]["meets_expected"],result["stages"][-1])
         self.assertFalse(result["terminal_demo_eligible"])
         self.assertIn("VAKE.Demo.Signature.sign_constructs_signature",{x["name"] for x in result["audit"]["theorems"]})
-        with self.assertRaisesRegex(ValueError,"exact bundled nonce"): self.store.start(rid,"trace")
+        with self.assertRaisesRegex(ValueError,"bundled scenario file"): self.store.start(rid,"trace")
         observations=read_json(self.store.directory(rid)/"export/lean-check/validation/signature-observations.json")
         self.assertEqual(observations["status"],"EXECUTABLE_OBSERVATION")
         self.assertIn('"ok"',observations["valid"])
@@ -208,11 +208,46 @@ class UITests(unittest.TestCase):
                 self.assertNotIn(str(Path.home()).encode(),content)
             self.assertEqual(z.read("model.json"),(ROOT/"examples/nonce_exchange.json").read_bytes())
             self.assertEqual(z.read("profile.json"),(ROOT/"examples/restricted_symbolic_v1.profile.json").read_bytes())
+    @unittest.skipUnless(configured("UI_TEST_LEAN") == "1", "Actual Lean integration opt-in")
+    def test_dh_example_traces_from_bundled_scenarios(self):
+        rid=self.example("dh_exchange")
+        self.assertTrue(self.store.refresh(rid)["trace_eligible"])
+        for name in ("check","export","verify","trace"):
+            result=self.run_stage(rid,name)
+            self.assertTrue(result["stages"][-1]["meets_expected"],result["stages"][-1])
+        with self.assertRaisesRegex(ValueError,"Binding controls require"): self.store.start(rid,"controls")
+        trace=result["trace"]
+        self.assertEqual(trace["status"],"PROVED_UNDER_ASSUMPTIONS")
+        self.assertEqual([(r["name"],len(r["events"]),r["send_count"]) for r in trace["scenarios"]],[("honest",32,2),("mitm",35,2)])
+        self.assertIn("VAKE.Demo.Global.mitm_keys_differ",{x["name"] for x in json.loads((self.store.directory(rid)/"traces/lean-check/validation/proof-audit.json").read_text())["theorems"]})
+        self.assertEqual(trace["security_status"],"OPEN_OBLIGATION")
+
+    @unittest.skipUnless(configured("UI_TEST_LEAN") == "1", "Actual Lean integration opt-in")
+    def test_signed_dh_browser_workflow_and_evidence(self):
+        rid=self.example("signed_dh_exchange")
+        state=self.store.refresh(rid)
+        self.assertTrue(state["trace_eligible"])
+        self.assertFalse(state["terminal_demo_eligible"])
+        for stage in ("check","export","verify","trace"):
+            result=self.run_stage(rid,stage)
+            self.assertTrue(result["stages"][-1]["meets_expected"],result["stages"][-1])
+        self.assertEqual(result["trace"]["status"],"PROVED_UNDER_ASSUMPTIONS")
+        self.assertEqual([s["name"] for s in result["trace"]["scenarios"]],["honest","forged_share","spliced_signature"])
+        names={row["name"] for row in result["trace_audit"]["theorems"]}
+        self.assertTrue({"VAKE.Demo.Global.honest_keys_agree","VAKE.Demo.Global.forged_share_no_key_accepted","VAKE.Demo.Global.spliced_signature_no_key_accepted"}<=names)
+        self.assertEqual(result["security_status"],"OPEN_OBLIGATION")
+        with zipfile.ZipFile(io.BytesIO(self.store.bundle(rid))) as archive:
+            manifest=json.loads(archive.read("run-manifest.json"))
+            for row in manifest["artifacts"]:
+                self.assertEqual(hashlib.sha256(archive.read(row["path"])).hexdigest(),row["sha256"])
+            self.assertEqual(archive.read("model.json"),(ROOT/"examples/signed_dh_exchange.json").read_bytes())
+
     def test_exact_demo_scope_requires_both_inputs(self):
         data=(ROOT/"examples/nonce_exchange.json").read_text(encoding="utf-8")
         rid=self.store.create({"model":data+"\n"})["run_id"]
         state=self.store.refresh(rid)
         self.assertFalse(state["terminal_demo_eligible"])
+        self.assertFalse(state["trace_eligible"])
         self.assertNotIn("--terminal-demo",self.store.command(self.store.directory(rid),"verify",state))
     def test_timeout_reports_inconclusive(self):
         rid=self.example()
@@ -314,6 +349,5 @@ class UITests(unittest.TestCase):
         self.assertEqual(p.returncode,0)
         self.assertIn("vake check",p.stdout)
         self.assertIn("vake verify",p.stdout)
-
 
 if __name__=="__main__": unittest.main()

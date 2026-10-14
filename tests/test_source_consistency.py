@@ -1,4 +1,3 @@
-"""Toolchain-independent regression tests for packaging and workflow diagnostics."""
 from contextlib import redirect_stdout
 import importlib.util
 import io
@@ -16,13 +15,11 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from runtime_env import configured
 from ui.runner import Store
 
-
 def load_script(name):
     spec = importlib.util.spec_from_file_location("source_test_" + name, ROOT / "scripts" / (name + ".py"))
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
-
 
 class SourceConsistencyTests(unittest.TestCase):
     def test_environment_configuration_and_default(self):
@@ -110,7 +107,6 @@ class SourceConsistencyTests(unittest.TestCase):
         self.assertEqual(code, 1)
         self.assertEqual(result["status"], "FAIL")
         self.assertIn("Invalid measurement result", result["error"])
-
 
 if __name__ == "__main__":
     unittest.main()

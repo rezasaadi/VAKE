@@ -12,12 +12,12 @@ const tourSteps = [
   {title:"Compare the two executions", text:"Select Check execution traces. The honest scenario completes; the malformed-message scenario rejects without sending a message.", target:"run-trace", stage:"trace"},
   {title:"Keep the record", text:"Select Download evidence ZIP. You can inspect the logs here or reproduce this run later from the saved commands.", target:"bundle"}
 ];
-const statusLabels = {CHECKED:"Model accepted", EXPORTED:"Lean files created", PROVED_UNDER_ASSUMPTIONS:"Checked under assumptions", PASSED:"Checks passed", TYPE_ERROR:"Type error", PARSE_ERROR:"JSON error", INTERNAL_ERROR:"Tool error", TRANSLATION_ERROR:"Translation error", OPEN_OBLIGATION:"Open obligation", INCONCLUSIVE:"Inconclusive", NOT_CHECKED:"Not checked", NOT_RUN:"Not run", NOT_REPORTED:"Not reported", EXPECTED_REJECTION:"Expected rejection", NOT_CONFIRMED:"Not confirmed", queued:"Queued", running:"Running", completed:"Completed", failed:"Failed"};
+const statusLabels = {CHECKED:"Model accepted", EXPORTED:"Lean files created", PROVED_UNDER_ASSUMPTIONS:"Checked under assumptions", PASSED:"Checks passed", TYPE_ERROR:"Type error", PARSE_ERROR:"JSON error", INTERNAL_ERROR:"Tool error", TRANSLATION_ERROR:"Translation error", OPEN_OBLIGATION:"Open obligation", CERTIFICATE_FAILED:"Certificate failed", SCENARIO_ERROR:"Scenario error", INCONCLUSIVE:"Inconclusive", NOT_CHECKED:"Not checked", NOT_RUN:"Not run", NOT_REPORTED:"Not reported", EXPECTED_REJECTION:"Expected rejection", NOT_CONFIRMED:"Not confirmed", queued:"Queued", running:"Running", completed:"Completed", failed:"Failed"};
 function esc(value) { return String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
 function json(value) { return JSON.stringify(value, null, 2); }
 function badge(status) {
   const cls = ["CHECKED","EXPORTED","PROVED_UNDER_ASSUMPTIONS","PASSED","completed"].includes(status) ? "good" :
-    ["TYPE_ERROR","PARSE_ERROR","INTERNAL_ERROR","TRANSLATION_ERROR","failed"].includes(status) ? "bad" :
+    ["TYPE_ERROR","PARSE_ERROR","INTERNAL_ERROR","TRANSLATION_ERROR","CERTIFICATE_FAILED","SCENARIO_ERROR","failed"].includes(status) ? "bad" :
     ["OPEN_OBLIGATION","INCONCLUSIVE"].includes(status) ? "warn" : "neutral";
   return '<span class="badge '+cls+'" title="'+esc(status)+'">'+esc(statusLabels[status] || status)+'</span>';
 }
@@ -71,7 +71,7 @@ function updateButtons() {
   $("run-check").disabled=!run||busy()||!!stage("check");
   $("run-export").disabled=!run||busy()||!!stage("export")||!["CHECKED","OPEN_OBLIGATION"].includes(stage("check")?.status);
   $("run-verify").disabled=!run||busy()||!!stage("verify")||stage("export")?.status!=="EXPORTED"||stage("check")?.status!=="CHECKED";
-  for (const name of ["trace","controls"]) $("run-"+name).disabled=!run||busy()||!!stage(name)||stage("verify")?.status!=="PROVED_UNDER_ASSUMPTIONS"||!run.terminal_demo_eligible;
+  for (const name of ["trace","controls"]) $("run-"+name).disabled=!run||busy()||!!stage(name)||stage("verify")?.status!=="PROVED_UNDER_ASSUMPTIONS"||!(name==="trace"?run.trace_eligible:run.terminal_demo_eligible);
   $("next").disabled=!run || (page===2 && !["CHECKED","OPEN_OBLIGATION"].includes(stage("check")?.status)) || (page===3 && stage("export")?.status!=="EXPORTED");
   $("bundle").classList.toggle("disabled",!run||busy());
   $("bundle").href=run?"/api/runs/"+run.run_id+"/bundle":"#";
@@ -233,7 +233,7 @@ $("copy").onclick=()=>navigator.clipboard.writeText(artifactText).catch(error);
 $("refresh-history").onclick=()=>refreshHistory().catch(error);
 (async()=>{
   examples=await api("/api/examples");
-  $("example").innerHTML=examples.map(e=>'<option value="'+esc(e.id)+'">'+esc({nonce_exchange:"Nonce exchange — guided example",type_mismatch:"Type mismatch — rejected input",signature_check:"Signature construction — limited example"}[e.id]||e.filename)+'</option>').join("");
+  $("example").innerHTML=examples.map(e=>'<option value="'+esc(e.id)+'">'+esc({nonce_exchange:"Nonce exchange — guided example",dh_exchange:"Diffie–Hellman exchange — honest and man-in-the-middle",signed_dh_exchange:"Signed Diffie–Hellman — substitutions rejected",type_mismatch:"Type mismatch — rejected input",signature_check:"Signature construction — limited example"}[e.id]||e.filename)+'</option>').join("");
   const remembered=localStorage.getItem("vake-run");
   if(remembered) {try {await selectRun(remembered);} catch(err){localStorage.removeItem("vake-run");error(err);}}
   if(!run) {render();await refreshHistory();}
@@ -246,7 +246,7 @@ function renderTraces() {
   if(!trace) { $("trace-view").textContent=""; return; }
   const cert=run.artifacts.find(a=>a.path==="traces/lean-check/VAKE/Demo/Global.lean");
   const audit=run.artifacts.find(a=>a.path==="traces/lean-check/validation/proof-audit.json");
-  $("trace-view").innerHTML='<div class="scenario-grid">'+(trace.scenarios||[]).map(s=>'<section class="scenario"><h3>'+esc({honest:"Honest exchange",malformed:"Malformed message"}[s.name]||s.name)+'</h3><p>'+esc(s.outcome)+'</p><p class="trace-stat">'+esc(s.events.length)+' checked actions · '+esc(s.send_count)+' sends</p><details><summary>Inspect checked steps</summary><p><code>'+esc(s.source_theorem)+'</code><br><code>'+esc(s.target_theorem)+'</code></p><table><thead><tr><th>Step</th><th>Session / action</th><th>Event / source location</th></tr></thead><tbody>'+s.events.map((e,i)=>'<tr><td>'+esc(i+1)+'</td><td>'+esc(e.session)+'<br>'+esc(s.actions[i])+'</td><td><strong>'+esc(e.kind)+'</strong> '+esc((e.names||[]).join(", "))+'<br><code>'+esc(e.location||"Network action")+'</code><details><summary>Values and certificate</summary><code>'+esc(s.theorem_prefix+"_step_"+(i+1))+'</code><pre>'+esc(json(e.values))+'</pre></details></td></tr>').join("")+'</tbody></table></details></section>').join("")+'</div><details><summary>Trace certificates and audit</summary><p>'+esc(trace.theorem_count)+' audited declarations, including shared theory. '+esc(trace.scope)+'</p><p>'+esc(trace.rendering_boundary)+'</p>'+(cert?'<a href="'+link(cert)+'" target="_blank" rel="noopener">Trace certificate</a> · ':"")+(audit?'<a href="'+link(audit)+'" target="_blank" rel="noopener">Statements and axiom audit</a>':"")+'</details>';
+  $("trace-view").innerHTML='<div class="scenario-grid">'+(trace.scenarios||[]).map(s=>'<section class="scenario"><h3>'+esc({honest:"Honest exchange",malformed:"Malformed message",mitm:"Man-in-the-middle",forged_share:"Forged share",spliced_signature:"Spliced signature"}[s.name]||s.name)+'</h3><p>'+esc(s.outcome)+'</p><p class="trace-stat">'+esc(s.events.length)+' checked actions · '+esc(s.send_count)+' sends</p><details><summary>Inspect checked steps</summary><p><code>'+esc(s.source_theorem)+'</code><br><code>'+esc(s.target_theorem)+'</code></p><table><thead><tr><th>Step</th><th>Session / action</th><th>Event / source location</th></tr></thead><tbody>'+s.events.map((e,i)=>'<tr><td>'+esc(i+1)+'</td><td>'+esc(e.session)+'<br>'+esc(s.actions[i])+'</td><td><strong>'+esc(e.kind)+'</strong> '+esc((e.names||[]).join(", "))+'<br><code>'+esc(e.location||"Network action")+'</code><details><summary>Values and certificate</summary><code>'+esc(s.theorem_prefix+"_step_"+(i+1))+'</code><pre>'+esc(json(e.values))+'</pre></details></td></tr>').join("")+'</tbody></table></details></section>').join("")+'</div><details><summary>Trace certificates and audit</summary><p>'+esc(trace.theorem_count)+' audited declarations, including shared theory. '+esc(trace.scope)+'</p><p>'+esc(trace.rendering_boundary)+'</p>'+(cert?'<a href="'+link(cert)+'" target="_blank" rel="noopener">Trace certificate</a> · ':"")+(audit?'<a href="'+link(audit)+'" target="_blank" rel="noopener">Statements and axiom audit</a>':"")+'</details>';
 }
 function displayAudit() {
   if(!run?.audit) return null;

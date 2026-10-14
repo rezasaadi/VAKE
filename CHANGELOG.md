@@ -1,14 +1,17 @@
 # Changelog
 
-## 0.2.0 — source consistency update
+## Unreleased
 
-- Unified the CLI, Lean library, generated certificates, script settings, tests, and packaging paths under VAKE.
-- Expanded installation, command examples, model guidance, result interpretation, evidence handling, and troubleshooting in the README.
-- Reworked documentation as user and contributor guides, repaired local links, and removed references to unavailable release reports.
-- Replaced the stale extraction inventory with a current component manifest and a repeatable manifest generator.
-- Added source-archive support, project-identity checks, and manifest validation to repository preflight.
-- Isolated verification workspaces from generated audit and demonstration files.
-- Propagated toolchain selections into child reproduction workflows and supported an explicit Rust compiler override.
-- Tightened measurement result validation and recorded failed measurement workflows.
+- Generate concrete Lean execution certificates from model/profile-bound scenario files.
+- Add DH and signed-DH examples, including honest agreement and the supplied substitution scenarios.
+- Use length-prefixed value keys for symbolic equality and DH/XOR ordering, with normalization regression lemmas.
+- Check adversary deducibility with the `admitted_search` tactic.
+- Require matching peer fields for named-peer acceptance targets.
+- Report `CERTIFICATE_FAILED` and `SCENARIO_ERROR` for failed certificates and invalid scenarios.
+- Check message existence in `sent_equal` claims; add `target_state`, `no_accept`, and `signing_key` support.
+- Extend the demo, browser workflow, evidence tests, and timing runner to the new examples.
 
-Validation coverage and remaining limitations for this revision are recorded in [the consistency report](docs/consistency-report.md). Historical interface screenshots illustrate the workflow and are not validation evidence for this revision.
+## 0.2.0
+
+- Package the Rust CLI, Lean library, local browser interface, and reproduction scripts under VAKE.
+- Add source-archive preflight, component hashes, isolated verification workspaces, and configurable tool paths.

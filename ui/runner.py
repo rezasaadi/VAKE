@@ -15,10 +15,11 @@ import time
 import uuid
 import zipfile
 from scripts.runtime_env import configured
+from scripts.scenario_traces import matching as scenario_file
 
 ROOT = Path(__file__).resolve().parents[1]
 MAX_INPUT = 2 * 1024 * 1024
-EXAMPLES = {"nonce_exchange": "nonce_exchange.json", "type_mismatch": "negative/type_mismatch.json", "signature_check": "signature_check.json"}
+EXAMPLES = {"nonce_exchange": "nonce_exchange.json", "dh_exchange": "dh_exchange.json", "signed_dh_exchange": "signed_dh_exchange.json", "type_mismatch": "negative/type_mismatch.json", "signature_check": "signature_check.json"}
 PROFILE = "restricted_symbolic_v1.profile.json"
 ID_RE = re.compile(r"[0-9]{8}T[0-9]{6}Z-[0-9a-f]{12}")
 SUCCESS = {"check": "CHECKED", "export": "EXPORTED", "verify": "PROVED_UNDER_ASSUMPTIONS", "trace": "PROVED_UNDER_ASSUMPTIONS", "controls": "PASSED"}
@@ -163,9 +164,12 @@ class Store:
         (path / "profile.json").write_bytes(profile)
         terminal = (model == (self.root / "examples/nonce_exchange.json").read_bytes()
                     and profile == (self.root / "examples" / PROFILE).read_bytes())
+        scenarios = scenario_file(self.root, model, profile)
         state = {"run_id": run_id, "created_at_utc": now(), "model_name": protocol.get("id", "Unparsed input"),
                  "schema": parsed.get("format_version"), "source_sha256": sha(model), "profile_sha256": sha(profile),
-                 "example": example, "terminal_demo_eligible": terminal, "job": {"state": "idle"},
+                 "example": example, "terminal_demo_eligible": terminal,
+                 "trace_eligible": scenarios is not None, "scenario_file": scenarios.name if scenarios else None,
+                 "job": {"state": "idle"},
                  "expected_check": {"status": "TYPE_ERROR", "exit_code": 1} if example == "type_mismatch" else None}
         write_json(path / "state.json", state)
         return self.refresh(run_id)
@@ -199,8 +203,10 @@ class Store:
             if name in ("trace", "controls"):
                 if records.get("verify", {}).get("status") != "PROVED_UNDER_ASSUMPTIONS" or records["verify"].get("exit_code") != 0:
                     raise ValueError("Complete Lean verification before demonstration checks")
-                if not state["terminal_demo_eligible"]:
-                    raise ValueError("Demonstration checks require the exact bundled nonce model and profile")
+                if name == "trace" and not state.get("trace_eligible"):
+                    raise ValueError("Trace checks require a bundled scenario file bound to this exact model and profile")
+                if name == "controls" and not state["terminal_demo_eligible"]:
+                    raise ValueError("Binding controls require the exact bundled nonce model and profile")
             stage = path / "stages" / name
             stage.mkdir(parents=True, exist_ok=False)
             (stage / "stdout.log").touch()
