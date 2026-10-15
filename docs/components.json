@@ -201,8 +201,8 @@
     },
     {
       "path": "scripts/trace_demo.py",
-      "bytes": 6319,
-      "sha256": "be94cc230385d2f8fb7e32008050de78a75061c82865c2b54608e54346b919ba"
+      "bytes": 6315,
+      "sha256": "e94a249742d2a19b1eee96c4dafb9be201b57816aaf6e07a2dc8ccf6996f4259"
     },
     {
       "path": "scripts/validate_lean.py",

@@ -1,4 +1,5 @@
 from runtime_env import configured
+import lean_workspace
 from pathlib import Path
 import argparse, hashlib, json, shutil, subprocess, sys, time
 from scenario_traces import matching, required_theorems
@@ -64,7 +65,7 @@ def main():
         if not lake:
             raise RuntimeError("Lean/Lake 4.34.1 is required")
         isolated = output / "lean-check"
-        shutil.copytree(ROOT / "lean", isolated, ignore=shutil.ignore_patterns(".lake", "Imported", "Generated", "Demo", "validation", "Audit.lean"))
+        result["library_cache"] = lean_workspace.prepare(ROOT / "lean", isolated, lake, output / "library-cache-build.log")
         version = run("lean-version", [lake, "env", "lean", "--version"], isolated).strip()
         if "version 4.34.1," not in version:
             raise RuntimeError("Lean 4.34.1 required")
