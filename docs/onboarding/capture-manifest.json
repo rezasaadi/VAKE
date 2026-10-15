@@ -1,9 +1,9 @@
 {
   "chromium_engine_version": "Not recorded",
   "tool_version": "VAKE 0.2.0 onboarding preview",
-  "platform": "Native Windows; real existing CLI and Lean 4.34.1",
-  "pixels": "Original browser JPEG bytes; no image edits",
-  "capture_mode": "Six views visited on the completed real run; execution and screenshot timestamps are distinct.",
+  "platform": "Windows; Lean 4.34.1",
+  "pixels": "Browser JPEG captures",
+  "capture_mode": "Six views of one completed run; capture timestamps differ from execution timestamps.",
   "source_sha256": "78f1dcffd245e80d9ec2f933abbba2ca41338d3dd3a39cb77b3b0c7080052048",
   "profile_sha256": "4a0efdd3d41915d7a251635582f2946d59b91c02581b3d3db0a7ea6d329c7268",
   "captures": [
