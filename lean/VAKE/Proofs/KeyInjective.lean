@@ -1,9 +1,19 @@
 import VAKE.Common
 
+/-!
+# Injectivity of the symbolic-equality key
+
+`Val.key` is the length-prefixed structural serialization that VAKE uses for symbolic
+equality (`BEq Val`) and for the canonical order of commutative arguments (DH, XOR).
+This file proves that the serialization is prefix-free and therefore injective, so
+key equality coincides with structural equality of values.
+-/
 
 namespace VAKE.KeyInjective
 
+/-! ## Decimal length prefixes -/
 
+/-- Left inverse of `Nat.toDigits 10` on the digits it produces. -/
 def decodeDigits (cs : List Char) : Nat :=
   cs.foldl (fun acc c => acc * 10 + (c.toNat - 48)) 0
 
@@ -33,7 +43,7 @@ private theorem colon_not_digit_of_mem {n : Nat} {c : Char} (h : c ∈ Nat.toDig
   subst hc
   exact absurd this (by decide)
 
-
+/-- Splitting at the first colon recovers the digit block. -/
 private theorem split_colon : ∀ (d₁ d₂ r₁ r₂ : List Char),
     (∀ c ∈ d₁, c ≠ ':') → (∀ c ∈ d₂, c ≠ ':') →
     d₁ ++ ':' :: r₁ = d₂ ++ ':' :: r₂ → d₁ = d₂ ∧ r₁ = r₂
@@ -51,7 +61,7 @@ private theorem split_colon : ∀ (d₁ d₂ r₁ r₂ : List Char),
         (fun c hm => h₂ c (by simp [hm])) h
       exact ⟨by rw [hc, this.1], this.2⟩
 
-
+/-- Characters of a length-prefixed string. -/
 @[irreducible] def S (s : String) : List Char := (Val.str s).toList
 
 private theorem S_eq (s : String) : S s = Nat.toDigits 10 s.length ++ ':' :: s.toList := by
@@ -65,7 +75,7 @@ private theorem S_head (s : String) : ∃ c r, S s = c :: r ∧ c.isDigit = true
     refine ⟨c, r ++ ':' :: s.toList, rfl, ?_⟩
     exact Nat.isDigit_of_mem_toDigits (b := 10) (n := s.length) (by decide) (by decide) (by rw [h]; simp)
 
-
+/-- Length-prefixed strings are prefix-free. -/
 private theorem S_prefix {x y : String} {s t : List Char} (h : S x ++ s = S y ++ t) : x = y ∧ s = t := by
   rw [S_eq, S_eq] at h
   simp only [List.append_assoc, List.cons_append] at h
@@ -76,6 +86,7 @@ private theorem S_prefix {x y : String} {s t : List Char} (h : S x ++ s = S y ++
   obtain ⟨hx, hs⟩ := List.append_inj hr hlen
   exact ⟨String.ext hx, hs⟩
 
+/-! ## Unfolding the key into characters -/
 
 @[irreducible] def K (v : Val) : List Char := v.key.toList
 @[irreducible] def LK (vs : List Val) : List Char := (Val.listKeys vs).toList
@@ -106,7 +117,7 @@ private theorem FK_cons (n : String) (v : Val) (fs : List (String × Val)) :
     FK ((n, v) :: fs) = S n ++ (K v ++ FK fs) := by
   simp [FK, K, S, Val.fieldKeys, String.toList_append]
 
-
+/-- Every key starts with its constructor tag, never with `]`. -/
 private theorem K_head (v : Val) : ∃ c r, K v = c :: r ∧ c ≠ ']' := by
   cases v with
   | literal => exact ⟨_, _, K_literal .., by decide⟩
@@ -134,7 +145,7 @@ private theorem toString_inj {m n : Nat} (h : toString m = toString n) : m = n :
   have := congrArg String.toList h
   simpa [Nat.toString_eq_repr, Nat.toList_repr] using this
 
-
+/-- Constructor tag written first by `Val.key`. -/
 def tag : Val → Char
   | .literal .. => 'L' | .atom .. => 'A' | .record .. => 'R'
   | .encoded .. => 'E' | .app .. => 'P' | .result .. => 'Q'
@@ -155,6 +166,7 @@ private theorem tag_eq {a b : Val} {s t : List Char} (h : K a ++ s = K b ++ t) :
   simp only [List.cons_append, List.cons.injEq] at h
   exact h.1
 
+/-! ## Prefix-freeness by mutual structural recursion -/
 
 mutual
 private theorem K_prefix : ∀ (a b : Val) (s t : List Char), K a ++ s = K b ++ t → a = b ∧ s = t
@@ -276,7 +288,9 @@ private theorem FK_prefix : ∀ (xs ys : List (String × Val)) (s t : List Char)
 termination_by structural xs => xs
 end
 
+/-! ## Main results -/
 
+/-- The symbolic-equality key is injective. -/
 theorem key_injective {a b : Val} (h : a.key = b.key) : a = b := by
   have h' : K a ++ [] = K b ++ [] := by simp [K, h]
   exact (K_prefix a b [] [] h').1
@@ -284,7 +298,7 @@ theorem key_injective {a b : Val} (h : a.key = b.key) : a = b := by
 theorem key_eq_iff {a b : Val} : a.key = b.key ↔ a = b :=
   ⟨key_injective, fun h => h ▸ rfl⟩
 
-
+/-- Key-based `BEq` (the instance used by the symbolic semantics) is structural equality. -/
 theorem beq_iff_eq {a b : Val} : (a == b) = true ↔ a = b := by
   show (a.key == b.key) = true ↔ a = b
   constructor

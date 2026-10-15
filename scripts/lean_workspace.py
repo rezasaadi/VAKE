@@ -1,3 +1,17 @@
+"""Fresh per-run Lean workspaces backed by a content-addressed library cache.
+
+Every verification run still gets its own copy of the Lean sources, so generated
+modules, audits and logs never leak between runs. What is reused is the compiled
+reusable library (`lake build VAKE`): it is built once per distinct library
+fingerprint and its `.lake` directory is copied into each new workspace. Lake then
+re-validates every module against its source hash, so an edited library file is
+rebuilt in the workspace rather than served stale from the cache.
+
+The fingerprint covers the Lean version, the Lake configuration and every library
+source file (generated, imported, demo and audit files are excluded). Set
+VAKE_LEAN_CACHE=0 for a clean-room run that rebuilds the library from source, and
+VAKE_CACHE_DIR to relocate the cache (default: <repository>/.vake-cache).
+"""
 from __future__ import annotations
 
 import hashlib
@@ -80,7 +94,7 @@ def _ensure_cache_entry(isolated: Path, lake: str, key: str, log: Path | None) -
     try:
         os.replace(staging, entry)
     except OSError:
-
+        # Another run populated the same entry first; both copies are equivalent.
         shutil.rmtree(staging, ignore_errors=True)
         if not (entry / ".lake").is_dir():
             return "unavailable", None, "cache entry could not be installed"
@@ -88,7 +102,7 @@ def _ensure_cache_entry(isolated: Path, lake: str, key: str, log: Path | None) -
 
 
 def seed_library(isolated: Path, lake: str, log: Path | None = None) -> dict:
-
+    """Copy the cached library build into an existing fresh workspace without `.lake`."""
     if not cache_enabled():
         return {"library_cache": "disabled"}
     if (isolated / ".lake").exists():
@@ -108,7 +122,7 @@ def seed_library(isolated: Path, lake: str, log: Path | None = None) -> dict:
 
 
 def prepare(source_lean: Path, isolated: Path, lake: str, log: Path | None = None) -> dict:
-
+    """Create a fresh workspace at `isolated`; seed its library build from the cache."""
     if isolated.exists():
         raise RuntimeError("Lean work directory already exists; use a fresh output directory")
     shutil.copytree(source_lean, isolated, ignore=ignore_run_local)

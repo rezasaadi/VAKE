@@ -2,6 +2,9 @@ import VAKE.Symbolic
 
 namespace VAKE.Normalization
 
+/-! Regression checks for keys that collided under an earlier encoding. General
+injectivity of `Val.key` is proved in `VAKE.Proofs.KeyInjective`. -/
+
 def collidingA : Val := .atom "DhSecret" "dh_keygen:1" "session:I,adversary" (some 32)
 def collidingB : Val := .atom "DhSecret" "dh_keygen:1,session:I" "adversary" (some 32)
 
