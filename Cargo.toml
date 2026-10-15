@@ -2,6 +2,7 @@
 name = "vake"
 version = "0.2.0"
 edition = "2024"
+license = "Apache-2.0"
 description = "Typed protocol DSL, Lean export, and checked translation correspondence"
 publish = false
 

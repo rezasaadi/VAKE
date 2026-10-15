@@ -11,8 +11,8 @@
     },
     {
       "path": "Cargo.toml",
-      "bytes": 259,
-      "sha256": "224e442e147b80bc315305413513d57a3bc12a2a0e8268c5b6ba19005b7b3cca"
+      "bytes": 282,
+      "sha256": "26134e9aa6ce9d133abf7ef15c6affff6519d44745e7ee5cd35236fef45269c4"
     },
     {
       "path": "lean/lake-manifest.json",

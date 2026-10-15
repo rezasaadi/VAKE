@@ -29,8 +29,8 @@
     },
     {
       "path": "Cargo.toml",
-      "sha256": "224e442e147b80bc315305413513d57a3bc12a2a0e8268c5b6ba19005b7b3cca",
-      "bytes": 259
+      "sha256": "26134e9aa6ce9d133abf7ef15c6affff6519d44745e7ee5cd35236fef45269c4",
+      "bytes": 282
     },
     {
       "path": "CHANGELOG.md",
@@ -54,7 +54,7 @@
     },
     {
       "path": "docs/components.json",
-      "sha256": "4ba95ec5af8864d46cff815f33db7236a0e78f438fb4f88527827981d9e026a2",
+      "sha256": "caddd1e9049865cc48eb8021f3256d76127040dbbe7512221f3facd719d53aac",
       "bytes": 8264
     },
     {
@@ -334,8 +334,13 @@
     },
     {
       "path": "LICENSE",
-      "sha256": "66f1beebbb991594e31a2225f56e0f555598f4d9b797d08495192eaff39def45",
-      "bytes": 610
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "bytes": 11358
+    },
+    {
+      "path": "NOTICE",
+      "sha256": "c74b8f0bcc4562361a1c95df9b599d010db6b5152c8d299ea669cd240f374a0f",
+      "bytes": 163
     },
     {
       "path": "README.md",
