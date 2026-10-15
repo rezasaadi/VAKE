@@ -58,5 +58,10 @@
     "VAKE.Commitment.target_run_exact_expansion",
     "VAKE.Commitment.source_done_expands_zero",
     "VAKE.Commitment.target_done_expands_zero"
+  ],
+  "KeyInjective": [
+    "VAKE.KeyInjective.key_injective",
+    "VAKE.KeyInjective.key_eq_iff",
+    "VAKE.KeyInjective.beq_iff_eq"
   ]
 }

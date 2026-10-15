@@ -201,8 +201,8 @@
     },
     {
       "path": "scripts/validate_lean.py",
-      "bytes": 9231,
-      "sha256": "9772ea51f3bbd533adc2f3aed5ac28ddfde98c270844eeff48ca3aa795c14c04"
+      "bytes": 9247,
+      "sha256": "67793eab5d93ba21402d5b956862a93923ecbbe47977780be055ee1e0920b422"
     },
     {
       "path": "scripts/verify.py",

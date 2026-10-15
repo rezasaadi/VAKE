@@ -54,7 +54,7 @@
     },
     {
       "path": "docs/components.json",
-      "sha256": "6e7250883cdd1e89c5e1a7fefa555948159f0be9f62c7d3e880fe74212ebab75",
+      "sha256": "e39c48223ffa51dde08ba8d658106dd72fd50c283a9f355fee0f6225bca4932e",
       "bytes": 8104
     },
     {
@@ -419,8 +419,8 @@
     },
     {
       "path": "scripts/proof-declarations.json",
-      "sha256": "256622351f003bb272bfad53de869b711f5fc6ea9fa04aca9c5eb89b39231889",
-      "bytes": 2089
+      "sha256": "d10b2e34ee83bf20e4e946fcc20256be01d188473a6148aca542e8165e0f9154",
+      "bytes": 2224
     },
     {
       "path": "scripts/repository_preflight.py",
@@ -494,8 +494,8 @@
     },
     {
       "path": "scripts/validate_lean.py",
-      "sha256": "9772ea51f3bbd533adc2f3aed5ac28ddfde98c270844eeff48ca3aa795c14c04",
-      "bytes": 9231
+      "sha256": "67793eab5d93ba21402d5b956862a93923ecbbe47977780be055ee1e0920b422",
+      "bytes": 9247
     },
     {
       "path": "scripts/verify.py",

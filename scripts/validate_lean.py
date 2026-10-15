@@ -10,7 +10,7 @@ import subprocess
 import sys
 
 ALLOWED_AXIOMS = {"propext", "Classical.choice", "Quot.sound"}
-CORE_PROOFS = ["Local", "Global", "NoCommit", "Commitment"]
+CORE_PROOFS = ["Local", "Global", "NoCommit", "Commitment", "KeyInjective"]
 
 def sha(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
