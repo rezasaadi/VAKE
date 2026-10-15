@@ -30,7 +30,7 @@ The checker enforces unique identifiers, registry references, constructor layout
 
 Backend contract admission is separate from typing. The supported operations are `fresh`, `hash`, `extract`, `expand`, `bytes_view`, `sign`, `verify`, `kem_keygen`, `kem_encap`, `kem_decap`, `decode`, `credential`, `credential_resolve`, `validate_credential`, `eq`, `and`, `mac`, `check_mac`, `dh_keygen`, `dh_validate`, `dh_shared`, `aead_seal`, `aead_open`, and `xor`. [src/contracts.rs](../src/contracts.rs) enforces exact signatures, modes, failure tags, and argument positions. Adding an `Op.*` name does not implement an operation.
 
-Only `fixture_tlv` with `FixtureEncodingInverse` and optional `FixtureEncodingInjective` is admitted. This specifies a symbolic codec contract, not a binary implementation. Profiles require `schema_version: "1.0"` and `interpretation: "restricted_symbolic_v1"`. Phase policies, exposure interfaces, parties, credentials, and KEM correctness settings are checked by [src/profile.rs](../src/profile.rs).
+Only `fixture_tlv` with `FixtureEncodingInverse` and optional `FixtureEncodingInjective` is admitted. Operations and encoding families of the excluded EDHOC, TLS and KEMTLS profiles are rejected by the frontend and have no semantics in the Lean library. This specifies a symbolic codec contract, not a binary implementation. Profiles require `schema_version: "1.0"` and `interpretation: "restricted_symbolic_v1"`. Phase policies, exposure interfaces, parties, credentials, and KEM correctness settings are checked by [src/profile.rs](../src/profile.rs).
 
 ## Rejected and open inputs
 
