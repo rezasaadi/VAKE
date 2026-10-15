@@ -34,8 +34,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "sha256": "43c10d6c9c320b26200d73627590e5fdc73231cde45749fe44e360138da0ad06",
-      "bytes": 988
+      "sha256": "678cf1a0bc560b7efa06fedb791ef51b33c840f4082932c241b565f96b25442d",
+      "bytes": 1629
     },
     {
       "path": "compose.yaml",
