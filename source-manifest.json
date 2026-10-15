@@ -54,7 +54,7 @@
     },
     {
       "path": "docs/components.json",
-      "sha256": "c864fd245f9ddf4ca04ba6395bf355f1e7aee93de623449da949ba36af635248",
+      "sha256": "a80ec1b3f9435837a5dffcf9334a298bc61a231904c87ab6601b108e828951af",
       "bytes": 8264
     },
     {
@@ -489,8 +489,8 @@
     },
     {
       "path": "scripts/test_negative_bindings.py",
-      "sha256": "85d324c9f00eb3f9ccf80b0641aed66d4152ca635f653c343ed5f4b577fec038",
-      "bytes": 3569
+      "sha256": "b8213911e07eadb50cc402b55a9c315b2637e86969f43994f18a738817f7e8bd",
+      "bytes": 3690
     },
     {
       "path": "scripts/trace_demo.py",

@@ -7,6 +7,7 @@ import re
 import shutil
 import subprocess
 import sys
+import lean_workspace
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
@@ -33,6 +34,7 @@ def main():
     for name, before, after, theorem in mutations:
         isolated = args.out / name
         shutil.copytree(args.lean_dir, isolated, ignore=shutil.ignore_patterns(".lake", "validation", "Debug.lean"))
+        lean_workspace.seed_library(isolated, args.lake, args.out / (name + ".library-cache.log"))
         target = isolated / generated
         source_text = target.read_text(encoding="utf-8")
         if source_text.count(before) != 1:
