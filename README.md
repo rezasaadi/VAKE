@@ -6,7 +6,7 @@ VAKE checks typed JSON protocol models, exports Lean representations, and checks
 
 ![VAKE workspace](docs/onboarding/welcome.jpg)
 
-Screenshots show an older interface; run the checks locally for current results.
+The screenshots show an earlier interface state. Run the checks locally for evidence of this source version.
 
 ## Run with Docker
 
@@ -37,7 +37,23 @@ On Windows, run `.\scripts\build.ps1`, then `.\scripts\run-ui.ps1 -Port 8765 -Op
 VAKE_UI_TEST_LEAN=1 python3 scripts/reproduce.py --stage all
 ```
 
-On Windows, use `target\debug\vake.exe`; set `$env:VAKE_UI_TEST_LEAN='1'` before running `.\scripts\reproduce.ps1`. The full demo checks the nonce, DH, signed-DH, signature-construction, and altered-binding examples. Use fresh output directories for verification runs.
+On Windows, use `target\debug\vake.exe`; set `$env:VAKE_UI_TEST_LEAN='1'` before running `.\scripts\reproduce.ps1`. The full demo checks the nonce, DH, signed-DH, signature-construction, altered-binding, and model-revision examples. Use fresh output directories for verification runs.
+
+### Model revision
+
+```bash
+python3 scripts/revision_demo.py
+```
+
+[`examples/revisions/signed_dh_unchecked_signature.json`](examples/revisions/signed_dh_unchecked_signature.json) changes one line of the signed DH model: the responder continues after a failed signature check. The script re-exports and verifies the edited model, confirms that the old scenario file is refused (`SCENARIO_ERROR`), and runs the rebound scenario file. It reports `PASSED` only if Lean rejects exactly the six certificates that encoded the signature check (the final rejection step and the two rejection claims of `forged_share` and `spliced_signature`) while the honest scenario still holds.
+
+### Differential testing of the two front ends
+
+```bash
+python3 scripts/differential_test.py --count 2000 --mutants 1000 --seed 2026
+```
+
+The script generates random admitted variants of the bundled models (renamed identifiers, adversarial literals, inserted and split blocks, reordered declarations, re-encoded JSON), runs the Rust exporter and the Python importer on each, and checks `binding` and `profile_binding` in Lean. It then injects type-correct mutations into the exporter's output and requires Lean to reject each one at the expected binding certificate. Results are written to `differential-result.json`; smaller `--count` values give a quick check. A passing run requires at least one agreeing export and the requested number of mutation checks (capped at `--count`). Frontend internal errors and inconsistent exit codes fail the run; unresolved modules in a failed Lean batch are built individually before being counted as agreement. CI runs 20 models and 20 mutations with seed 2026 and preserves the result metadata and logs.
 
 ## Prepare a source update
 
@@ -53,7 +69,7 @@ This refreshes both hash manifests and checks the complete working tree. Include
 
 - **Nonce exchange:** honest execution and malformed-message rejection.
 - **DH exchange:** honest key agreement and a concrete man-in-the-middle execution.
-- **Signed DH:** honest key agreement and rejection of the two bundled share substitutions.
+- **Signed DH:** honest key agreement and rejection of the two supplied share substitutions.
 - **Signature construction:** a concrete primitive lemma and separately labelled executable observations.
 
 Execution certificates come from [scenario files](docs/scenarios.md) bound to the exact model/profile bytes. Failed certificates report `CERTIFICATE_FAILED`; invalid scenario files report `SCENARIO_ERROR`.

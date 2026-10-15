@@ -38,7 +38,7 @@ def main():
         if pending:
             print(json.dumps({'status':'NOT_READY_TO_PUSH','message':'Commit the complete source update, including both manifests and every new file, before pushing.','pending_files':pending},indent=2))
             return 1
-    print(json.dumps({'status':'PREPARED','source_files':len(manifest['files'])}))
+    print(json.dumps({'status':'PREPARED','source_files':len(manifest['files']),'git_changes':'No staging, commits or pushes performed'}))
     return 0
 
 if __name__=='__main__':raise SystemExit(main())

@@ -64,4 +64,4 @@ Upload your own JSON through **Open model**. Execution traces are available for 
 
 The [technical guide](ui-user-guide.md) explains every evidence field. Read [limitations](limitations.md) for the supported scope and assumptions.
 
-Screenshot run identifiers, timestamps, and hashes are recorded in [the capture manifest](onboarding/capture-manifest.json). The images show an older interface; run the checks locally for current results.
+The screenshots illustrate a historical UI run. They do not validate this source revision. Their original identifiers and hashes are recorded in [the capture manifest](onboarding/capture-manifest.json).

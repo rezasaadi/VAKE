@@ -56,8 +56,8 @@
     },
     {
       "path": "lean/VAKE/Proofs/KeyInjective.lean",
-      "bytes": 12673,
-      "sha256": "9aa26937769fe51a06526849bf0c9d355ff51c04bf979064a8ff506397f60578"
+      "bytes": 13671,
+      "sha256": "bf7b1533621a2a6007df5ad5bf53fd9dff4304e7a6e60666f4cff1229c50e307"
     },
     {
       "path": "lean/VAKE/Proofs/Local.lean",
@@ -71,8 +71,8 @@
     },
     {
       "path": "lean/VAKE/Proofs/Normalization.lean",
-      "bytes": 872,
-      "sha256": "995dc2a830b7e153699b3d8619f3b74e3d65f3ef41f0f8851a6460a19981efc9"
+      "bytes": 1022,
+      "sha256": "f7b6d86b568c4f8ee94475753a17423a0a898db2fe36458bc923235e7a7440ba"
     },
     {
       "path": "lean/VAKE/Source/Global.lean",
@@ -126,8 +126,8 @@
     },
     {
       "path": "scripts/collect_ci_evidence.py",
-      "bytes": 1509,
-      "sha256": "d1ed4284a491658f65ae1ef11848a185ca55869751560d799330b6fcfb7ff043"
+      "bytes": 1613,
+      "sha256": "8752f0ab5dab45cf07b293e4678f4209362127c42954f4b3be5f40e28a9d52e6"
     },
     {
       "path": "scripts/component_manifest.py",
@@ -136,8 +136,13 @@
     },
     {
       "path": "scripts/demo.py",
-      "bytes": 5317,
-      "sha256": "db268356a91d69f47084338f7de076b171badf8ad93f1bb1d514829a09e2acc9"
+      "bytes": 5474,
+      "sha256": "203bd3e8c5f303603f9076ef33b4b7733250311aa9671a238a9ebb476486127e"
+    },
+    {
+      "path": "scripts/differential_test.py",
+      "bytes": 21449,
+      "sha256": "e0669d5356b2a791836d2e3c38eccc0b68509e15d49ead654e32cb232d4428aa"
     },
     {
       "path": "scripts/import_model.py",
@@ -146,8 +151,8 @@
     },
     {
       "path": "scripts/lean_workspace.py",
-      "bytes": 4691,
-      "sha256": "e63e05eb1591352b34c1b84977b2abf0c06d30ad95001c1a65e6b53d56387e58"
+      "bytes": 5812,
+      "sha256": "ea192b51654d3b9ae4c73316a5a99fc9fd1837985caaaecc6ca5375fa023b7de"
     },
     {
       "path": "scripts/measure.py",
@@ -161,8 +166,8 @@
     },
     {
       "path": "scripts/prepare_release.py",
-      "bytes": 1967,
-      "sha256": "2b63efafff476a3d45e1e135264779ba826b5bf943fc2a1f048de4716055646c"
+      "bytes": 2023,
+      "sha256": "13c1274b09f41c2913b0bb8d7cf6934c5e6e3d74089c4778ce845d87f833cbdc"
     },
     {
       "path": "scripts/repository_preflight.py",
@@ -173,6 +178,11 @@
       "path": "scripts/reproduce.py",
       "bytes": 3662,
       "sha256": "c7194763719635529a23fcb78f887e735f6f7dcde4397a37253dd665f376e6a3"
+    },
+    {
+      "path": "scripts/revision_demo.py",
+      "bytes": 5438,
+      "sha256": "c9db8cf15b3d7027fb6e08a5d6b024b44682cf32ff82f9cbe6dcba6c09b81d04"
     },
     {
       "path": "scripts/runtime_env.py",
