@@ -9,6 +9,7 @@ Use a bundled model to learn the schema and workflow before writing a custom mod
 | `dh_exchange.json` | Unauthenticated Diffie–Hellman exchange with accept targets; checked honest key agreement and a man-in-the-middle execution in which the adversary computes both accepted keys |
 | `signed_dh_exchange.json` | DH exchange with signed shares; checked honest agreement and two share substitutions that fail signature verification, with no key accepted |
 | `signature_check.json` | Signature-construction lemma and separately labeled executable verification observations |
+| `revisions/signed_dh_unchecked_signature.json` | One-line edit of the signed DH model (responder continues after a failed signature check) and its rebound scenario file; used by `scripts/revision_demo.py`, where the attack scenarios' rejection certificates are expected to fail |
 | `scenarios/*.scenarios.json` | Concrete executions and final-state claims, bound by hash to a model and profile ([format](../docs/scenarios.md)) |
 | `restricted_symbolic_v1.profile.json` | Supported profile for export and verification |
 

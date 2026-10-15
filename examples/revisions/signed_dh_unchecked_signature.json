@@ -1,0 +1,1340 @@
+{
+  "format_version": "0.1",
+  "protocol": {
+    "id": "VAKE.SignedDH",
+    "fragment_description": "Two-role ephemeral Diffie-Hellman exchange in which each role signs its share with a long-term signing key and verifies the peer's signature with the expected peer's public key before deriving and accepting the shared secret. Its bundled scenarios show honest key agreement and a substituted share that fails signature verification, so no key is accepted. No universal authentication or secrecy claim is made."
+  },
+  "types": [
+    {
+      "id": "Bytes",
+      "kind": "base",
+      "parameters": [],
+      "fields": [],
+      "primitive_ref": null
+    },
+    {
+      "id": "DhPublic",
+      "kind": "semantic",
+      "parameters": [],
+      "fields": [],
+      "primitive_ref": null
+    },
+    {
+      "id": "DhSecret",
+      "kind": "semantic",
+      "parameters": [],
+      "fields": [],
+      "primitive_ref": null
+    },
+    {
+      "id": "SharedSecret",
+      "kind": "semantic",
+      "parameters": [],
+      "fields": [],
+      "primitive_ref": null
+    },
+    {
+      "id": "SignatureSecretKey",
+      "kind": "semantic",
+      "parameters": [],
+      "fields": [],
+      "primitive_ref": null
+    },
+    {
+      "id": "SignaturePublicKey",
+      "kind": "semantic",
+      "parameters": [],
+      "fields": [],
+      "primitive_ref": null
+    },
+    {
+      "id": "Signature",
+      "kind": "semantic",
+      "parameters": [],
+      "fields": [],
+      "primitive_ref": null
+    },
+    {
+      "id": "Share",
+      "kind": "record",
+      "parameters": [],
+      "fields": [
+        {
+          "name": "pub",
+          "type_id": "DhPublic"
+        }
+      ],
+      "primitive_ref": null
+    },
+    {
+      "id": "SignedShare",
+      "kind": "record",
+      "parameters": [],
+      "fields": [
+        {
+          "name": "pub",
+          "type_id": "DhPublic"
+        },
+        {
+          "name": "sig",
+          "type_id": "Signature"
+        }
+      ],
+      "primitive_ref": null
+    },
+    {
+      "id": "KeyPair",
+      "kind": "result",
+      "parameters": [],
+      "fields": [],
+      "primitive_ref": "dhKeygen"
+    },
+    {
+      "id": "Validated",
+      "kind": "result",
+      "parameters": [],
+      "fields": [],
+      "primitive_ref": "dhValidate"
+    },
+    {
+      "id": "Shared",
+      "kind": "result",
+      "parameters": [],
+      "fields": [],
+      "primitive_ref": "dhShared"
+    },
+    {
+      "id": "DecodedShare",
+      "kind": "result",
+      "parameters": [],
+      "fields": [],
+      "primitive_ref": "decodeSigned"
+    },
+    {
+      "id": "VerifiedShare",
+      "kind": "result",
+      "parameters": [],
+      "fields": [],
+      "primitive_ref": "verifySig"
+    }
+  ],
+  "primitives": [
+    {
+      "id": "dhKeygen",
+      "family": "DH",
+      "mode": "effectful_total",
+      "inputs": [],
+      "outcomes": [
+        {
+          "tag": "ok",
+          "payload": [
+            {
+              "name": "public",
+              "type_id": "DhPublic"
+            },
+            {
+              "name": "secret",
+              "type_id": "DhSecret"
+            }
+          ]
+        }
+      ],
+      "failure_profile": "none",
+      "law_ids": [
+        "Op.dh_keygen"
+      ]
+    },
+    {
+      "id": "dhValidate",
+      "family": "DH",
+      "mode": "effectful_result",
+      "inputs": [
+        {
+          "name": "pub",
+          "type_id": "DhPublic",
+          "position_kind": "public"
+        }
+      ],
+      "outcomes": [
+        {
+          "tag": "ok",
+          "payload": [
+            {
+              "name": "pub",
+              "type_id": "DhPublic"
+            }
+          ]
+        },
+        {
+          "tag": "invalid",
+          "payload": []
+        }
+      ],
+      "failure_profile": "explicit_error",
+      "law_ids": [
+        "Op.dh_validate"
+      ]
+    },
+    {
+      "id": "dhShared",
+      "family": "DH",
+      "mode": "effectful_result",
+      "inputs": [
+        {
+          "name": "sec",
+          "type_id": "DhSecret",
+          "position_kind": "secret"
+        },
+        {
+          "name": "pub",
+          "type_id": "DhPublic",
+          "position_kind": "public"
+        }
+      ],
+      "outcomes": [
+        {
+          "tag": "ok",
+          "payload": [
+            {
+              "name": "shared",
+              "type_id": "SharedSecret"
+            }
+          ]
+        },
+        {
+          "tag": "invalid",
+          "payload": []
+        }
+      ],
+      "failure_profile": "explicit_error",
+      "law_ids": [
+        "Op.dh_shared"
+      ]
+    },
+    {
+      "id": "decodeSigned",
+      "family": "codec",
+      "mode": "effectful_result",
+      "inputs": [
+        {
+          "name": "bytes",
+          "type_id": "Bytes",
+          "position_kind": "public"
+        }
+      ],
+      "outcomes": [
+        {
+          "tag": "ok",
+          "payload": [
+            {
+              "name": "message",
+              "type_id": "SignedShare"
+            }
+          ]
+        },
+        {
+          "tag": "invalid",
+          "payload": []
+        }
+      ],
+      "failure_profile": "explicit_error",
+      "law_ids": [
+        "Op.decode"
+      ]
+    },
+    {
+      "id": "signSig",
+      "family": "signature",
+      "mode": "pure_total",
+      "inputs": [
+        {
+          "name": "key",
+          "type_id": "SignatureSecretKey",
+          "position_kind": "secret"
+        },
+        {
+          "name": "message",
+          "type_id": "Bytes",
+          "position_kind": "public"
+        }
+      ],
+      "outcomes": [
+        {
+          "tag": "ok",
+          "payload": [
+            {
+              "name": "signature",
+              "type_id": "Signature"
+            }
+          ]
+        }
+      ],
+      "failure_profile": "none",
+      "law_ids": [
+        "Op.sign"
+      ]
+    },
+    {
+      "id": "verifySig",
+      "family": "signature",
+      "mode": "effectful_result",
+      "inputs": [
+        {
+          "name": "key",
+          "type_id": "SignaturePublicKey",
+          "position_kind": "public"
+        },
+        {
+          "name": "message",
+          "type_id": "Bytes",
+          "position_kind": "public"
+        },
+        {
+          "name": "signature",
+          "type_id": "Signature",
+          "position_kind": "public"
+        }
+      ],
+      "outcomes": [
+        {
+          "tag": "ok",
+          "payload": []
+        },
+        {
+          "tag": "invalid",
+          "payload": []
+        }
+      ],
+      "failure_profile": "explicit_error",
+      "law_ids": [
+        "Op.verify"
+      ]
+    }
+  ],
+  "constructors": [
+    {
+      "id": "MkShare",
+      "type_id": "Share",
+      "fields": [
+        {
+          "name": "pub",
+          "type_id": "DhPublic"
+        }
+      ]
+    },
+    {
+      "id": "MkSigned",
+      "type_id": "SignedShare",
+      "fields": [
+        {
+          "name": "pub",
+          "type_id": "DhPublic"
+        },
+        {
+          "name": "sig",
+          "type_id": "Signature"
+        }
+      ]
+    }
+  ],
+  "encodings": [
+    {
+      "id": "shareCodec",
+      "input_type_ids": [
+        "Share"
+      ],
+      "family": "fixture_tlv",
+      "contract_ids": [
+        "FixtureEncodingInverse",
+        "FixtureEncodingInjective"
+      ]
+    },
+    {
+      "id": "signedCodec",
+      "input_type_ids": [
+        "SignedShare"
+      ],
+      "family": "fixture_tlv",
+      "contract_ids": [
+        "FixtureEncodingInverse",
+        "FixtureEncodingInjective"
+      ]
+    }
+  ],
+  "values": [
+    {
+      "id": "iSk",
+      "type_id": "SignatureSecretKey",
+      "owner_role": "Initiator",
+      "storage_kind": "parameter"
+    },
+    {
+      "id": "iPeerPk",
+      "type_id": "SignaturePublicKey",
+      "owner_role": "Initiator",
+      "storage_kind": "parameter"
+    },
+    {
+      "id": "ikp",
+      "type_id": "KeyPair",
+      "owner_role": "Initiator",
+      "storage_kind": "local"
+    },
+    {
+      "id": "ipub",
+      "type_id": "DhPublic",
+      "owner_role": "Initiator",
+      "storage_kind": "local"
+    },
+    {
+      "id": "isec",
+      "type_id": "DhSecret",
+      "owner_role": "Initiator",
+      "storage_kind": "local"
+    },
+    {
+      "id": "itoSign",
+      "type_id": "Bytes",
+      "owner_role": "Initiator",
+      "storage_kind": "local"
+    },
+    {
+      "id": "isig",
+      "type_id": "Signature",
+      "owner_role": "Initiator",
+      "storage_kind": "local"
+    },
+    {
+      "id": "iwireOut",
+      "type_id": "Bytes",
+      "owner_role": "Initiator",
+      "storage_kind": "local"
+    },
+    {
+      "id": "iwireIn",
+      "type_id": "Bytes",
+      "owner_role": "Initiator",
+      "storage_kind": "local"
+    },
+    {
+      "id": "idec",
+      "type_id": "DecodedShare",
+      "owner_role": "Initiator",
+      "storage_kind": "local"
+    },
+    {
+      "id": "ipkt",
+      "type_id": "SignedShare",
+      "owner_role": "Initiator",
+      "storage_kind": "local"
+    },
+    {
+      "id": "ipeerPub",
+      "type_id": "DhPublic",
+      "owner_role": "Initiator",
+      "storage_kind": "local"
+    },
+    {
+      "id": "ipeerSig",
+      "type_id": "Signature",
+      "owner_role": "Initiator",
+      "storage_kind": "local"
+    },
+    {
+      "id": "isignedBytes",
+      "type_id": "Bytes",
+      "owner_role": "Initiator",
+      "storage_kind": "local"
+    },
+    {
+      "id": "iver",
+      "type_id": "VerifiedShare",
+      "owner_role": "Initiator",
+      "storage_kind": "local"
+    },
+    {
+      "id": "ival",
+      "type_id": "Validated",
+      "owner_role": "Initiator",
+      "storage_kind": "local"
+    },
+    {
+      "id": "ipeer",
+      "type_id": "DhPublic",
+      "owner_role": "Initiator",
+      "storage_kind": "local"
+    },
+    {
+      "id": "ish",
+      "type_id": "Shared",
+      "owner_role": "Initiator",
+      "storage_kind": "local"
+    },
+    {
+      "id": "ik",
+      "type_id": "SharedSecret",
+      "owner_role": "Initiator",
+      "storage_kind": "local"
+    },
+    {
+      "id": "rSk",
+      "type_id": "SignatureSecretKey",
+      "owner_role": "Responder",
+      "storage_kind": "parameter"
+    },
+    {
+      "id": "rPeerPk",
+      "type_id": "SignaturePublicKey",
+      "owner_role": "Responder",
+      "storage_kind": "parameter"
+    },
+    {
+      "id": "rkp",
+      "type_id": "KeyPair",
+      "owner_role": "Responder",
+      "storage_kind": "local"
+    },
+    {
+      "id": "rpub",
+      "type_id": "DhPublic",
+      "owner_role": "Responder",
+      "storage_kind": "local"
+    },
+    {
+      "id": "rsec",
+      "type_id": "DhSecret",
+      "owner_role": "Responder",
+      "storage_kind": "local"
+    },
+    {
+      "id": "rtoSign",
+      "type_id": "Bytes",
+      "owner_role": "Responder",
+      "storage_kind": "local"
+    },
+    {
+      "id": "rsig",
+      "type_id": "Signature",
+      "owner_role": "Responder",
+      "storage_kind": "local"
+    },
+    {
+      "id": "rwireOut",
+      "type_id": "Bytes",
+      "owner_role": "Responder",
+      "storage_kind": "local"
+    },
+    {
+      "id": "rwireIn",
+      "type_id": "Bytes",
+      "owner_role": "Responder",
+      "storage_kind": "local"
+    },
+    {
+      "id": "rdec",
+      "type_id": "DecodedShare",
+      "owner_role": "Responder",
+      "storage_kind": "local"
+    },
+    {
+      "id": "rpkt",
+      "type_id": "SignedShare",
+      "owner_role": "Responder",
+      "storage_kind": "local"
+    },
+    {
+      "id": "rpeerPub",
+      "type_id": "DhPublic",
+      "owner_role": "Responder",
+      "storage_kind": "local"
+    },
+    {
+      "id": "rpeerSig",
+      "type_id": "Signature",
+      "owner_role": "Responder",
+      "storage_kind": "local"
+    },
+    {
+      "id": "rsignedBytes",
+      "type_id": "Bytes",
+      "owner_role": "Responder",
+      "storage_kind": "local"
+    },
+    {
+      "id": "rver",
+      "type_id": "VerifiedShare",
+      "owner_role": "Responder",
+      "storage_kind": "local"
+    },
+    {
+      "id": "rval",
+      "type_id": "Validated",
+      "owner_role": "Responder",
+      "storage_kind": "local"
+    },
+    {
+      "id": "rpeer",
+      "type_id": "DhPublic",
+      "owner_role": "Responder",
+      "storage_kind": "local"
+    },
+    {
+      "id": "rsh",
+      "type_id": "Shared",
+      "owner_role": "Responder",
+      "storage_kind": "local"
+    },
+    {
+      "id": "rk",
+      "type_id": "SharedSecret",
+      "owner_role": "Responder",
+      "storage_kind": "local"
+    }
+  ],
+  "slots": [],
+  "messages": [],
+  "contexts": [],
+  "roles": [
+    {
+      "id": "Initiator",
+      "parameter_value_ids": [
+        "iSk",
+        "iPeerPk"
+      ],
+      "entry_block": "keygen",
+      "blocks": [
+        {
+          "id": "keygen",
+          "steps": [
+            {
+              "kind": "invoke",
+              "primitive_id": "dhKeygen",
+              "args": [],
+              "result_value_id": "ikp"
+            }
+          ],
+          "terminator": {
+            "kind": "match",
+            "result_value_id": "ikp",
+            "arms": [
+              {
+                "tag": "ok",
+                "bindings": [
+                  {
+                    "payload_name": "public",
+                    "value_id": "ipub"
+                  },
+                  {
+                    "payload_name": "secret",
+                    "value_id": "isec"
+                  }
+                ],
+                "target_block": "sendShare"
+              }
+            ]
+          }
+        },
+        {
+          "id": "sendShare",
+          "steps": [
+            {
+              "kind": "assign",
+              "output_value_id": "itoSign",
+              "term": {
+                "kind": "encode",
+                "encoding_id": "shareCodec",
+                "record": {
+                  "kind": "record",
+                  "constructor_id": "MkShare",
+                  "fields": [
+                    {
+                      "name": "pub",
+                      "term": {
+                        "kind": "ref",
+                        "value_id": "ipub"
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "kind": "assign",
+              "output_value_id": "isig",
+              "term": {
+                "kind": "apply",
+                "primitive_id": "signSig",
+                "args": [
+                  {
+                    "kind": "ref",
+                    "value_id": "iSk"
+                  },
+                  {
+                    "kind": "ref",
+                    "value_id": "itoSign"
+                  }
+                ]
+              }
+            },
+            {
+              "kind": "assign",
+              "output_value_id": "iwireOut",
+              "term": {
+                "kind": "encode",
+                "encoding_id": "signedCodec",
+                "record": {
+                  "kind": "record",
+                  "constructor_id": "MkSigned",
+                  "fields": [
+                    {
+                      "name": "pub",
+                      "term": {
+                        "kind": "ref",
+                        "value_id": "ipub"
+                      }
+                    },
+                    {
+                      "name": "sig",
+                      "term": {
+                        "kind": "ref",
+                        "value_id": "isig"
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "kind": "send",
+              "bytes": {
+                "kind": "ref",
+                "value_id": "iwireOut"
+              },
+              "channel_id": "net"
+            }
+          ],
+          "terminator": {
+            "kind": "jump",
+            "target_block": "recvShare"
+          }
+        },
+        {
+          "id": "recvShare",
+          "steps": [
+            {
+              "kind": "receive",
+              "output_bytes_value_id": "iwireIn"
+            },
+            {
+              "kind": "invoke",
+              "primitive_id": "decodeSigned",
+              "args": [
+                {
+                  "kind": "ref",
+                  "value_id": "iwireIn"
+                }
+              ],
+              "result_value_id": "idec"
+            }
+          ],
+          "terminator": {
+            "kind": "match",
+            "result_value_id": "idec",
+            "arms": [
+              {
+                "tag": "ok",
+                "bindings": [
+                  {
+                    "payload_name": "message",
+                    "value_id": "ipkt"
+                  }
+                ],
+                "target_block": "checkSignature"
+              },
+              {
+                "tag": "invalid",
+                "bindings": [],
+                "target_block": "fail"
+              }
+            ]
+          }
+        },
+        {
+          "id": "checkSignature",
+          "steps": [
+            {
+              "kind": "assign",
+              "output_value_id": "ipeerPub",
+              "term": {
+                "kind": "project",
+                "record": {
+                  "kind": "ref",
+                  "value_id": "ipkt"
+                },
+                "field": "pub"
+              }
+            },
+            {
+              "kind": "assign",
+              "output_value_id": "ipeerSig",
+              "term": {
+                "kind": "project",
+                "record": {
+                  "kind": "ref",
+                  "value_id": "ipkt"
+                },
+                "field": "sig"
+              }
+            },
+            {
+              "kind": "assign",
+              "output_value_id": "isignedBytes",
+              "term": {
+                "kind": "encode",
+                "encoding_id": "shareCodec",
+                "record": {
+                  "kind": "record",
+                  "constructor_id": "MkShare",
+                  "fields": [
+                    {
+                      "name": "pub",
+                      "term": {
+                        "kind": "ref",
+                        "value_id": "ipeerPub"
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "kind": "invoke",
+              "primitive_id": "verifySig",
+              "args": [
+                {
+                  "kind": "ref",
+                  "value_id": "iPeerPk"
+                },
+                {
+                  "kind": "ref",
+                  "value_id": "isignedBytes"
+                },
+                {
+                  "kind": "ref",
+                  "value_id": "ipeerSig"
+                }
+              ],
+              "result_value_id": "iver"
+            }
+          ],
+          "terminator": {
+            "kind": "match",
+            "result_value_id": "iver",
+            "arms": [
+              {
+                "tag": "ok",
+                "bindings": [],
+                "target_block": "validate"
+              },
+              {
+                "tag": "invalid",
+                "bindings": [],
+                "target_block": "fail"
+              }
+            ]
+          }
+        },
+        {
+          "id": "validate",
+          "steps": [
+            {
+              "kind": "invoke",
+              "primitive_id": "dhValidate",
+              "args": [
+                {
+                  "kind": "ref",
+                  "value_id": "ipeerPub"
+                }
+              ],
+              "result_value_id": "ival"
+            }
+          ],
+          "terminator": {
+            "kind": "match",
+            "result_value_id": "ival",
+            "arms": [
+              {
+                "tag": "ok",
+                "bindings": [
+                  {
+                    "payload_name": "pub",
+                    "value_id": "ipeer"
+                  }
+                ],
+                "target_block": "derive"
+              },
+              {
+                "tag": "invalid",
+                "bindings": [],
+                "target_block": "fail"
+              }
+            ]
+          }
+        },
+        {
+          "id": "derive",
+          "steps": [
+            {
+              "kind": "invoke",
+              "primitive_id": "dhShared",
+              "args": [
+                {
+                  "kind": "ref",
+                  "value_id": "isec"
+                },
+                {
+                  "kind": "ref",
+                  "value_id": "ipeer"
+                }
+              ],
+              "result_value_id": "ish"
+            }
+          ],
+          "terminator": {
+            "kind": "match",
+            "result_value_id": "ish",
+            "arms": [
+              {
+                "tag": "ok",
+                "bindings": [
+                  {
+                    "payload_name": "shared",
+                    "value_id": "ik"
+                  }
+                ],
+                "target_block": "accept"
+              },
+              {
+                "tag": "invalid",
+                "bindings": [],
+                "target_block": "fail"
+              }
+            ]
+          }
+        },
+        {
+          "id": "accept",
+          "steps": [
+            {
+              "kind": "accept",
+              "target_id": "iKey",
+              "key": {
+                "kind": "ref",
+                "value_id": "ik"
+              },
+              "peer": null
+            }
+          ],
+          "terminator": {
+            "kind": "stop",
+            "reason": "accepted"
+          }
+        },
+        {
+          "id": "fail",
+          "steps": [],
+          "terminator": {
+            "kind": "reject",
+            "target_ids": [
+              "iKey"
+            ],
+            "reason": "failed"
+          }
+        }
+      ]
+    },
+    {
+      "id": "Responder",
+      "parameter_value_ids": [
+        "rSk",
+        "rPeerPk"
+      ],
+      "entry_block": "recvShare",
+      "blocks": [
+        {
+          "id": "keygen",
+          "steps": [
+            {
+              "kind": "invoke",
+              "primitive_id": "dhKeygen",
+              "args": [],
+              "result_value_id": "rkp"
+            }
+          ],
+          "terminator": {
+            "kind": "match",
+            "result_value_id": "rkp",
+            "arms": [
+              {
+                "tag": "ok",
+                "bindings": [
+                  {
+                    "payload_name": "public",
+                    "value_id": "rpub"
+                  },
+                  {
+                    "payload_name": "secret",
+                    "value_id": "rsec"
+                  }
+                ],
+                "target_block": "sendShare"
+              }
+            ]
+          }
+        },
+        {
+          "id": "sendShare",
+          "steps": [
+            {
+              "kind": "assign",
+              "output_value_id": "rtoSign",
+              "term": {
+                "kind": "encode",
+                "encoding_id": "shareCodec",
+                "record": {
+                  "kind": "record",
+                  "constructor_id": "MkShare",
+                  "fields": [
+                    {
+                      "name": "pub",
+                      "term": {
+                        "kind": "ref",
+                        "value_id": "rpub"
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "kind": "assign",
+              "output_value_id": "rsig",
+              "term": {
+                "kind": "apply",
+                "primitive_id": "signSig",
+                "args": [
+                  {
+                    "kind": "ref",
+                    "value_id": "rSk"
+                  },
+                  {
+                    "kind": "ref",
+                    "value_id": "rtoSign"
+                  }
+                ]
+              }
+            },
+            {
+              "kind": "assign",
+              "output_value_id": "rwireOut",
+              "term": {
+                "kind": "encode",
+                "encoding_id": "signedCodec",
+                "record": {
+                  "kind": "record",
+                  "constructor_id": "MkSigned",
+                  "fields": [
+                    {
+                      "name": "pub",
+                      "term": {
+                        "kind": "ref",
+                        "value_id": "rpub"
+                      }
+                    },
+                    {
+                      "name": "sig",
+                      "term": {
+                        "kind": "ref",
+                        "value_id": "rsig"
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "kind": "send",
+              "bytes": {
+                "kind": "ref",
+                "value_id": "rwireOut"
+              },
+              "channel_id": "net"
+            }
+          ],
+          "terminator": {
+            "kind": "jump",
+            "target_block": "derive"
+          }
+        },
+        {
+          "id": "recvShare",
+          "steps": [
+            {
+              "kind": "receive",
+              "output_bytes_value_id": "rwireIn"
+            },
+            {
+              "kind": "invoke",
+              "primitive_id": "decodeSigned",
+              "args": [
+                {
+                  "kind": "ref",
+                  "value_id": "rwireIn"
+                }
+              ],
+              "result_value_id": "rdec"
+            }
+          ],
+          "terminator": {
+            "kind": "match",
+            "result_value_id": "rdec",
+            "arms": [
+              {
+                "tag": "ok",
+                "bindings": [
+                  {
+                    "payload_name": "message",
+                    "value_id": "rpkt"
+                  }
+                ],
+                "target_block": "checkSignature"
+              },
+              {
+                "tag": "invalid",
+                "bindings": [],
+                "target_block": "fail"
+              }
+            ]
+          }
+        },
+        {
+          "id": "checkSignature",
+          "steps": [
+            {
+              "kind": "assign",
+              "output_value_id": "rpeerPub",
+              "term": {
+                "kind": "project",
+                "record": {
+                  "kind": "ref",
+                  "value_id": "rpkt"
+                },
+                "field": "pub"
+              }
+            },
+            {
+              "kind": "assign",
+              "output_value_id": "rpeerSig",
+              "term": {
+                "kind": "project",
+                "record": {
+                  "kind": "ref",
+                  "value_id": "rpkt"
+                },
+                "field": "sig"
+              }
+            },
+            {
+              "kind": "assign",
+              "output_value_id": "rsignedBytes",
+              "term": {
+                "kind": "encode",
+                "encoding_id": "shareCodec",
+                "record": {
+                  "kind": "record",
+                  "constructor_id": "MkShare",
+                  "fields": [
+                    {
+                      "name": "pub",
+                      "term": {
+                        "kind": "ref",
+                        "value_id": "rpeerPub"
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "kind": "invoke",
+              "primitive_id": "verifySig",
+              "args": [
+                {
+                  "kind": "ref",
+                  "value_id": "rPeerPk"
+                },
+                {
+                  "kind": "ref",
+                  "value_id": "rsignedBytes"
+                },
+                {
+                  "kind": "ref",
+                  "value_id": "rpeerSig"
+                }
+              ],
+              "result_value_id": "rver"
+            }
+          ],
+          "terminator": {
+            "kind": "match",
+            "result_value_id": "rver",
+            "arms": [
+              {
+                "tag": "ok",
+                "bindings": [],
+                "target_block": "validate"
+              },
+              {
+                "tag": "invalid",
+                "bindings": [],
+                "target_block": "validate"
+              }
+            ]
+          }
+        },
+        {
+          "id": "validate",
+          "steps": [
+            {
+              "kind": "invoke",
+              "primitive_id": "dhValidate",
+              "args": [
+                {
+                  "kind": "ref",
+                  "value_id": "rpeerPub"
+                }
+              ],
+              "result_value_id": "rval"
+            }
+          ],
+          "terminator": {
+            "kind": "match",
+            "result_value_id": "rval",
+            "arms": [
+              {
+                "tag": "ok",
+                "bindings": [
+                  {
+                    "payload_name": "pub",
+                    "value_id": "rpeer"
+                  }
+                ],
+                "target_block": "keygen"
+              },
+              {
+                "tag": "invalid",
+                "bindings": [],
+                "target_block": "fail"
+              }
+            ]
+          }
+        },
+        {
+          "id": "derive",
+          "steps": [
+            {
+              "kind": "invoke",
+              "primitive_id": "dhShared",
+              "args": [
+                {
+                  "kind": "ref",
+                  "value_id": "rsec"
+                },
+                {
+                  "kind": "ref",
+                  "value_id": "rpeer"
+                }
+              ],
+              "result_value_id": "rsh"
+            }
+          ],
+          "terminator": {
+            "kind": "match",
+            "result_value_id": "rsh",
+            "arms": [
+              {
+                "tag": "ok",
+                "bindings": [
+                  {
+                    "payload_name": "shared",
+                    "value_id": "rk"
+                  }
+                ],
+                "target_block": "accept"
+              },
+              {
+                "tag": "invalid",
+                "bindings": [],
+                "target_block": "fail"
+              }
+            ]
+          }
+        },
+        {
+          "id": "accept",
+          "steps": [
+            {
+              "kind": "accept",
+              "target_id": "rKey",
+              "key": {
+                "kind": "ref",
+                "value_id": "rk"
+              },
+              "peer": null
+            }
+          ],
+          "terminator": {
+            "kind": "stop",
+            "reason": "accepted"
+          }
+        },
+        {
+          "id": "fail",
+          "steps": [],
+          "terminator": {
+            "kind": "reject",
+            "target_ids": [
+              "rKey"
+            ],
+            "reason": "failed"
+          }
+        }
+      ]
+    }
+  ],
+  "targets": [
+    {
+      "id": "iKey",
+      "role_id": "Initiator",
+      "stage_id": "final",
+      "key_type_id": "SharedSecret",
+      "peer_mode": "anonymous",
+      "output_kind": "application_key",
+      "property_definition_ids": [],
+      "partnering_profile_id": "none",
+      "exposure_profile_id": "none"
+    },
+    {
+      "id": "rKey",
+      "role_id": "Responder",
+      "stage_id": "final",
+      "key_type_id": "SharedSecret",
+      "peer_mode": "anonymous",
+      "output_kind": "application_key",
+      "property_definition_ids": [],
+      "partnering_profile_id": "none",
+      "exposure_profile_id": "none"
+    }
+  ],
+  "holes": []
+}

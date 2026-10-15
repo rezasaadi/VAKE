@@ -66,6 +66,8 @@ def main():
             ok = invoke('signed-dh-verify', [sys.executable, ROOT/'scripts/verify.py', '--export-dir', run/'signed-dh-export'], expected_status='PROVED_UNDER_ASSUMPTIONS')
         if ok:
             ok = invoke('signed-dh-traces', [sys.executable, ROOT/'scripts/trace_demo.py', '--export-dir', run/'signed-dh-export', '--out', run/'signed-dh-traces'], expected_status='PROVED_UNDER_ASSUMPTIONS')
+    if ok:
+        ok = invoke('model-revision', [sys.executable, ROOT/'scripts/revision_demo.py', '--out', run/'model-revision'], expected_status='PASSED')
     negative = ROOT / 'examples/negative/type_mismatch.json'
     if negative.exists():
         ok = invoke('negative-type', [executable, 'check', negative], 1, 'TYPE_ERROR') and ok
