@@ -14,3 +14,4 @@ import VAKE.Proofs.NoCommit
 import VAKE.Proofs.Commitment
 import VAKE.Proofs.Deduce
 import VAKE.Proofs.Normalization
+import VAKE.Proofs.KeyInjective

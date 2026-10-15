@@ -55,6 +55,11 @@
       "sha256": "e4b787a5cfa49d994bef2d98214cb2d80bc61246ddd3d10727a11116d1d0fa3a"
     },
     {
+      "path": "lean/VAKE/Proofs/KeyInjective.lean",
+      "bytes": 12673,
+      "sha256": "9aa26937769fe51a06526849bf0c9d355ff51c04bf979064a8ff506397f60578"
+    },
+    {
       "path": "lean/VAKE/Proofs/Local.lean",
       "bytes": 5396,
       "sha256": "00734364d99256d02020a8b598ab0647fbf4a09621d8804ccc85c673a4f31dc9"
@@ -111,8 +116,8 @@
     },
     {
       "path": "lean/VAKE.lean",
-      "bytes": 419,
-      "sha256": "bf08d101670596f61ff883ba29217139a9b429773f36536779aa176419861b05"
+      "bytes": 451,
+      "sha256": "a5cdf0a4e425cfcf780eb3df0cb2a54146561daf3e08ddfbccc49b618fe3f53c"
     },
     {
       "path": "rust-toolchain.toml",
