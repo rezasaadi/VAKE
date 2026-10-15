@@ -100,8 +100,7 @@ def terminator (c : Contract) (r : Registry) (e : Environment) (sid loc : String
     | _ => .error (.stuck "match not result")
   | .stop reason => return (w, {s with status := .stopped}, event "stop" [reason] [])
   | .reject ts reason =>
-    let cleaned := if e.interpretation == "edhoc_method0_suite0_v1" then {s with locals := [], slots := [], pending := none} else s
-    return (w, {cleaned with status := .rejected, targets := ts.foldl (fun m t => put m t "rejected") s.targets}, event "reject" (reason :: ts) [])
+    return (w, {s with status := .rejected, targets := ts.foldl (fun m t => put m t "rejected") s.targets}, event "reject" (reason :: ts) [])
 
 def findBlock (m : Model) (s : Session) : Eval Block := do
   let role ← need ("unknown role: " ++ s.role) (m.roles.find? (·.id == s.role))

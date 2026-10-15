@@ -100,8 +100,7 @@ def transfer (c : Contract) (r : Registry) (e : Environment) (sid loc : String)
     | _ => .error (.stuck "match not result")
   | .halt reason => return (w, {s with status := .stopped}, event "stop" [reason] [])
   | .refuse ts reason =>
-    let cleaned := if e.interpretation == "edhoc_method0_suite0_v1" then {s with locals := [], slots := [], pending := none} else s
-    return (w, {cleaned with status := .rejected, targets := ts.foldl (fun m t => put m t "rejected") s.targets}, event "reject" (reason :: ts) [])
+    return (w, {s with status := .rejected, targets := ts.foldl (fun m t => put m t "rejected") s.targets}, event "reject" (reason :: ts) [])
 
 def findSegment (p : Program) (s : Session) : Eval Segment := do
   let process ← need ("unknown role: " ++ s.role) (p.processes.find? (·.id == s.role))

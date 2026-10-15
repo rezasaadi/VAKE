@@ -1,5 +1,4 @@
 import VAKE.Common
-import VAKE.EDHOC
 import VAKE.Symbolic
 import VAKE.Network
 import VAKE.Source.Syntax

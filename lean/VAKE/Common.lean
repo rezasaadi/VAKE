@@ -126,23 +126,6 @@ structure Credential where
   keyOwner : String
   deriving Repr, BEq, Inhabited
 
-class KEMSetup where
-  kemSuite : String := ""
-  kemKeyOwners : List String := []
-  kemCredentials : List Credential := []
-  deriving Repr, BEq, Inhabited
-instance : KEMSetup := {}
-
-class EDHOCSetup where
-  method : Nat := 0
-  suite : Nat := 0
-  credentialFormat : String := ""
-  signatureKeyOwners : List String := []
-  localCredentials : List Credential := []
-  dhProfile : String := ""
-  deriving Repr, BEq, Inhabited
-instance : EDHOCSetup := {}
-
 structure Environment where
   interpretation : String
   phase : String
@@ -151,13 +134,8 @@ structure Environment where
   credentials : List Credential
   kemCorrectness : String
   correctnessErrorSessions : List String
-  [kemSetup : KEMSetup]
-  [edhocSetup : EDHOCSetup]
   deriving Repr, BEq, Inhabited
 
-def Environment.kemSuite (e : Environment) : String := e.kemSetup.kemSuite
-def Environment.kemKeyOwners (e : Environment) : List String := e.kemSetup.kemKeyOwners
-def Environment.kemCredentials (e : Environment) : List Credential := e.kemSetup.kemCredentials
 
 structure Contract where
   literal : Registry → String → String → Eval Val

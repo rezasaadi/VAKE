@@ -31,18 +31,13 @@
     },
     {
       "path": "lean/VAKE/Common.lean",
-      "bytes": 7940,
-      "sha256": "3f2e5175c0937657bb8a49c2e46d1ad69b0d64021fe69b1cf069491d227dd425"
-    },
-    {
-      "path": "lean/VAKE/EDHOC.lean",
-      "bytes": 9176,
-      "sha256": "e9da7fec65ef3e74de0b9154b318031ec0eb74e2c59b83cf4b577367e6d40b4c"
+      "bytes": 7179,
+      "sha256": "65bcc814f0952169d66598a8e7aabc4a4c2754b9daee712e809a6a0a88a426c2"
     },
     {
       "path": "lean/VAKE/Network.lean",
-      "bytes": 15635,
-      "sha256": "801549984e1fcb49981baeb34d02c87fd7308fcec1da2121a1ae67debc6b5745"
+      "bytes": 11171,
+      "sha256": "0bb1a7ba8ac1221788e6c76c52f1ff34e3928bdfa941800452c39ca902da6fa6"
     },
     {
       "path": "lean/VAKE/Proofs/Commitment.lean",
@@ -81,8 +76,8 @@
     },
     {
       "path": "lean/VAKE/Source/Semantics.lean",
-      "bytes": 6854,
-      "sha256": "3baf39c6dc75ecc3fb21343c95fb69836561a88125913d8841be3dca21e64f58"
+      "bytes": 6716,
+      "sha256": "a61fa0b0d4f2ee342f4e197b814a4f7c83be6c3b8dda11fed2321e336d3ba711"
     },
     {
       "path": "lean/VAKE/Source/Syntax.lean",
@@ -91,8 +86,8 @@
     },
     {
       "path": "lean/VAKE/Symbolic.lean",
-      "bytes": 10475,
-      "sha256": "7386ea0e56431f0fa079c123b4e6624194304dba1602f78a3bbcd69195177a47"
+      "bytes": 8838,
+      "sha256": "9e34bb2e959f1f5cc9c731f6c7f7f43853c866b52fdff0406e122206b35c7799"
     },
     {
       "path": "lean/VAKE/Target/Global.lean",
@@ -101,8 +96,8 @@
     },
     {
       "path": "lean/VAKE/Target/Semantics.lean",
-      "bytes": 6919,
-      "sha256": "d9699ef163acca6c4bd9e3034059b78f0ccf47c26d0e16d26bc7ca2d57195751"
+      "bytes": 6781,
+      "sha256": "b2422e732fb3da9d4cf6585dee0488248f1b74896b28162ac63eaa8f3a76d0a2"
     },
     {
       "path": "lean/VAKE/Target/Syntax.lean",
@@ -116,8 +111,8 @@
     },
     {
       "path": "lean/VAKE.lean",
-      "bytes": 437,
-      "sha256": "97671f474ec044d151f2db641b5835cfb62df462d9bf89f6bdc8a01d3020704e"
+      "bytes": 419,
+      "sha256": "bf08d101670596f61ff883ba29217139a9b429773f36536779aa176419861b05"
     },
     {
       "path": "rust-toolchain.toml",

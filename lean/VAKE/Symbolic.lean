@@ -1,5 +1,4 @@
 import VAKE.Common
-import VAKE.EDHOC
 namespace VAKE.Symbolic
 def width (ty : String) : Nat := if ty == "Signature" then 64 else 32
 def stringVal (ty s : String) : Val := .literal ty (Lean.Json.str s).compress
@@ -16,11 +15,6 @@ def appArgs (v : Val) (op : String) : Option (List Val) :=
   | _ => none
 def signingKey (party : String) : Val := .atom "SignatureSecretKey" party "trusted_setup" (some 32)
 def publicKey (party : String) : Val := .app "SignaturePublicKey" "sig_pk" [signingKey party]
-def kemSecretKey (party : String) : Val := .atom "KemSecretKey" party "trusted_kem_setup" (some 32)
-def kemPublicKey (party : String) : Val := .app "KemPublicKey" "kem_pk" [kemSecretKey party]
-def kemCredentialValue (c : Credential) : Val :=
-  .app "KemCredential" "kem_credential" [stringVal "Label" c.domain, stringVal "CredentialId" c.reference,
-    stringVal "Principal" c.principal, kemPublicKey c.keyOwner]
 def credentialValue (c : Credential) : Val :=
   .app "Credential" "credential" [stringVal "Label" c.domain, stringVal "CredentialId" c.reference,
     stringVal "Principal" c.principal, publicKey c.keyOwner]
@@ -67,20 +61,6 @@ decreasing_by
   have h2 : sizeOf f.val = 1 + sizeOf f.val.1 + sizeOf f.val.2 := rfl
   omega
 
-def p3WellSized (v : Val) : Bool :=
-  match v with
-  | .atom ty _ _ _ => if ty == "AeadCiphertext" || ty == "Bytes" then true else wellSized v
-  | .record _ _ fs => fs.attach.all (fun f => p3WellSized f.val.2)
-  | .encoded _ v => p3WellSized v
-  | _ => wellSized v
-termination_by v
-decreasing_by
-  all_goals simp_wf
-  all_goals try omega
-  have h := List.sizeOf_lt_of_mem f.property
-  have h2 : sizeOf f.val = 1 + sizeOf f.val.1 + sizeOf f.val.2 := rfl
-  omega
-
 def ordered (vs : List Val) : List Val := Val.sort vs
 def xorTerms (v : Val) : List Val :=
   if string? v == some "" then [] else (appArgs v "xor").getD [v]
@@ -103,8 +83,7 @@ def invoke (r : Registry) (e : Environment) (sid pid : String) (args : List Val)
     | "fresh", [] => .ok ("ok", [fresh out sid "sample" counter], counter + 1)
     | "hash", _ | "extract", _ | "expand", _ | "sign", _ | "mac", _ =>
       .ok ("ok", [.app out p.op args], counter)
-    | "tls_extract", _ | "tls_expand", _ | "bytes_view", _ |
-      "tls_record_nonce", _ | "tls_record_aad", _ =>
+    | "bytes_view", _ =>
       .ok ("ok", [.app out p.op args], counter)
     | "verify", [pk, msg, sig] =>
       let valid : Bool := match appArgs sig "sign" with
@@ -131,8 +110,7 @@ def invoke (r : Registry) (e : Environment) (sid pid : String) (args : List Val)
         else .ok ("invalid", [], counter)
     | "decode", [.encoded id v] =>
       if ((r.encodings.find? (·.id == id)).any (fun d => d.types.contains out)) && v.typeId == out &&
-          (if e.interpretation == "edhoc_method0_suite0_v1" then p3WellSized v else wellSized v) &&
-          (e.interpretation != "edhoc_method0_suite0_v1" || (EDHOC.length r (.encoded id v)).isSome) then
+          wellSized v then
         .ok ("ok", [v], counter) else .ok ("invalid", [], counter)
     | "decode", [_] => .ok ("invalid", [], counter)
     | "credential", [d, ref, principal] =>
@@ -148,11 +126,6 @@ def invoke (r : Registry) (e : Environment) (sid pid : String) (args : List Val)
     | "validate_credential", [token, domain, principal] =>
       match e.credentials.find? (fun c => credentialValue c == token && string? domain == some c.domain && string? principal == some c.principal) with
       | some c => .ok ("ok", [publicKey c.keyOwner], counter)
-      | none => .ok ("invalid", [], counter)
-    | "validate_kem_credential", [token, domain, principal] =>
-      match e.kemCredentials.find? (fun c => kemCredentialValue c == token &&
-        string? domain == some c.domain && string? principal == some c.principal) with
-      | some c => .ok ("ok", [kemPublicKey c.keyOwner], counter)
       | none => .ok ("invalid", [], counter)
     | "eq", [a, b] => .ok ("ok", [boolVal (a == b)], counter)
     | "and", [a, b] => do
@@ -174,10 +147,7 @@ def invoke (r : Registry) (e : Environment) (sid pid : String) (args : List Val)
       | some [k', n', m, a'] => if k == k' && n == n' && a == a' then .ok ("ok", [m], counter) else .ok ("invalid", [], counter)
       | _ => .ok ("invalid", [], counter)
     | "xor", [a, b] => .ok ("ok", [xorValue a b], counter)
-    | _, _ => if p.op.startsWith "edhoc_" then do
-        let (tag, vs) ← EDHOC.invoke r e p.op out args
-        return (tag, vs, counter)
-      else .error (.stuck ("unsupported contract/arity: " ++ p.op))
+    | _, _ => .error (.stuck ("unsupported contract/arity: " ++ p.op))
   let (tag, values, counter') ← result
   let payload ← need "backend outcome undeclared" (lookup p.outcomes tag)
   if payload.length != values.length then throw (.stuck "backend payload arity mismatch")
