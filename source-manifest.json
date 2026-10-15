@@ -558,6 +558,11 @@
       "bytes": 13834
     },
     {
+      "path": "tests/test_lean_workspace.py",
+      "sha256": "db7f70c8153d4d707d6284762cfea0290049018cccc7db8dc2c4208a4ae6a69e",
+      "bytes": 2916
+    },
+    {
       "path": "tests/test_proof_audit.py",
       "sha256": "05223b773d86f42fdaa351dac406b500cf3756d3f6a9e838e6f4ab24e1b38d01",
       "bytes": 1802
