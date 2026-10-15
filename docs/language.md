@@ -38,4 +38,4 @@ Malformed JSON, unknown fields/variants, and duplicate keys at any depth are rej
 
 Models with declared holes can pass typing with an `OPEN_OBLIGATION` result and can be exported. Resolve those holes before requesting closed-model certificates. Label literals are supported by the general model language, although the nonce-specific concrete execution demo avoids them.
 
-For result interpretation and example-specific checks, read [the README](../README.md#examples-and-scope) and [limitations](limitations.md).
+For result interpretation and example-specific checks, read [the README](../README.md#what-the-checks-establish) and [limitations](limitations.md).

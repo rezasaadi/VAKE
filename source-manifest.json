@@ -64,13 +64,13 @@
     },
     {
       "path": "docs/language.md",
-      "sha256": "95cdb5ebc602c473d27c9df829d49e0bcb74429de12a249c62adea0adfc9609d",
-      "bytes": 4196
+      "sha256": "c3a41a83de500bc62a5195ebaea7b32dcf38b02869c86c89d0fa88bf3ad427a3",
+      "bytes": 4203
     },
     {
       "path": "docs/limitations.md",
-      "sha256": "61eac651f4c6f8e3b4db21c27b0616693326095ba437b7af228963c3a7988e5c",
-      "bytes": 4081
+      "sha256": "fcff9f813bd6f54f5ea153ad5c7e14ac6390db47b937821535d79ece95e108e6",
+      "bytes": 5108
     },
     {
       "path": "docs/onboarding/01-open.jpg",
@@ -344,8 +344,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "ca2b57ce6a887ac705bb14b28218f501d6f94b894b5f80aff35b094f62802a30",
-      "bytes": 3233
+      "sha256": "59e2f2603c1a8a5530bef8fafcf08946cbab366d34af980638e992533fdb6da5",
+      "bytes": 3989
     },
     {
       "path": "rust-toolchain.toml",

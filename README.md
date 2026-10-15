@@ -6,7 +6,7 @@ VAKE checks typed JSON protocol models, exports Lean representations, and checks
 
 ![VAKE workspace](docs/onboarding/welcome.jpg)
 
-The screenshots show an earlier interface state. Run the checks locally for evidence of this source version.
+Screenshots show an older interface; run the checks locally for current results.
 
 ## Run with Docker
 
@@ -49,20 +49,35 @@ python3 scripts/prepare_release.py
 
 This refreshes both hash manifests and checks the complete working tree. Include every changed and new source file, plus both manifests, in the same commit. Before pushing, run `python3 scripts/prepare_release.py --check-publication` to check for pending files. CI checks the committed snapshot; it saves preflight failures in the `vake-linux-evidence` artifact.
 
-## Examples and scope
+## Examples
 
 - **Nonce exchange:** honest execution and malformed-message rejection.
 - **DH exchange:** honest key agreement and a concrete man-in-the-middle execution.
-- **Signed DH:** honest key agreement and rejection of the two supplied share substitutions.
+- **Signed DH:** honest key agreement and rejection of the two bundled share substitutions.
 - **Signature construction:** a concrete primitive lemma and separately labelled executable observations.
 
 Execution certificates come from [scenario files](docs/scenarios.md) bound to the exact model/profile bytes. Failed certificates report `CERTIFICATE_FAILED`; invalid scenario files report `SCENARIO_ERROR`.
 
-These are checked instances under reported symbolic and logical assumptions. They do not establish universal authentication, secrecy, replay resistance, computational security, or post-quantum security. The execution checks use the reused formal library with structural value keys and deducibility proof search.
+## What the checks establish
 
-Redistribution licensing remains unresolved; see [LICENSE](LICENSE).
+Each result is a kernel-checked certificate for the encoded model, under the symbolic contracts and the logical axioms listed in its audit. Concretely, VAKE checks:
+
+- that the generated Lean target agrees with an independently imported source (a differential check of the Rust exporter against the Python importer; the translation itself is a constructor renaming);
+- the listed final-state claims of each scenario execution, with a kernel-checked deducibility proof for every adversary step;
+- the reusable correspondence theorems and the injectivity of the value key used for symbolic equality.
+
+The checks cover particular executions, not all executions. They do not establish authentication, secrecy, replay resistance, computational security, or post-quantum security. See [Limitations](docs/limitations.md) for the full trust boundary.
+
+Verification runs reuse the compiled Lean library from a content-addressed cache under `.vake-cache/`; set `VAKE_LEAN_CACHE=0` to rebuild it from source.
+
+## Documentation
 
 - [Input language](docs/language.md)
 - [Examples](examples/README.md)
+- [Scenario files](docs/scenarios.md)
 - [Browser reference](docs/ui-user-guide.md)
 - [Limitations](docs/limitations.md)
+
+## License
+
+VAKE is licensed under the [Apache License 2.0](LICENSE). See [NOTICE](NOTICE).
