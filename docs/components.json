@@ -161,8 +161,8 @@
     },
     {
       "path": "scripts/prepare_release.py",
-      "bytes": 2023,
-      "sha256": "13c1274b09f41c2913b0bb8d7cf6934c5e6e3d74089c4778ce845d87f833cbdc"
+      "bytes": 1967,
+      "sha256": "2b63efafff476a3d45e1e135264779ba826b5bf943fc2a1f048de4716055646c"
     },
     {
       "path": "scripts/repository_preflight.py",

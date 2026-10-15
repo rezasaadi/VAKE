@@ -54,7 +54,7 @@
     },
     {
       "path": "docs/components.json",
-      "sha256": "a80ec1b3f9435837a5dffcf9334a298bc61a231904c87ab6601b108e828951af",
+      "sha256": "4ba95ec5af8864d46cff815f33db7236a0e78f438fb4f88527827981d9e026a2",
       "bytes": 8264
     },
     {
@@ -419,8 +419,8 @@
     },
     {
       "path": "scripts/prepare_release.py",
-      "sha256": "13c1274b09f41c2913b0bb8d7cf6934c5e6e3d74089c4778ce845d87f833cbdc",
-      "bytes": 2023
+      "sha256": "2b63efafff476a3d45e1e135264779ba826b5bf943fc2a1f048de4716055646c",
+      "bytes": 1967
     },
     {
       "path": "scripts/proof-declarations.json",
