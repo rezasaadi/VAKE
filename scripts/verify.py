@@ -1,5 +1,6 @@
 from __future__ import annotations
 from runtime_env import configured
+import lean_workspace
 import argparse
 import json
 import os
@@ -35,7 +36,7 @@ def main():
         isolated = export / 'lean-check'
         if isolated.exists():
             raise RuntimeError('Verification work directory already exists; use a fresh export directory')
-        shutil.copytree(source_lean, isolated, ignore=shutil.ignore_patterns('.lake', 'Imported', 'Generated', 'Demo', 'Audit.lean', 'SignatureObservations.lean', 'validation'))
+        result['library_cache'] = lean_workspace.prepare(source_lean, isolated, lake, logs / 'library-cache-build.log')
         record, output = run([lake, 'env', 'lean', '--version'], isolated, logs / 'lean-version.log')
         commands.append(record)
         if record['exit_code'] or 'version 4.34.1,' not in output:

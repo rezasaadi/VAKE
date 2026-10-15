@@ -54,7 +54,7 @@
     },
     {
       "path": "docs/components.json",
-      "sha256": "90b99124044f71e77e2203040d50b8e486bb2e3410f6c0da3efe5a5793abcd41",
+      "sha256": "5d1fcbcd261163ee8db39133994b113f72299a62940164ad9548df94d79c36c8",
       "bytes": 8264
     },
     {
@@ -504,8 +504,8 @@
     },
     {
       "path": "scripts/verify.py",
-      "sha256": "09774784341bfebe5edd702195bf81caab89e1dcb2d5c8676672626d01873416",
-      "bytes": 5112
+      "sha256": "e06447b81678cb4a874fe2a18686b99b9fb5815529e20ca567be9fabfb2a6ec0",
+      "bytes": 5076
     },
     {
       "path": "src/admission.rs",

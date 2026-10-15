@@ -211,8 +211,8 @@
     },
     {
       "path": "scripts/verify.py",
-      "bytes": 5112,
-      "sha256": "09774784341bfebe5edd702195bf81caab89e1dcb2d5c8676672626d01873416"
+      "bytes": 5076,
+      "sha256": "e06447b81678cb4a874fe2a18686b99b9fb5815529e20ca567be9fabfb2a6ec0"
     },
     {
       "path": "src/admission.rs",
