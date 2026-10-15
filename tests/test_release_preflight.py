@@ -99,6 +99,22 @@ class ReleasePreflightTests(unittest.TestCase):
             manifest=json.loads((root/'reports/ci-evidence/manifest.json').read_text())
             self.assertEqual(manifest['files'][0]['sha256'],hashlib.sha256(target.read_bytes()).hexdigest())
 
+    def test_collector_preserves_revision_and_differential_results(self):
+        module=load('collect_ci_evidence')
+        with tempfile.TemporaryDirectory() as temporary:
+            root=Path(temporary)
+            source=root/'reports/runs/differential-ci'
+            source.mkdir(parents=True)
+            names={'revision-result.json','differential-result.json','trials.json','mutants.json'}
+            for name in names:
+                (source/name).write_text(json.dumps({'status':'FAILED','output':str(root)}),encoding='utf-8')
+            with patch.object(module,'ROOT',root):module.main()
+            for name in names:
+                target=root/'reports/ci-evidence/differential-ci'/name
+                self.assertEqual(json.loads(target.read_text(encoding='utf-8')),{'status':'FAILED','output':'<REPO>'})
+            manifest=json.loads((root/'reports/ci-evidence/manifest.json').read_text(encoding='utf-8'))
+            self.assertEqual({Path(row['path']).name for row in manifest['files']},names)
+
     def test_publication_check_reports_all_pending_paths(self):
         module=load('prepare_release')
         with patch.object(module.subprocess,'check_output',side_effect=[b'scripts/demo.py\0',b'scripts/scenario_traces.py\0']):

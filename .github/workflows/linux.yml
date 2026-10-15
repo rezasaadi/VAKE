@@ -33,6 +33,8 @@ jobs:
         env:
           VAKE_UI_TEST_LEAN: '1'
         run: python scripts/reproduce.py
+      - name: Check seeded differential agreement and mutations
+        run: python scripts/differential_test.py --count 20 --mutants 20 --seed 2026 --batch 10 --out reports/runs/differential-ci
       - name: Collect sanitized execution logs
         if: always()
         run: python scripts/collect_ci_evidence.py

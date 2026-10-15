@@ -6,6 +6,7 @@ def main():
     output.mkdir(parents=True,exist_ok=False)
     rows=[]
     allowed={"preflight-result.json","reproduction-result.json","demo-result.json","verification-result.json","trace-result.json","proof-audit.json","negative-binding-results.json","signature-observations.json"}
+    allowed.update({"revision-result.json", "differential-result.json", "trials.json", "mutants.json"})
     for path in sorted((ROOT/"reports/runs").rglob("*")):
         if not path.is_file() or ".lake" in path.parts or path.suffix!=".log" and path.name not in allowed: continue
         rel=path.relative_to(ROOT/"reports/runs")
