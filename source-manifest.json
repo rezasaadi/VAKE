@@ -54,7 +54,7 @@
     },
     {
       "path": "docs/components.json",
-      "sha256": "d9a368de212b2486d6ac33f4610a776bb5ce28b659b3e486aa66abe6b12b340a",
+      "sha256": "ae580acc902040f70e2121f3f8ff54b07c50896047b10c363ba64d671dd74c87",
       "bytes": 7934
     },
     {
@@ -519,8 +519,8 @@
     },
     {
       "path": "src/lean_export.rs",
-      "sha256": "598d0ae4c9a898d8e682ecf2646a6f76fe234df12336d4337334b22f5f37f1e7",
-      "bytes": 21409
+      "sha256": "9724111b117f433493796e1ccce139b2c409450ca62387786ea03037e186f81b",
+      "bytes": 21371
     },
     {
       "path": "src/lib.rs",

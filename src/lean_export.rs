@@ -514,7 +514,7 @@ pub fn export(model_bytes: &[u8], profile_bytes: &[u8], output: &Path) -> Result
         "closure":if kernel.closed {"closed"}else{"open"},"holes":kernel.holes,"module":module,
         "theorem_module":format!("VAKE.Generated.B{identity}"),
         "theorem_names":["binding","profile_binding","step_preservation","trace_preservation","trace_reflection"],
-        "theorem_status":"not_checked_by_export_command","security_properties":"open","P2":"unsupported","P3":"unsupported",
+        "theorem_status":"not_checked_by_export_command","security_properties":"open",
         "assumptions":["JSON parsing and independent importer trust","formal source semantics source-review boundary","explicit symbolic and network contracts","Lean kernel"],
         "files":files.iter().map(|(path,bytes)|json!({"path":path,"bytes":bytes.len(),"raw_sha256":raw_digest(bytes)})).collect::<Vec<_>>()});
 

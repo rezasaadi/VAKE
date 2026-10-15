@@ -226,8 +226,8 @@
     },
     {
       "path": "src/lean_export.rs",
-      "bytes": 21409,
-      "sha256": "598d0ae4c9a898d8e682ecf2646a6f76fe234df12336d4337334b22f5f37f1e7"
+      "bytes": 21371,
+      "sha256": "9724111b117f433493796e1ccce139b2c409450ca62387786ea03037e186f81b"
     },
     {
       "path": "src/lib.rs",
