@@ -13,11 +13,6 @@
       "bytes": 25
     },
     {
-      "path": ".github/workflows/linux.yml",
-      "sha256": "7403af3c928634287432bf977c48c907f66638a6ded6808c99f8df2388514eb9",
-      "bytes": 1875
-    },
-    {
       "path": ".gitignore",
       "sha256": "4b0ea41754e22b2ab169de9baed07bebcb29e19ab155d070823a797bb4d9a3ed",
       "bytes": 647
