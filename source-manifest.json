@@ -44,8 +44,8 @@
     },
     {
       "path": "CONTRIBUTING.md",
-      "sha256": "63a90d0eafc4e9acf02f89132d767d11efdfe3a5b45f833969a49d4e6fee7971",
-      "bytes": 1066
+      "sha256": "59e569825cefb90c3e3a4c4b100b507e342891e44bae4f7dc97bdbf1e95b3b6c",
+      "bytes": 1089
     },
     {
       "path": "Dockerfile",

@@ -8,4 +8,4 @@ Run the [reproduction workflow](README.md#cli-and-reproduction) after execution 
 
 Keep compiler caches and local runs outside the source package. Evidence bundles preserve model and Lean bytes; machine paths are normalized only in metadata copies.
 
-See [LICENSE](LICENSE) for licensing status.
+Contributions are accepted under the [Apache License 2.0](LICENSE).
