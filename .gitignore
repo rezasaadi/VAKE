@@ -40,3 +40,7 @@ Thumbs.db
 /dist/
 /lean/SignatureObservations.lean
 /.vake-cache/
+
+# All run output, timings and local validation evidence
+/reports/
+/artifact/validation-*/

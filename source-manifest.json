@@ -14,8 +14,8 @@
     },
     {
       "path": ".gitignore",
-      "sha256": "4b0ea41754e22b2ab169de9baed07bebcb29e19ab155d070823a797bb4d9a3ed",
-      "bytes": 647
+      "sha256": "bcf4767869d7478d28aa66f64f0aec0fef11c6349907c0772d0e9f701b040901",
+      "bytes": 738
     },
     {
       "path": "Cargo.lock",
@@ -49,7 +49,7 @@
     },
     {
       "path": "docs/components.json",
-      "sha256": "9cc0db913b13e6cc62f5ef17e89ea1ccb797e858cad32a943edbf2f3edc8e40b",
+      "sha256": "b485f4353f53c6d71bb7fa3f0e587c43d83e12833ad5a2f846f210e26958ee1c",
       "bytes": 8588
     },
     {
@@ -429,8 +429,8 @@
     },
     {
       "path": "scripts/package.py",
-      "sha256": "f8200853f0f7d7f244158702be918e5b63ffdae4442ad62f0a9d0fbbd1d77f65",
-      "bytes": 3457
+      "sha256": "f016463dfbf01700119a2dbb51ec6c1802f3ccf50a111e9fbc47eaa33b18e09c",
+      "bytes": 3487
     },
     {
       "path": "scripts/prepare_release.py",
@@ -444,8 +444,8 @@
     },
     {
       "path": "scripts/repository_preflight.py",
-      "sha256": "1807b8500f0ea8a997b51636ab84dd10b2ec88619d258df03d1f442f28efcd93",
-      "bytes": 7821
+      "sha256": "f55e9655f652c440e1871516abb0feb18093a39ee4754cf21e9bb54db1acca69",
+      "bytes": 7796
     },
     {
       "path": "scripts/reproduce.ps1",

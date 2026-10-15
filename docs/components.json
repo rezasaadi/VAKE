@@ -161,8 +161,8 @@
     },
     {
       "path": "scripts/package.py",
-      "bytes": 3457,
-      "sha256": "f8200853f0f7d7f244158702be918e5b63ffdae4442ad62f0a9d0fbbd1d77f65"
+      "bytes": 3487,
+      "sha256": "f016463dfbf01700119a2dbb51ec6c1802f3ccf50a111e9fbc47eaa33b18e09c"
     },
     {
       "path": "scripts/prepare_release.py",
@@ -171,8 +171,8 @@
     },
     {
       "path": "scripts/repository_preflight.py",
-      "bytes": 7821,
-      "sha256": "1807b8500f0ea8a997b51636ab84dd10b2ec88619d258df03d1f442f28efcd93"
+      "bytes": 7796,
+      "sha256": "f55e9655f652c440e1871516abb0feb18093a39ee4754cf21e9bb54db1acca69"
     },
     {
       "path": "scripts/reproduce.py",

@@ -7,7 +7,7 @@ import shutil
 import zipfile
 
 ROOT=Path(__file__).resolve().parents[1]
-EXCLUDED_PREFIXES=('reports/runs/','reports/ui-runs/','reports/ci-evidence/','reports/demo-proof-export/','reports/negative-binding-controls/','lean/validation/','lean/VAKE/Generated/','lean/VAKE/Imported/','lean/VAKE/Demo/','vake-reports-export/','dist/')
+EXCLUDED_PREFIXES=('reports/runs/','reports/ui-runs/','reports/ci-evidence/','reports/demo-proof-export/','reports/negative-binding-controls/','lean/validation/','lean/VAKE/Generated/','lean/VAKE/Imported/','lean/VAKE/Demo/','vake-reports-export/','dist/','artifact/validation-')
 
 def included(path, root=None):
     root=ROOT if root is None else Path(root)
@@ -17,7 +17,7 @@ def included(path, root=None):
     if not path.is_file() or name in {'source-manifest.json','lean/VAKE/Audit.lean','lean/SignatureObservations.lean'}:return False
     if path.name.startswith('.env') or path.suffix in {'.pem','.key','.pyc'}:return False
     if name.startswith(EXCLUDED_PREFIXES):return False
-    if name.startswith('reports/') and len(rel.parts)==2 and path.suffix=='.log':return False
+    if name.startswith('reports/'):return False  # run output, timings and evidence are never source
     return True
 
 def source_files(root=None):
