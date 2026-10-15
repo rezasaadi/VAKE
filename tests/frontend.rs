@@ -334,3 +334,23 @@ fn signed_dh_example_is_closed_typed_and_backend_supported() {
     assert_eq!((report.roles, report.blocks), (2, 16));
     contracts::contracts(&model).unwrap();
 }
+
+#[test]
+fn excluded_profile_encodings_and_operations_are_rejected() {
+    for family in [
+        "tls_abstract",
+        "cbor_abstract",
+        "cose_abstract",
+        "edhoc_sequence",
+        "edhoc_array",
+    ] {
+        let mut value: Value = serde_json::from_slice(NONCE).unwrap();
+        value["encodings"][0]["family"] = json!(family);
+        let err = check::check(&parse_value(&value)).unwrap_err();
+        assert!(err.contains("encoding family"), "{family}: {err}");
+    }
+    let mut value: Value = serde_json::from_slice(NONCE).unwrap();
+    value["primitives"][0]["law_ids"] = json!(["Op.edhoc_bytes"]);
+    let err = contracts::contracts(&parse_value(&value)).unwrap_err();
+    assert!(err.contains("unsupported primitive operation"), "{err}");
+}

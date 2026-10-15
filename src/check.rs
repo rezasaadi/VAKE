@@ -336,15 +336,7 @@ pub fn check(m: &Model) -> Result<CheckReport, String> {
     for e in &m.encodings {
         choice(
             &e.family,
-            &[
-                "fixture_tlv",
-                "tls_abstract",
-                "cbor_abstract",
-                "cose_abstract",
-                "edhoc_sequence",
-                "edhoc_array",
-                "case_defined",
-            ],
+            &["fixture_tlv", "case_defined"],
             "encoding family",
         )?;
         unique(

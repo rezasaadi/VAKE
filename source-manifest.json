@@ -54,7 +54,7 @@
     },
     {
       "path": "docs/components.json",
-      "sha256": "f8a5c8b78fb5c8dca545bcf36a7ae142fbcd26d2d31462201c1d3ffc52b9204d",
+      "sha256": "d9a368de212b2486d6ac33f4610a776bb5ce28b659b3e486aa66abe6b12b340a",
       "bytes": 7934
     },
     {
@@ -504,13 +504,13 @@
     },
     {
       "path": "src/check.rs",
-      "sha256": "171e2d21c549fa6fd3c161053b27a9a4aa838b8c6a9575d2d96121e869784c7a",
-      "bytes": 29749
+      "sha256": "858653afdc8e1cc6b7b05c5c5c8dc021934e5d7b956bb23208d687a55470f045",
+      "bytes": 29539
     },
     {
       "path": "src/contracts.rs",
-      "sha256": "f511eabaac6294a4e260ca714963330f1a05eaf1d9da63189c92599a5a362a11",
-      "bytes": 10601
+      "sha256": "b7005c60b95ffbe0ac567c26154e099214e544d488bede66425d853d48b32bcc",
+      "bytes": 10359
     },
     {
       "path": "src/ir.rs",
@@ -544,8 +544,8 @@
     },
     {
       "path": "tests/frontend.rs",
-      "sha256": "594b62904b65a4beece47342e15511a5443172171795e58fdbfa7ec232f2eb4a",
-      "bytes": 13064
+      "sha256": "4af3fa49863f6caa9956559798ef2ee0b9239d9ffb5bc560c8a2aeb957ed0a49",
+      "bytes": 13834
     },
     {
       "path": "tests/test_proof_audit.py",

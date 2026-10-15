@@ -21,11 +21,6 @@ pub fn operation(p: &Primitive) -> Result<String, String> {
 pub fn contracts(model: &Model) -> Result<(), String> {
     for p in &model.primitives {
         let op = operation(p)?;
-        if op.starts_with("edhoc_") || op.starts_with("tls_") || op == "validate_kem_credential" {
-            return Err(format!(
-                "unsupported standalone operation {op}: P2/P3 profiles are excluded"
-            ));
-        }
         let ins: Vec<_> = p.inputs.iter().map(|x| x.type_id.as_str()).collect();
         let success = p
             .outcomes
