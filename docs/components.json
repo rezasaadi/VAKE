@@ -145,14 +145,19 @@
       "sha256": "20db0c0304fef013dbde3cf36ececf6ac59497f995f83db1613e5933490f0f17"
     },
     {
+      "path": "scripts/lean_workspace.py",
+      "bytes": 4691,
+      "sha256": "e63e05eb1591352b34c1b84977b2abf0c06d30ad95001c1a65e6b53d56387e58"
+    },
+    {
       "path": "scripts/measure.py",
       "bytes": 5619,
       "sha256": "71c05c156efd25da7076eca4b103fa12b52e35ac8623b43cb5642457d8ef08b1"
     },
     {
       "path": "scripts/package.py",
-      "bytes": 3443,
-      "sha256": "0037babd9db20639d23fe454483fea3e1929f3d291b315c614af8333be42b00b"
+      "bytes": 3457,
+      "sha256": "f8200853f0f7d7f244158702be918e5b63ffdae4442ad62f0a9d0fbbd1d77f65"
     },
     {
       "path": "scripts/prepare_release.py",
@@ -161,8 +166,8 @@
     },
     {
       "path": "scripts/repository_preflight.py",
-      "bytes": 7806,
-      "sha256": "dff1ad58354944b82c3cd43d90f440b4c57e64324f4f3019684d99c6ea6d8a78"
+      "bytes": 7821,
+      "sha256": "1807b8500f0ea8a997b51636ab84dd10b2ec88619d258df03d1f442f28efcd93"
     },
     {
       "path": "scripts/reproduce.py",

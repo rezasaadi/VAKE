@@ -12,7 +12,7 @@ EXCLUDED_PREFIXES=('reports/runs/','reports/ui-runs/','reports/ci-evidence/','re
 def included(path, root=None):
     root=ROOT if root is None else Path(root)
     rel=path.relative_to(root)
-    if any(p in {'.git','target','.lake','__pycache__','node_modules'} for p in rel.parts):return False
+    if any(p in {'.git','target','.lake','.vake-cache','__pycache__','node_modules'} for p in rel.parts):return False
     name=rel.as_posix()
     if not path.is_file() or name in {'source-manifest.json','lean/VAKE/Audit.lean','lean/SignatureObservations.lean'}:return False
     if path.name.startswith('.env') or path.suffix in {'.pem','.key','.pyc'}:return False

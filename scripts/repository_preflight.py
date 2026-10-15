@@ -13,7 +13,7 @@ import zipfile
 from package import source_files
 
 ROOT = Path(__file__).resolve().parents[1]
-FORBIDDEN_PARTS = {".git", "target", ".lake", "__pycache__", "node_modules"}
+FORBIDDEN_PARTS = {".git", "target", ".lake", ".vake-cache", "__pycache__", "node_modules"}
 FORBIDDEN_PREFIXES = ("reports/runs/", "reports/ui-runs/", "reports/ci-evidence/", "vake-reports-export/", "paper/build/", "paper/output/")
 PATTERNS = {
     "obsolete project identity": re.compile(r"(?:ae(?:gi|ig)s|veri[\s_.-]*ake)", re.I),

@@ -39,3 +39,4 @@ Thumbs.db
 *.swo
 /dist/
 /lean/SignatureObservations.lean
+/.vake-cache/

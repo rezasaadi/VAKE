@@ -38,3 +38,4 @@ artifact/docker/
 docs/screenshots/
 reports/docker-runtime/
 lean/SignatureObservations.lean
+.vake-cache/
